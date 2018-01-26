@@ -13,6 +13,11 @@ export default class extends Phaser.State {
     //
     // load your assets
     //
+
+      this.load.spritesheet('roguelikeChar', './assets/images/roguelikeChar_transparent.png', 16, 16, /*frameMax=*/-1, /*margin=*/0, /*space=*/1)
+      this.load.spritesheet('roguelikeDungeon', './assets/images/roguelikeDungeon_transparent.png', 16, 16, /*frameMax=*/-1, /*margin=*/0, /*space=*/1)
+      this.load.spritesheet('roguelikeIndoor', './assets/images/roguelikeIndoor_transparent.png', 16, 16, /*frameMax=*/-1, /*margin=*/0, /*space=*/1)
+      this.load.spritesheet('roguelikeSheet', './assets/images/roguelikeSheet_transparent.png', 16, 16, /*frameMax=*/-1, /*margin=*/0, /*space=*/1)
   }
 
   create () {
