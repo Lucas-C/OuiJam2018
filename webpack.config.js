@@ -21,12 +21,13 @@ module.exports = {
     ],
     vendor: ['pixi', 'p2', 'phaser', 'webfontloader']
   },
-  devtool: 'cheap-source-map',
+  devtool: 'source-map',
   output: {
     pathinfo: true,
     path: path.resolve(__dirname, 'dist'),
     publicPath: './dist/',
-    filename: 'bundle.js'
+    filename: 'bundle.js',
+    sourceMapFilename: '[file].map?[contenthash]'
   },
   watch: true,
   plugins: [
