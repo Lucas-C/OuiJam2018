@@ -54,3 +54,9 @@
     let bed_front_2 = 186;
     let bed_back_2 = 243;
 
+    // Scroll
+    let scroll_1 = 896;
+    let scroll_2 = 897;
+    let scroll_3 = 898;
+    let scroll_4 = 899;
+    
