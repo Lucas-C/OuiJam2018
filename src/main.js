@@ -10,7 +10,7 @@ import config from './config'
 
 class Game extends Phaser.Game {
   constructor () {
-    super(config.getGameWidth(), config.getGameHeight(), Phaser.CANVAS, 'content')
+    super(config.getGameWidth(), config.getGameHeight(), Phaser.CANVAS, 'content', /*state=*/null, /*transparent=*/false, /*antialias=*/false)
 
     this.state.add('Boot', BootState, false)
     this.state.add('Splash', SplashState, false)
