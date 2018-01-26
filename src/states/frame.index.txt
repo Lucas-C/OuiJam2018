@@ -1,0 +1,16 @@
+    // Cellule basique
+    let floor_cell_basic_top_lft = 1428;
+    let floor_cell_basic_top_mid = 1429;
+    let floor_cell_basic_top_rgt = 1430;
+    let floor_cell_basic_ctr_lft = 1485;
+    let floor_cell_basic_ctr_mid = 1486;
+    let floor_cell_basic_ctr_rgt = 1487;
+    let floor_cell_basic_bot_lft = 1542;
+    let floor_cell_basic_bot_mid = 1543;
+    let floor_cell_basic_bot_rgt = 1544;
+
+    // Fleches bleues
+    let arrow_blue_big_left = 1650;
+    let arrow_blue_big_right = 1651;
+    let arrow_blue_med_left = 1707;
+    let arrow_blue_med_right = 1708;
