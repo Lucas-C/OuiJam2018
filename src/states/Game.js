@@ -26,6 +26,10 @@ export default class extends Phaser.State {
     this.game.add.existing(this.guard)
   }
 
+  update () {
+      this.guard.update()
+  }
+
   render () {
     if (__DEV__) {
       this.game.debug.spriteInfo(this.guard, 32, 32)
