@@ -40,10 +40,10 @@ const FRAME = {
     CHAIR_SIDE_RIGHT_3: 250,
 
     // Chaise type 4 (bord rond)
-    CHAIR_FRONT_1: 304,
-    CHAIR_BACK_1: 305,
-    CHAIR_SIDE_LEFT_1: 306,
-    CHAIR_SIDE_RIGHT_1: 307,
+    CHAIR_FRONT_4: 304,
+    CHAIR_BACK_4: 305,
+    CHAIR_SIDE_LEFT_4: 306,
+    CHAIR_SIDE_RIGHT_4: 307,
 
     // Lit ouvert
     BED_SIDE_LEFT_1: 71,
@@ -74,6 +74,9 @@ const FRAME = {
     WALL_CORNER_BOT_RIGHT: 779,
     WALL_MIDDLE_HORIZONTAL: 719,
     WALL_MIDDLE_VERTICAL: 777,
+
+    // Barreaux (spritesheet : indoor)
+    METAL_BAR: 123,
 };
 
 export default FRAME;
