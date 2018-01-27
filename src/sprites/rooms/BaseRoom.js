@@ -16,13 +16,6 @@ export default class BaseRoom extends Phaser.Group {
     }
 
     /**********
-     * Getters
-     *********/
-    exits() {
-        return this.exits
-    }
-
-    /**********
      * Setters
      *********/
     setGroundTiles() {
