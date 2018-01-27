@@ -22,7 +22,6 @@ export default class extends Phaser.State {
     game.world.setBounds(0, 0, config.worldWidth, config.worldHeight)
     //game.world.scale.setTo(1.1) // Camera zoom
     this.rootGroup = new Phaser.Group(game, /*parent=*/null, /*name=*/'rootGroup')
-    console.log('rootGroup pos', this.rootGroup.x, this.rootGroup.y)
 
     this.levelGrid = new LevelGrid(this.roomsPerLevelSide, config.levelGridWidth, config.levelGridHeight, this.rootGroup);
     //this.levelGrid.showForDebug();

@@ -53,12 +53,14 @@ export default class BaseRoom extends Phaser.Group {
     const sprite = this.create(0, 0, 'roguelikeChar', FRAME.NELLA_MANDELSON) // the pretty one
     this.grid.placeAt(x, y, sprite)
     this.allies.push(sprite)
+    return this
   }
 
   addEndWindow(x, y) {
     this.windowSprite = this.create(0, 0, BaseRoom.WALL_AND_FLOOR_SPRITE_SHEET, FRAME.WINDOW_1)
     this.grid.placeAt(x, y, this.windowSprite);
-    this.grid.placeAt(x, y, this.create(0, 0, BaseRoom.WALL_AND_FLOOR_SPRITE_SHEET, FRAME.CURTAINS_1));
+    this.grid.placeAt(x, y, this.create(0, 0, BaseRoom.WALL_AND_FLOOR_SPRITE_SHEET, FRAME.CURTAINS_1))
+    return this
   }
 
   addAlly(x, y) {
@@ -67,12 +69,14 @@ export default class BaseRoom extends Phaser.Group {
     this.grid.placeAt(x, y, this.create(0, 0, 'roguelikeChar', this.selectOneInArray([10, 14, 327, 381])), -1, 1); // clothes
     this.grid.placeAt(x, y, this.create(0, 0, 'roguelikeChar', this.selectOneInArray([19, 21])), -1, 1); // hair
     this.allies.push(sprite)
+    return this
   }
 
   addBaddy(x, y) {
     const sprite = this.create(0, 0, 'roguelikeChar', this.selectOneInArray([270, 432, 541])) // all in one
     this.grid.placeAt(x, y, sprite)
     this.baddies.push(sprite)
+    return this
   }
 
   addGuard(x, y) {
@@ -83,7 +87,9 @@ export default class BaseRoom extends Phaser.Group {
     this.grid.placeAt(x, y, this.create(0, 0, 'roguelikeChar', this.selectOneInArray([28])));
     this.grid.placeAt(x, y, this.create(0, 0, 'roguelikeChar', this.selectOneInArray([256])));
     this.grid.placeAt(x, y, this.create(0, 0, 'roguelikeChar', this.selectOneInArray([49])));
+    return this;
   }
+
   selectOneInArray(array) {
     return array[Math.floor(Math.random() * array.length)];
   }
@@ -97,6 +103,7 @@ export default class BaseRoom extends Phaser.Group {
       FRAME.BED_SIDE_LEFT_2, FRAME.BED_SIDE_RIGHT_2, FRAME.BED_FRONT_2, FRAME.BED_BACK_2
     ];
     this.grid.placeAt(x, y, this.create(0, 0, 'roguelikeSheet', this.selectOneInArray(furnitureArray))); // all in one
+    return this;
   }
 
 
@@ -118,10 +125,11 @@ export default class BaseRoom extends Phaser.Group {
           break;
       }
     })
+    return this
   }
 
   _addTopSideMetalBar() {
-    for (let i = 1; i < config.cellsPerRoomSide - 1; i++) {
+    for (let i = 0; i < config.cellsPerRoomSide; i++) {
       const metalBar = this.create(0, 0, BaseRoom.METAL_BAR_SPRITE_SHEET, FRAME.METAL_BAR);
       metalBar.anchor.setTo(0.4, 1);
       metalBar.angle = 90;
@@ -130,7 +138,7 @@ export default class BaseRoom extends Phaser.Group {
   }
 
   _addBottomSideMetalBar() {
-    for (let i = 1; i < config.cellsPerRoomSide - 1; i++) {
+    for (let i = 0; i < config.cellsPerRoomSide; i++) {
       const metalBar = this.create(0, 0, BaseRoom.METAL_BAR_SPRITE_SHEET, FRAME.METAL_BAR);
       metalBar.anchor.setTo(0.5, 1);
       metalBar.angle = 90;
@@ -139,7 +147,7 @@ export default class BaseRoom extends Phaser.Group {
   }
 
   _addLeftSideMetalBar() {
-    for (let i = 1; i < config.cellsPerRoomSide - 1; i++) {
+    for (let i = 0; i < config.cellsPerRoomSide; i++) {
       const metalBar = this.create(0, 0, BaseRoom.METAL_BAR_SPRITE_SHEET, FRAME.METAL_BAR);
       metalBar.anchor.setTo(0.4, 0);
       this.grid.placeAt(0, i, metalBar);
@@ -147,7 +155,7 @@ export default class BaseRoom extends Phaser.Group {
   }
 
   _addRightSideMetalBar() {
-    for (let i = 1; i < config.cellsPerRoomSide - 1; i++) {
+    for (let i = 0; i < config.cellsPerRoomSide; i++) {
       const metalBar = this.create(0, 0, BaseRoom.METAL_BAR_SPRITE_SHEET, FRAME.METAL_BAR);
       metalBar.anchor.setTo(0.5, 0);
       this.grid.placeAt(config.cellsPerRoomSide, i, metalBar);
@@ -172,6 +180,7 @@ export default class BaseRoom extends Phaser.Group {
           break;
       }
     })
+    return this
   }
 
   _addTopSideWall() {
