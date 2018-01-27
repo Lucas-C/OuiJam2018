@@ -6,6 +6,13 @@ export default class extends Phaser.Group {
     constructor() {
         super(game)
     }
+    addCell(x, y, cell) {
+        console.log('addCell', x, y, cell)
+    }
+    cellPosAt(x, y) {
+        console.log('cellPosAt', x, y)
+        return null
+    }
     //place an object in relation to the grid
     placeAt(xx, yy, obj) {
         //calculate the center of the cell

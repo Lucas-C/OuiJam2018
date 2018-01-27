@@ -11,7 +11,9 @@ export default class extends Phaser.State {
     create() {
         this.game.world.setBounds(0, 0, 2000, 2000)
 
-        this.currentRoom = new Phaser.Point() // Dummy, must be overriden by child level
+        this.nextLevel = null // By default we consider the level to be the last one
+        this.mainGrid = null // Dummy, must be overriden by child level
+        this.currentRoom = null // Dummy, must be overriden by child level
 
         this.cursor = new Cursor({game: this.game})
         this.game.add.existing(this.cursor)
@@ -24,11 +26,18 @@ export default class extends Phaser.State {
     }
 
     update() {
+        super.update()
         //console.log('currentRoom:', this.currentRoom)
         game.camera.x = this.currentRoom.x * config.getRoomSize();
         game.camera.y = this.currentRoom.y *config.getRoomSize();
         this.cursor.update()
-        this.guard.update()
+        if (this.currentRoom.isEndCell) {
+            // TODO: Show a test message beforehand
+            this.state.start(this.nextLevel)
+        } else if (this.currentRoom.baddiesCount() > this.currentRoom.alliesCount()) {
+            // TODO: Show a test message beforehand
+            this.state.start('Level0')
+        }
     }
 
     render() {
