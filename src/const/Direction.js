@@ -1,8 +1,8 @@
 const DIRECTION = {
-    RIGHT: 'right',
-    UP: 'up',
-    DOWN: 'down',
-    LEFT: 'left'
+  RIGHT: 'right',
+  UP: 'up',
+  DOWN: 'down',
+  LEFT: 'left'
 };
 
 export default DIRECTION;

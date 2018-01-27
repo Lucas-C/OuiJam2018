@@ -1,7 +1,7 @@
 import Phaser from 'phaser'
 
 export default class extends Phaser.Group {
-  constructor (roomWidth, roomHeight, parent) {
+  constructor(roomWidth, roomHeight, parent) {
     super(game, /*parent=*/parent, /*name=*/'cursor')
 
     //this.fixedToCamera = true
