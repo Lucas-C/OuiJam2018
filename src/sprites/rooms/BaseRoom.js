@@ -22,14 +22,6 @@ export default class BaseRoom extends Phaser.Group {
         return this.exits
     }
 
-    alliesCount() {
-        return this.alliesCount;
-    }
-
-    baddiesCount() {
-        return this.baddiesCount;
-    }
-
     /**********
      * Setters
      *********/
