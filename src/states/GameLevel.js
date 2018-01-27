@@ -14,7 +14,7 @@ export default class extends Phaser.State {
 
         this.nextLevel = null // By default we consider the level to be the last one
         this.levelGrid = new LevelGrid(config.cellsPerLine, config.levelGridWidth, config.levelGridHeight);
-        this.levelGrid.showForDebug();
+        //this.levelGrid.showForDebug();
         this.currentRoom = null // Dummy, must be overriden by child level
 
         this.cursor = new Cursor({game: this.game})

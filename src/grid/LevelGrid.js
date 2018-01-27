@@ -2,7 +2,7 @@ import GameGrid from "./GameGrid";
 import config from "../config";
 
 export default class LevelGrid extends GameGrid {
-    constructor(size = 7, levelWidth, levelHeight) {
+    constructor(size, levelWidth, levelHeight) {
         super(size, levelWidth, levelHeight);
     }
 

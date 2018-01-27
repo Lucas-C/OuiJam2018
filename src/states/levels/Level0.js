@@ -23,28 +23,28 @@ export default class extends GameLevel {
     }
 
     createMiddleCell() {
-        const cell = new PrisonCell();
-        cell.addSideWallSprites('up')
-        cell.addAlly(2, 3)
-        cell.addAlly(4, 4)
-        cell.addBaddy(3, 5)
-        cell.addExits('left', 'down', 'right')
-        return cell
+        const room = new PrisonCell();
+        room.addSideWallSprites('up')
+        room.addAlly(2, 3)
+        room.addAlly(4, 4)
+        room.addBaddy(3, 5)
+        room.addExits('left', 'down', 'right')
+        return room
     }
 
     createBottomCell() {
-        const cell = new PrisonCell();
-        cell.addSideWallSprites('up', 'down')
-        cell.addBaddy(3, 3)
-        cell.addExits('up')
-        return cell
+        const room = new PrisonCell();
+        room.addSideWallSprites('up', 'down')
+        room.addBaddy(3, 3)
+        room.addExits('up')
+        return room
     }
 
     createEndCell() {
-        const cell = new PrisonCell();
-        cell.addSideWallSprites('right', 'up', 'down')
-        cell.addExits('left')
-        cell.addEndWindow(6, 3)
-        return cell
+        const room = new PrisonCell();
+        room.addSideWallSprites('right', 'up', 'down')
+        room.addExits('left')
+        room.addEndWindow(6, 3)
+        return room
     }
 }

@@ -1,7 +1,7 @@
 import Phaser from 'phaser'
 
 export default class GameGrid extends Phaser.Group {
-    constructor(size = 5, gridWidthCell = game.width, gridHeightCell = game.height) {
+    constructor(size, gridWidthCell, gridHeightCell) {
         super(game);
         this.widthCell = gridWidthCell / size;
         this.heightCell = gridHeightCell / size;

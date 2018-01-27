@@ -2,7 +2,7 @@ import GameGrid from "./GameGrid";
 import config from "../config";
 
 export default class RoomGrid extends GameGrid {
-    constructor(size = 7, roomWidth, roomHeight) {
+    constructor(size, roomWidth, roomHeight) {
         super(size, roomWidth, roomHeight);
     }
 

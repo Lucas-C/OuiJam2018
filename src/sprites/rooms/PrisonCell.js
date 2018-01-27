@@ -3,10 +3,17 @@ import BaseRoom from "./BaseRoom";
 export default class PrisonCell extends BaseRoom {
     constructor() {
         super();
-
-        const cell1 = this.create(0, 0, 'roguelikeSheet', 1428);
-        const cell2 = this.create(0, 0, 'roguelikeSheet', 1428);
-        this.grid.placeAt(0, 0, cell1);
-        this.grid.placeAt(6, 6, cell2);
+        this.setGroundTiles({
+            spriteSheet: 'roguelikeSheet',
+            topLeftIndex: 1428,
+            topMiddleIndex: 1429,
+            topRightIndex: 1430,
+            middleLeftIndex: 1485,
+            middleIndex: 1486,
+            middleRightIndex: 1487,
+            bottomLeftIndex: 1542,
+            bottomMiddleIndex: 1543,
+            bottomRightIndex: 1544
+        })
     }
 }
