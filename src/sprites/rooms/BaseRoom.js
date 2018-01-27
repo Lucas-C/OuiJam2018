@@ -46,17 +46,16 @@ export default class BaseRoom extends Phaser.Group {
   }
 
   addNellaMandelson(x, y) {
-    console.log('addNellaMandelson', x, y)
+    console.log('TODO: addNellaMandelson', x, y)
   }
 
   addEndWindow(x, y) {
     this.isEndCell = true
-    console.log('addEndWindow', x, y)
+    console.log('TODO: addEndWindow', x, y)
   }
 
   addAlly(x, y) {
     this.alliesCount += 1
-    console.log('addAlly', x, y)
     this.grid.placeAt(x, y, this.create(0, 0, 'roguelikeChar', this.selectOneInArray([0, 1]))); // base
     this.grid.placeAt(x, y, this.create(0, 0, 'roguelikeChar', this.selectOneInArray([10, 14, 327, 381])), -1, 1); // clothes
     this.grid.placeAt(x, y, this.create(0, 0, 'roguelikeChar', this.selectOneInArray([19, 21])), -1, 1); // hair
@@ -64,7 +63,6 @@ export default class BaseRoom extends Phaser.Group {
 
   addBaddy(x, y) {
     this.baddiesCount += 1
-    console.log('addBaddy', x, y)
     this.grid.placeAt(x, y, this.create(0, 0, 'roguelikeChar', this.selectOneInArray([270, 432, 541]))); // all in one
   }
 

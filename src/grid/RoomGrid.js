@@ -8,7 +8,7 @@ export default class RoomGrid extends GameGrid {
 
   placeAt(xx, yy, obj) {
     super.placeAt(xx, yy, obj)
-    obj.scale.setTo(this.widthCell / 16, this.heightCell / 16)
+    obj.scale.setTo(this.widthCell / config.spriteSize, this.heightCell / config.spriteSize)
   }
 
   showForDebug() {

@@ -19,7 +19,7 @@ export default class extends Phaser.State {
 
   preload() {
     game.world.setBounds(0, 0, config.worldWidth, config.worldHeight)
-    game.world.scale.setTo(0.8) // Camera zoom
+    //game.world.scale.setTo(1.1) // Camera zoom
     this.rootGroup = new Phaser.Group(game, /*parent=*/null, /*name=*/'rootGroup')
     console.log('rootGroup pos', this.rootGroup.x, this.rootGroup.y)
 
@@ -35,14 +35,17 @@ export default class extends Phaser.State {
     game.add.existing(this.cursor)
 
     const cursorKeys = game.input.keyboard.createCursorKeys()
-    cursorKeys.left.onDown.add(() => this.moveCursor(-1, 0))
-    cursorKeys.right.onDown.add(() => this.moveCursor(1, 0))
-    cursorKeys.up.onDown.add(() => this.moveCursor(0, -1))
-    cursorKeys.down.onDown.add(() => this.moveCursor(0, 1))
+    cursorKeys.left.onDown.add(() => this.moveCursor('left', -1, 0))
+    cursorKeys.right.onDown.add(() => this.moveCursor('right', 1, 0))
+    cursorKeys.up.onDown.add(() => this.moveCursor('up', 0, -1))
+    cursorKeys.down.onDown.add(() => this.moveCursor('down', 0, 1))
   }
 
-  moveCursor(deltaX, deltaY) {
-    // TODO: check if movement is allowed given this.currentRoom.exits
+  moveCursor(direction, deltaX, deltaY) {
+    if (!this.currentRoom.exits.includes(direction)) {
+      console.log('Cannot go ' + direction + ' in current room')
+      return
+    }
     const [srcX, srcY] = [this.currentRoom.gridPosX, this.currentRoom.gridPosY]
     const [dstX, dstY] = [srcX + deltaX, srcY + deltaY]
     const newRoom = this.levelGrid.roomAtPos(dstX, dstY)

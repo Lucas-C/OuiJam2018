@@ -4,6 +4,7 @@ export default {
   worldWidth: 1000,
   worldHeight: 1000,
   localStorageName: 'OuiJam2018',
+  spriteSize: 16,
   characterSpriteScale: 2,
   cellsPerRoomSide: 7,
   levelGridWidth: 800,
