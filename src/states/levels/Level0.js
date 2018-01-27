@@ -1,5 +1,5 @@
 import GameLevel from '../GameLevel'
-import Cell from "../../sprites/cells/Cell";
+import PrisonCell from "../../sprites/rooms/PrisonCell";
 
 export default class extends GameLevel {
     create() {
@@ -8,22 +8,22 @@ export default class extends GameLevel {
 
         // Starting room:
         this.currentRoom = this.createStartCell()
-        this.mainGrid.addCell(0, 0, this.currentRoom)
-        this.mainGrid.addCell(1, 0, this.createMiddleCell())
-        this.mainGrid.addCell(1, 1, this.createBottomCell())
-        this.mainGrid.addCell(2, 0, this.createEndCell())
+        this.levelGrid.addRoom(0, 0, this.currentRoom)
+        this.levelGrid.addRoom(1, 0, this.createMiddleCell())
+        this.levelGrid.addRoom(1, 1, this.createBottomCell())
+        this.levelGrid.addRoom(2, 0, this.createEndCell())
     }
 
     createStartCell() {
-        const cell = new Cell({game: this.game})
-        cell.addSideWallSprites('left', 'up', 'down')
-        cell.addNellaMandelson(3, 3)
-        cell.addExits('right')
-        return cell
+        const room = new PrisonCell()
+        room.addSideWallSprites('left', 'up', 'down')
+        room.addNellaMandelson(3, 3)
+        room.addExits('right')
+        return room
     }
 
     createMiddleCell() {
-        const cell = new Cell({game: this.game})
+        const cell = new PrisonCell();
         cell.addSideWallSprites('up')
         cell.addAlly(2, 3)
         cell.addAlly(4, 4)
@@ -33,7 +33,7 @@ export default class extends GameLevel {
     }
 
     createBottomCell() {
-        const cell = new Cell({game: this.game})
+        const cell = new PrisonCell();
         cell.addSideWallSprites('up', 'down')
         cell.addBaddy(3, 3)
         cell.addExits('up')
@@ -41,7 +41,7 @@ export default class extends GameLevel {
     }
 
     createEndCell() {
-        const cell = new Cell({game: this.game})
+        const cell = new PrisonCell();
         cell.addSideWallSprites('right', 'up', 'down')
         cell.addExits('left')
         cell.addEndWindow(6, 3)

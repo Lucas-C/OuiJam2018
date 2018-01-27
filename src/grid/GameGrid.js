@@ -14,15 +14,6 @@ export default class GameGrid extends Phaser.Group {
         obj.y = y2;
     }
 
-    addCell(x, y, cell) {
-        console.log('addCell', x, y, cell)
-    }
-
-    cellPosAt(x, y) {
-        console.log('cellPosAt', x, y)
-        return null
-    }
-
     showForDebug(lineColor = 0xff0000, lineSize = 4) {
         this.graphics = game.add.graphics();
         this.graphics.lineStyle(lineSize, lineColor, 1);
