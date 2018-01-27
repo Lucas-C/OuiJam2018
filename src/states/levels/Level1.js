@@ -1,6 +1,5 @@
 import GameLevel from '../GameLevel'
 import Guard from '../../sprites/characters/Guard'
-import AlignGrid from "../../grid/AlignGrid";
 
 export default class extends GameLevel {
     preload() {
