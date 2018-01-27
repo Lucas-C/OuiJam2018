@@ -7,12 +7,14 @@ export default class GameGrid extends Phaser.Group {
         this.heightCell = heightCell
     }
 
-    placeAt(xx, yy, obj) {
-        obj.gridPosX = xx
-        obj.gridPosY = yy
-        obj.x = this.widthCell * xx;
-        obj.y = this.heightCell * yy;
-    }
+  placeAt(xx, yy, obj, offsetx=0, offsety=0) {
+        console.log('offsetx', offsetx, 'offsety', offsety);
+    obj.gridPosX = xx;
+    obj.gridPosY = yy;
+    obj.x = (this.widthCell * xx)+offsetx;
+    obj.y = (this.heightCell * yy)+offsety;
+  }
+
 
     showForDebug(lineColor = 0xff0000, lineSize = 4) {
         this.graphics = game.add.graphics();

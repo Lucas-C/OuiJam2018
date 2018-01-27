@@ -39,15 +39,23 @@ export default class BaseRoom extends Phaser.Group {
         console.log('addEndWindow', x, y)
     }
 
-    addAlly(x, y) {
-        console.log('addAlly', x, y)
-        this.alliesCount += 1
-    }
+  addAlly(x, y) {
+    this.alliesCount += 1
+    console.log('addAlly', x, y)
+    this.grid.placeAt(x, y, this.create(0, 0, 'roguelikeChar', this.selectOneInArray([0, 1]))); // base
+    this.grid.placeAt(x, y, this.create(0, 0, 'roguelikeChar', this.selectOneInArray([10,14,327,381])), -1, 1); // clothes
+    this.grid.placeAt(x, y, this.create(0, 0, 'roguelikeChar', this.selectOneInArray([19,21])), -1, 1); // hair
+  }
 
-    addBaddy(x, y) {
-        console.log('addBaddy', x, y)
-        this.baddiesCount += 1
-    }
+  addBaddy(x, y) {
+    this.baddiesCount += 1
+    console.log('addBaddy', x, y)
+    this.grid.placeAt(x, y, this.create(0, 0, 'roguelikeChar', this.selectOneInArray([270, 432, 541]))); // all in one
+  }
+
+  selectOneInArray(array) {
+    return array[Math.floor(Math.random()*array.length)];
+  }
 
     addFurniture(x, y, spriteIndex) {
         console.log('addFurniture', x, y, spriteIndex)
