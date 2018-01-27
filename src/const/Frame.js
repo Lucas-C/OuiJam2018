@@ -23,25 +23,21 @@ const FRAME = {
 
   // Chaise type 1 (assise rouge, bord carré)
   CHAIR_FRONT_1: 133,
-  CHAIR_BACK_1: 134,
   CHAIR_SIDE_LEFT_1: 135,
   CHAIR_SIDE_RIGHT_1: 136,
 
   // Chaise type 2 (assise rouge, bord rond)
   CHAIR_FRONT_2: 190,
-  CHAIR_BACK_2: 191,
   CHAIR_SIDE_LEFT_2: 192,
   CHAIR_SIDE_RIGHT_2: 193,
 
   // Chaise type 3 (bord carré)
   CHAIR_FRONT_3: 247,
-  CHAIR_BACK_3: 248,
   CHAIR_SIDE_LEFT_3: 249,
   CHAIR_SIDE_RIGHT_3: 250,
 
   // Chaise type 4 (bord rond)
   CHAIR_FRONT_4: 304,
-  CHAIR_BACK_4: 305,
   CHAIR_SIDE_LEFT_4: 306,
   CHAIR_SIDE_RIGHT_4: 307,
 

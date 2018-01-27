@@ -20,6 +20,7 @@ export default class extends GameLevel {
     room.addSideWalls(DIRECTION.UP, DIRECTION.DOWN, DIRECTION.LEFT)
     room.addNellaMandelson(3, 3)
     room.addFurniture(1, 2)
+    room.addFurniture(5, 5)
     room.addExits('right')
     return room
   }
@@ -32,6 +33,7 @@ export default class extends GameLevel {
     room.addBaddy(3, 5)
     room.addFurniture(4, 2)
     room.addFurniture(2, 1)
+    room.addFurniture(2, 4)
     room.addExits('left', 'down', 'right')
     return room
   }
@@ -41,7 +43,8 @@ export default class extends GameLevel {
     room.addSideWalls(DIRECTION.LEFT, DIRECTION.RIGHT, DIRECTION.BOTTOM)
     room.addBaddy(3, 3)
     room.addFurniture(1, 5)
-    room.addFurniture(4, 6)
+    room.addFurniture(4, 5)
+    room.addFurniture(5, 1)
     room.addExits('up')
     return room
   }
@@ -49,7 +52,8 @@ export default class extends GameLevel {
   createEndCell() {
     const room = new PrisonCell(this.getRoomWidthInPx(), this.getRoomHeightInPx());
     room.addSideWalls(DIRECTION.UP, DIRECTION.DOWN, DIRECTION.RIGHT)
-    room.addFurniture(2, 2)
+    room.addFurniture(2, 4)
+    room.addFurniture(3, 1)
     room.addExits('left')
     room.addEndWindow(6, 3)
     return room
