@@ -59,4 +59,15 @@
     let scroll_2 = 897;
     let scroll_3 = 898;
     let scroll_4 = 899;
-    
+
+    // Murs
+    let wall_deadend_left = 718;
+    let wall_deadend_right = 720;
+    let wall_deadend_top = 775;
+    let wall_deadend_bottom = 832;
+    let wall_corner_top_left = 721;
+    let wall_corner_top_right = 722;
+    let wall_corner_bot_left = 778;
+    let wall_corner_bot_right = 779;
+    let wall_middle_horizontal = 719;
+    let wall_middle_vertical = 777;
