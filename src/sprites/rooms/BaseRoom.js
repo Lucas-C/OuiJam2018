@@ -47,6 +47,7 @@ export default class BaseRoom extends Phaser.Group {
 
   addNellaMandelson(x, y) {
     console.log('TODO: addNellaMandelson', x, y)
+    this.grid.placeAt(x, y, this.create(0, 0, 'roguelikeChar', 271)); // the pretty one
   }
 
   addEndWindow(x, y) {
