@@ -21,9 +21,17 @@ export default class extends Phaser.State {
     this.load.spritesheet('roguelikeDungeon', './assets/images/roguelikeDungeon_transparent.png', 16, 16, /*frameMax=*/-1, /*margin=*/0, /*space=*/1)
     this.load.spritesheet('roguelikeIndoor', './assets/images/roguelikeIndoor_transparent.png', 16, 16, /*frameMax=*/503, /*margin=*/0, /*space=*/1)
     this.load.spritesheet('roguelikeSheet', './assets/images/roguelikeSheet_transparent.png', 16, 16, /*frameMax=*/1824, /*margin=*/0, /*space=*/1)
+
+    game.load.audio('medievalPrison', ['assets/audio/medieval_prison.mp3']);
+    game.load.audio('move1', ['assets/audio/move_1.mp3']);
+    game.load.audio('move2', ['assets/audio/move_2.mp3']);
   }
 
   create() {
+    // Musique
+    var music = game.add.audio('medievalPrison');
+    music.play();
+
     var bck = game.add.sprite(0, 0, 'background');
     bck.scale.setTo(1, 1);
     bck.width = 800;

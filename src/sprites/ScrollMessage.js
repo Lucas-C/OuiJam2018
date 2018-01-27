@@ -22,6 +22,12 @@ export default class extends Phaser.Sprite {
           /*duration=*/1500, /*ease=*/Phaser.Easing.Cubic.InOut))
       }
       transmissionTween.start()
+      var moveSound = game.add.audio(this.selectOneInArray(['move1','move2']));
+      moveSound.play();
     }
+  }
+
+  selectOneInArray(array) {
+    return array[Math.floor(Math.random() * array.length)];
   }
 }
