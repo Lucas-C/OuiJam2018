@@ -17,7 +17,8 @@ export default class extends GameLevel {
 
   createStartCell() {
     const room = new PrisonCell(this.getRoomWidthInPx(), this.getRoomHeightInPx())
-    room.addSideWalls(DIRECTION.UP, DIRECTION.DOWN, DIRECTION.LEFT)
+    room.addSideWalls(DIRECTION.LEFT, DIRECTION.RIGHT)
+    room.addSideMetalBars(DIRECTION.UP, DIRECTION.DOWN);
     room.addNellaMandelson(3, 3)
     room.addFurniture(1, 2)
     room.addFurniture(5, 5)
@@ -27,7 +28,8 @@ export default class extends GameLevel {
 
   createMiddleCell() {
     const room = new PrisonCell(this.getRoomWidthInPx(), this.getRoomHeightInPx());
-    room.addSideWalls(DIRECTION.UP)
+    room.addSideWalls(DIRECTION.UP, DIRECTION.DOWN)
+    room.addSideMetalBars(DIRECTION.LEFT, DIRECTION.RIGHT);
     room.addAlly(2, 3)
     room.addAlly(4, 4)
     room.addBaddy(3, 5)

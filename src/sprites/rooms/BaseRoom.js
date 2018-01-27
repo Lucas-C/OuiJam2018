@@ -84,6 +84,62 @@ export default class BaseRoom extends Phaser.Group {
   }
 
 
+  addSideMetalBars(...sides) {
+    console.log('addSideMetalBars', sides);
+    this.sides = sides;
+    sides.forEach(side => {
+      console.log(`add metal bar ${side}`);
+      switch (side) {
+        case DIRECTION.UP:
+          this._addTopSideMetalBar();
+          break;
+        case DIRECTION.DOWN:
+          this._addBottomSideMetalBar();
+          break;
+        case DIRECTION.LEFT:
+          this._addLeftSideMetalBar();
+          break;
+        case DIRECTION.RIGHT:
+          this._addRightSideMetalBar();
+          break;
+      }
+    })
+  }
+
+  _addTopSideMetalBar() {
+    for (let i = 1; i < config.cellsPerRoomSide - 1; i++) {
+      const metalBar = this.create(0, 0, BaseRoom.METAL_BAR_SPRITE_SHEET, FRAME.METAL_BAR);
+      metalBar.anchor.setTo(0.4, 1);
+      metalBar.angle = 90;
+      this.grid.placeAt(i, 0, metalBar);
+    }
+  }
+
+  _addBottomSideMetalBar() {
+    for (let i = 1; i < config.cellsPerRoomSide - 1; i++) {
+      const metalBar = this.create(0, 0, BaseRoom.METAL_BAR_SPRITE_SHEET, FRAME.METAL_BAR);
+      metalBar.anchor.setTo(0.5, 1);
+      metalBar.angle = 90;
+      this.grid.placeAt(i, config.cellsPerRoomSide, metalBar);
+    }
+  }
+
+  _addLeftSideMetalBar() {
+    for (let i = 1; i < config.cellsPerRoomSide - 1; i++) {
+      const metalBar = this.create(0, 0, BaseRoom.METAL_BAR_SPRITE_SHEET, FRAME.METAL_BAR);
+      metalBar.anchor.setTo(0.4, 0);
+      this.grid.placeAt(0, i, metalBar);
+    }
+  }
+
+  _addRightSideMetalBar() {
+    for (let i = 1; i < config.cellsPerRoomSide - 1; i++) {
+      const metalBar = this.create(0, 0, BaseRoom.METAL_BAR_SPRITE_SHEET, FRAME.METAL_BAR);
+      metalBar.anchor.setTo(0.5, 0);
+      this.grid.placeAt(config.cellsPerRoomSide, i, metalBar);
+    }
+  }
+
   addSideWalls(...sides) {
     this.sides = sides;
     sides.forEach(side => {
@@ -169,4 +225,5 @@ export default class BaseRoom extends Phaser.Group {
   }
 }
 
-BaseRoom.WALL_AND_FLOOR_SPRITE_SHEET = 'roguelikeSheet'
+BaseRoom.WALL_AND_FLOOR_SPRITE_SHEET = 'roguelikeSheet';
+BaseRoom.METAL_BAR_SPRITE_SHEET = 'roguelikeIndoor';
