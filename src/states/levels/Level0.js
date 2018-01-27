@@ -23,6 +23,7 @@ export default class extends GameLevel {
     }
 
     update() {
+        super.update()
         const levelWon = false
         const levellost = false
         if (levelWon) {

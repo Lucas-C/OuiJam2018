@@ -3,8 +3,10 @@ export default {
   gameHeight: 800,
   localStorageName: 'OuiJam2018',
   spriteScale: 2,
+  spriteSize: 16,
+  roomTilesSide: 5,
   getRoomSize() {
-    return 5 * 16 * this.spriteScale
+    return this.roomTilesSide * this.spriteSize * this.spriteScale
   },
   getGameWidth() {
     const docElement = document.documentElement
