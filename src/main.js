@@ -4,7 +4,6 @@ import Phaser from 'phaser'
 
 import BootState from './states/Boot'
 import IntroState from './states/Intro'
-import SplashState from './states/Splash'
 import Level0 from './states/levels/Level0'
 
 import config from './config'
@@ -14,7 +13,6 @@ class Game extends Phaser.Game {
     super(config.getGameWidth(), config.getGameHeight(), Phaser.CANVAS, 'content', /*state=*/null, /*transparent=*/false, /*antialias=*/false)
 
     this.state.add('Boot', BootState, false)
-    this.state.add('Splash', SplashState, false)
     this.state.add('Intro', IntroState, false)
     this.state.add('Level0', Level0, false)
 

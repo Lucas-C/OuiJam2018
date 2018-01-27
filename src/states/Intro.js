@@ -1,5 +1,6 @@
 import Phaser from 'phaser'
 import config from '../config'
+import {centerGameObjects} from "../utils";
 
 export default class extends Phaser.State {
   init() {
@@ -7,6 +8,19 @@ export default class extends Phaser.State {
 
   preload() {
     game.load.image('background', 'assets/images/to_change.jpg');
+
+    this.loaderBg = this.add.sprite(this.game.world.centerX, this.game.world.centerY, 'loaderBg')
+    this.loaderBar = this.add.sprite(this.game.world.centerX, this.game.world.centerY, 'loaderBar')
+    centerGameObjects([this.loaderBg, this.loaderBar])
+
+    this.load.setPreloadSprite(this.loaderBar)
+    //
+    // load your assets
+    //
+    this.load.spritesheet('roguelikeChar', './assets/images/roguelikeChar_transparent.png', 16, 16, /*frameMax=*/647, /*margin=*/0, /*space=*/1)
+    this.load.spritesheet('roguelikeDungeon', './assets/images/roguelikeDungeon_transparent.png', 16, 16, /*frameMax=*/-1, /*margin=*/0, /*space=*/1)
+    this.load.spritesheet('roguelikeIndoor', './assets/images/roguelikeIndoor_transparent.png', 16, 16, /*frameMax=*/-1, /*margin=*/0, /*space=*/1)
+    this.load.spritesheet('roguelikeSheet', './assets/images/roguelikeSheet_transparent.png', 16, 16, /*frameMax=*/1824, /*margin=*/0, /*space=*/1)
   }
 
   create() {
@@ -31,7 +45,7 @@ export default class extends Phaser.State {
     this.makeGuard(this.world.centerX - 150, .4 * config.getGameHeight());
     this.makeGuard(this.world.centerX + 150, .4 * config.getGameHeight());
 
-    const gameDescText = 'You are, Nelly Mandela, unjustly imprisoned.\nTo save thousands of innocent people, your letter must reach the king ! '
+    const gameDescText = 'You are Nella Mandelson, unjustly imprisoned.\nTo save thousands of innocent people, your letter must reach the king ! '
     const gameDesc = this.add.text(this.world.centerX, .6 * config.getGameHeight(), gameDescText, {
       font: '28px Bangers',
       fill: '#D86785',
