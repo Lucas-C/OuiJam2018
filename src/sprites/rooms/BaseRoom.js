@@ -20,6 +20,7 @@ export default class BaseRoom extends Phaser.Group {
    * Setters
    *********/
   setGroundTiles() {
+    /*
     // Corners:
     this.grid.placeAt(0, 0, this.create(0, 0, BaseRoom.WALL_AND_FLOOR_SPRITE_SHEET, this.groundTilesIndices.TOP_LFT));
     this.grid.placeAt(0, config.cellsPerRoomSide - 1, this.create(0, 0, BaseRoom.WALL_AND_FLOOR_SPRITE_SHEET, this.groundTilesIndices.BOT_LFT));
@@ -33,9 +34,10 @@ export default class BaseRoom extends Phaser.Group {
       this.grid.placeAt(0, k, this.create(0, 0, BaseRoom.WALL_AND_FLOOR_SPRITE_SHEET, this.groundTilesIndices.CTR_LFT));
       this.grid.placeAt(config.cellsPerRoomSide - 1, k, this.create(0, 0, BaseRoom.WALL_AND_FLOOR_SPRITE_SHEET, this.groundTilesIndices.CTR_RGT));
     }
+    */
     // Middle:
-    for (let i = 1; i < config.cellsPerRoomSide - 1; i++) {
-      for (let j = 1; j < config.cellsPerRoomSide - 1; j++) {
+    for (let i = 0; i < config.cellsPerRoomSide; i++) {
+      for (let j = 0; j < config.cellsPerRoomSide; j++) {
         this.grid.placeAt(i, j, this.create(0, 0, BaseRoom.WALL_AND_FLOOR_SPRITE_SHEET, this.groundTilesIndices.CTR_MID));
       }
     }
@@ -46,13 +48,13 @@ export default class BaseRoom extends Phaser.Group {
   }
 
   addNellaMandelson(x, y) {
-    console.log('TODO: addNellaMandelson', x, y)
-    this.grid.placeAt(x, y, this.create(0, 0, 'roguelikeChar', 271)); // the pretty one
+    this.grid.placeAt(x, y, this.create(0, 0, 'roguelikeChar', FRAME.NELLA_MANDELSON)); // the pretty one
   }
 
   addEndWindow(x, y) {
     this.isEndCell = true
-    console.log('TODO: addEndWindow', x, y)
+    this.grid.placeAt(x, y, this.create(0, 0, BaseRoom.WALL_AND_FLOOR_SPRITE_SHEET, FRAME.WINDOW_1));
+    this.grid.placeAt(x, y, this.create(0, 0, BaseRoom.WALL_AND_FLOOR_SPRITE_SHEET, FRAME.CURTAINS_1));
   }
 
   addAlly(x, y) {
@@ -72,7 +74,6 @@ export default class BaseRoom extends Phaser.Group {
   }
 
   addFurniture(x, y) {
-    console.log('addFurniture', x, y)
     let furnitureArray = [
       FRAME.CHAIR_FRONT_1, FRAME.CHAIR_FRONT_2, FRAME.CHAIR_FRONT_3, FRAME.CHAIR_FRONT_4,
       FRAME.CHAIR_SIDE_LEFT_1, FRAME.CHAIR_SIDE_LEFT_2, FRAME.CHAIR_SIDE_LEFT_3, FRAME.CHAIR_SIDE_LEFT_4,
@@ -85,10 +86,8 @@ export default class BaseRoom extends Phaser.Group {
 
 
   addSideMetalBars(...sides) {
-    console.log('addSideMetalBars', sides);
     this.sides = sides;
     sides.forEach(side => {
-      console.log(`add metal bar ${side}`);
       switch (side) {
         case DIRECTION.UP:
           this._addTopSideMetalBar();
@@ -218,10 +217,6 @@ export default class BaseRoom extends Phaser.Group {
 
   hasBottomSideWall() {
     return this.sides.includes(DIRECTION.DOWN);
-  }
-
-  addSideBar(side) {
-    console.log('addSideBar', side)
   }
 }
 

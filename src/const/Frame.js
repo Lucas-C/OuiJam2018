@@ -71,8 +71,13 @@ const FRAME = {
   WALL_MIDDLE_HORIZONTAL: 719,
   WALL_MIDDLE_VERTICAL: 777,
 
+  WINDOW_1: 155,
+  CURTAINS_1: 170,
+
   // Barreaux (spritesheet : indoor)
   METAL_BAR: 123,
+
+  NELLA_MANDELSON: 271
 };
 
 export default FRAME;

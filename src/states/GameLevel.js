@@ -41,6 +41,10 @@ export default class extends Phaser.State {
     cursorKeys.right.onDown.add(() => this.moveCursor('right', 1, 0))
     cursorKeys.up.onDown.add(() => this.moveCursor('up', 0, -1))
     cursorKeys.down.onDown.add(() => this.moveCursor('down', 0, 1))
+
+    if (this.currentRoom.onEnterPrecondition) {
+      this.currentRoom.onEnterPrecondition()
+    }
   }
 
   moveCursor(direction, deltaX, deltaY) {
@@ -61,7 +65,6 @@ export default class extends Phaser.State {
       console.log('Moved from', [srcX, srcY], 'to', [dstX, dstY])
       console.log('New room pos:', this.currentRoom.position)
       console.log('cursor pos:', this.cursor.position)
-      console.log('levelGrid world pos:', this.levelGrid.position)
       /*console.log('levelGrid 1st room world pos:', this.levelGrid.rooms[0][0].position)
        const sprite = this.levelGrid.rooms[0][0].topLeftCorner
        console.log('sprite world pos:', sprite.world)*/
@@ -72,16 +75,26 @@ export default class extends Phaser.State {
 
   update() {
     super.update()
+
     this.cursor.x = this.currentRoom.x
     this.cursor.y = this.currentRoom.y
     //game.camera.focusOnXY(200, 200)
     //game.camera.focusOn(this.cursor)
+
+    const successMsg = 'Good job !'
+    const failureMsg = "It's all lost !\nThe message bearer has been backstabbed by a fascist"
     if (this.currentRoom.isEndCell) {
-      // TODO: Show a test message beforehand
-      this.state.start(this.nextLevel)
+      if (!this.dialogFrame.visible && this.dialogFrame.text === successMsg) {
+        this.state.start(this.nextLevel)
+      } else {
+        this.displayMessage(successMsg)
+      }
     } else if (this.currentRoom.baddiesCount > this.currentRoom.alliesCount) {
-      // TODO: Show a test message beforehand
-      this.state.start('Level0')
+      if (!this.dialogFrame.visible && this.dialogFrame.text === failureMsg) {
+        this.state.start('Level0')
+      } else {
+        this.displayMessage(failureMsg)
+      }
     }
   }
 
