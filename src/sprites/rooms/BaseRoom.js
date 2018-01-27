@@ -20,15 +20,17 @@ export default class BaseRoom extends Phaser.Group {
   }
 
   getHeight() {
-      return config.levelGridHeight / config.cellsPerLine;
+    return config.levelGridHeight / config.cellsPerLine;
   }
 
   /**********
    * Setters
    *********/
-  setGroundTiles({spriteSheet, topLeftIndex, topMiddleIndex, topRightIndex,
-                               middleLeftIndex, middleIndex, middleRightIndex,
-                               bottomLeftIndex, bottomMiddleIndex, bottomRightIndex}) {
+  setGroundTiles({
+    spriteSheet, topLeftIndex, topMiddleIndex, topRightIndex,
+    middleLeftIndex, middleIndex, middleRightIndex,
+    bottomLeftIndex, bottomMiddleIndex, bottomRightIndex
+  }) {
     // Corners:
     this.grid.placeAt(0, 0, this.create(0, 0, spriteSheet, topLeftIndex));
     this.grid.placeAt(0, config.cellsPerRoom - 1, this.create(0, 0, spriteSheet, bottomLeftIndex));
@@ -49,29 +51,39 @@ export default class BaseRoom extends Phaser.Group {
       }
     }
   }
+
   addExits(...exits) {
-      this.exits = exits
+    this.exits = exits
   }
+
   addNellaMandelson(x, y) {
-      console.log('addNellaMandelson', x, y)
+    console.log('addNellaMandelson', x, y)
   }
+
   addEndWindow(x, y) {
-      this.isEndCell = true
-      console.log('addEndWindow', x, y)
+    this.isEndCell = true
+    console.log('addEndWindow', x, y)
   }
+
   addAlly(x, y) {
-      console.log('addAlly', x, y)
+    this.alliesCount += 1
+    console.log('addAlly', x, y)
   }
+
   addBaddy(x, y) {
-      console.log('addBaddy', x, y)
+    this.baddiesCount += 1
+    console.log('addBaddy', x, y)
   }
+
   addFurniture(x, y, spriteIndex) {
-      console.log('addFurniture', x, y, spriteIndex)
+    console.log('addFurniture', x, y, spriteIndex)
   }
+
   addSideWallSprites(side) {
-      console.log('addSideWallSprites', side)
+    console.log('addSideWallSprites', side)
   }
+
   addSideBarSprites(side) {
-      console.log('addSideBarSprites', side)
+    console.log('addSideBarSprites', side)
   }
 }
