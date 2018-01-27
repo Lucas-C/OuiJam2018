@@ -19,6 +19,7 @@ export default class extends GameLevel {
     const room = new PrisonCell(this.getRoomWidthInPx(), this.getRoomHeightInPx())
     room.addSideWalls(DIRECTION.UP, DIRECTION.DOWN, DIRECTION.LEFT)
     room.addNellaMandelson(3, 3)
+    room.addFurniture(1, 2)
     room.addExits('right')
     return room
   }
@@ -29,6 +30,8 @@ export default class extends GameLevel {
     room.addAlly(2, 3)
     room.addAlly(4, 4)
     room.addBaddy(3, 5)
+    room.addFurniture(4, 2)
+    room.addFurniture(2, 1)
     room.addExits('left', 'down', 'right')
     return room
   }
@@ -37,6 +40,8 @@ export default class extends GameLevel {
     const room = new PrisonCell(this.getRoomWidthInPx(), this.getRoomHeightInPx());
     room.addSideWalls(DIRECTION.LEFT, DIRECTION.RIGHT, DIRECTION.BOTTOM)
     room.addBaddy(3, 3)
+    room.addFurniture(1, 5)
+    room.addFurniture(4, 6)
     room.addExits('up')
     return room
   }
@@ -44,6 +49,7 @@ export default class extends GameLevel {
   createEndCell() {
     const room = new PrisonCell(this.getRoomWidthInPx(), this.getRoomHeightInPx());
     room.addSideWalls(DIRECTION.UP, DIRECTION.DOWN, DIRECTION.RIGHT)
+    room.addFurniture(2, 2)
     room.addExits('left')
     room.addEndWindow(6, 3)
     return room

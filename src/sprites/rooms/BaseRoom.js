@@ -70,9 +70,17 @@ export default class BaseRoom extends Phaser.Group {
     return array[Math.floor(Math.random() * array.length)];
   }
 
-  addFurniture(x, y, spriteIndex) {
-    console.log('addFurniture', x, y, spriteIndex)
+  addFurniture(x, y) {
+    console.log('addFurniture', x, y)
+    let furnitureArray = [
+      FRAME.CHAIR_FRONT_1, FRAME.CHAIR_FRONT_2, FRAME.CHAIR_FRONT_3, FRAME.CHAIR_FRONT_4,
+      FRAME.CHAIR_BACK_1, FRAME.CHAIR_BACK_2, FRAME.CHAIR_BACK_3, FRAME.CHAIR_BACK_4,
+      FRAME.CHAIR_SIDE_LEFT_1, FRAME.CHAIR_SIDE_LEFT_2, FRAME.CHAIR_SIDE_LEFT_3, FRAME.CHAIR_SIDE_LEFT_4,
+      FRAME.CHAIR_SIDE_RIGHT_1, FRAME.CHAIR_SIDE_RIGHT_2, FRAME.CHAIR_SIDE_RIGHT_3, FRAME.CHAIR_SIDE_RIGHT_4
+    ];
+    this.grid.placeAt(x, y, this.create(0, 0, 'roguelikeSheet', this.selectOneInArray(furnitureArray))); // all in one
   }
+
 
   addSideWalls(...sides) {
     this.sides = sides;
