@@ -1,9 +1,10 @@
 export default {
   gameWidth: 800,
   gameHeight: 800,
+  worldWidth: 1000,
+  worldHeight: 1000,
   localStorageName: 'OuiJam2018',
   characterSpriteScale: 2,
-  roomsPerLevelSide: 5,
   cellsPerRoomSide: 7,
   levelGridWidth: 800,
   levelGridHeight: 800,

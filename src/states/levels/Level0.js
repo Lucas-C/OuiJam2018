@@ -9,14 +9,14 @@ export default class extends GameLevel {
 
         // Starting room:
         this.currentRoom = this.createStartCell()
-        this.levelGrid.addRoom(0, 0, this.currentRoom)
-        this.levelGrid.addRoom(1, 0, this.createMiddleCell())
-        this.levelGrid.addRoom(1, 1, this.createBottomCell())
-        this.levelGrid.addRoom(2, 0, this.createEndCell())
+        this.levelGrid.addRoom(1, 1, this.currentRoom)
+        this.levelGrid.addRoom(2, 1, this.createMiddleCell())
+        this.levelGrid.addRoom(2, 2, this.createBottomCell())
+        this.levelGrid.addRoom(3, 1, this.createEndCell())
     }
 
     createStartCell() {
-        const room = new PrisonCell()
+        const room = new PrisonCell(this.getRoomWidthInPx(), this.getRoomHeightInPx())
         room.addSideWalls(DIRECTION.UP, DIRECTION.DOWN, DIRECTION.LEFT, DIRECTION.RIGHT)
         room.addNellaMandelson(3, 3)
         room.addExits('right')
@@ -24,8 +24,8 @@ export default class extends GameLevel {
     }
 
     createMiddleCell() {
-        const room = new PrisonCell();
-        room.addSideWalls(DIRECTION.UP, DIRECTION.DOWN)
+        const room = new PrisonCell(this.getRoomWidthInPx(), this.getRoomHeightInPx());
+        room.addSideWalls(DIRECTION.UP)
         room.addAlly(2, 3)
         room.addAlly(4, 4)
         room.addBaddy(3, 5)
@@ -34,15 +34,15 @@ export default class extends GameLevel {
     }
 
     createBottomCell() {
-        const room = new PrisonCell();
-        room.addSideWalls(DIRECTION.LEFT, DIRECTION.RIGHT)
+        const room = new PrisonCell(this.getRoomWidthInPx(), this.getRoomHeightInPx());
+        room.addSideWalls(DIRECTION.LEFT, DIRECTION.RIGHT, DIRECTION.BOTTOM)
         room.addBaddy(3, 3)
         room.addExits('up')
         return room
     }
 
     createEndCell() {
-        const room = new PrisonCell();
+        const room = new PrisonCell(this.getRoomWidthInPx(), this.getRoomHeightInPx());
         room.addSideWalls(DIRECTION.UP, DIRECTION.DOWN, DIRECTION.RIGHT)
         room.addExits('left')
         room.addEndWindow(6, 3)
