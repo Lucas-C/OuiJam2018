@@ -72,7 +72,6 @@ export default class extends Phaser.State {
     banner.anchor.setTo(0.5)
     banner.alpha = 0.1;
 
-
     this.blinkText(banner);
 
     this.game.input.keyboard.onPressCallback = () => this.state.start('Level0')

@@ -34,6 +34,8 @@ export default class extends Phaser.State {
     this.cursor = new Cursor(this.getRoomWidthInPx(), this.getRoomHeightInPx(), this.rootGroup)
     game.add.existing(this.cursor)
 
+    this.dialogFrame = this._createDialogFrame()
+
     const cursorKeys = game.input.keyboard.createCursorKeys()
     cursorKeys.left.onDown.add(() => this.moveCursor('left', -1, 0))
     cursorKeys.right.onDown.add(() => this.moveCursor('right', 1, 0))
@@ -42,6 +44,7 @@ export default class extends Phaser.State {
   }
 
   moveCursor(direction, deltaX, deltaY) {
+    this.dialogFrame.visible = false
     if (!this.currentRoom.exits.includes(direction)) {
       console.log('Cannot go ' + direction + ' in current room')
       return
@@ -50,6 +53,10 @@ export default class extends Phaser.State {
     const [dstX, dstY] = [srcX + deltaX, srcY + deltaY]
     const newRoom = this.levelGrid.roomAtPos(dstX, dstY)
     if (newRoom) {
+      if (newRoom.onEnterPrecondition && newRoom.onEnterPrecondition() === false) {
+        console.log('newRoom.onEnterPrecondition exists and returned false => not entering it')
+        return
+      }
       this.currentRoom = newRoom
       console.log('Moved from', [srcX, srcY], 'to', [dstX, dstY])
       console.log('New room pos:', this.currentRoom.position)
@@ -78,9 +85,28 @@ export default class extends Phaser.State {
     }
   }
 
+  _createDialogFrame() {
+    const dialogFrame = this.add.text(config.gameWidth / 2, config.gameHeight * .08, '', {
+      font: '36px VT323',
+      fill: '#427a64',
+      smoothed: false,
+      align: "center",
+    })
+    dialogFrame.lineSpacing = 0
+    dialogFrame.anchor.setTo(0.5)
+    dialogFrame.visible = false
+    this.game.input.keyboard.onPressCallback = () => dialogFrame.visible = false
+    return dialogFrame
+  }
+
+  displayMessage(msg) {
+    this.dialogFrame.text = msg
+    this.dialogFrame.visible = true
+  }
+
   render() {
     if (__DEV__) {
-      //game.debug.spriteInfo(, 32, 32)
+      //game.debug.spriteInfo(this.dialogFrame, 400, 600)
       //game.debug.cameraInfo(game.camera, 32, 32)
     }
   }

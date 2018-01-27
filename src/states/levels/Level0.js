@@ -37,6 +37,7 @@ export default class extends GameLevel {
     room.addFurniture(2, 1)
     room.addFurniture(2, 4)
     room.addExits('left', 'down', 'right')
+    room.onEnterPrecondition = () => this.displayMessage('Do not enter cells where there are\nless friendly inmates than fascist ones ! ')
     return room
   }
 
