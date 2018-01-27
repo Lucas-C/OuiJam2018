@@ -36,6 +36,7 @@ export default class extends Phaser.State {
       if (newRoom) {
         this.currentRoom = newRoom
         console.log('Moved from', [srcX, srcY], 'to', [dstX, dstY])
+        console.log('New room pos:', [this.currentRoom.x, this.currentRoom.y])
       } else {
         console.log('Cannot move from', [srcX, srcY], 'to', [dstX, dstY])
       }
@@ -43,10 +44,10 @@ export default class extends Phaser.State {
 
     update() {
         super.update()
-        //console.log('currentRoom:', this.currentRoom)
-        game.camera.x = this.currentRoom.x * config.getRoomSize();
-        game.camera.y = this.currentRoom.y *config.getRoomSize();
-        this.cursor.update()
+        game.camera.x = this.currentRoom.x// - config.getGameWidth() / 2;
+        game.camera.y = this.currentRoom.y// - config.getGameHeight() / 2;
+        this.cursor.x = this.currentRoom.x
+        this.cursor.y = this.currentRoom.y
         if (this.currentRoom.isEndCell) {
             // TODO: Show a test message beforehand
             this.state.start(this.nextLevel)
