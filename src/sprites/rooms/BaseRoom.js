@@ -1,13 +1,14 @@
 import Phaser from "phaser-ce/build/custom/phaser-split";
 import RoomGrid from "../../grid/RoomGrid";
 import config from "../../config";
+import DIRECTION from "../../const/Direction";
 
 export default class BaseRoom extends Phaser.Group {
   constructor() {
     super(game);
     this.grid = new RoomGrid(config.cellsPerRoom, this.getWidth(), this.getHeight())
     //this.grid.showForDebug()
-    this.exits = ['right', 'up', 'down', 'left']
+    this.exits = [Object.values(DIRECTION)];
     this.isEndCell = false
   }
 
