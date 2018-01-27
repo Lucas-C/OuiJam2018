@@ -77,10 +77,8 @@ export default class BaseRoom extends Phaser.Group {
   }
 
   addSideWalls(...sides) {
-    console.log('addSideWall', sides);
     this.sides = sides;
     sides.forEach(side => {
-      console.log(`add wall ${side}`);
       switch (side) {
         case DIRECTION.UP:
           this._addTopSideWall();

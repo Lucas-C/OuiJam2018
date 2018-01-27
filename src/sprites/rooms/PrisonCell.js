@@ -4,8 +4,8 @@ import Frame from "../../const/Frame";
 
 export default class PrisonCell extends BaseRoom {
 
-  constructor() {
-    super()
+  constructor(roomWidth, roomHeight) {
+    super(roomWidth, roomHeight)
     this.groundTilesIndices = Frame.FLOOR_CELL_BASIC;
     this.setGroundTiles()
   }

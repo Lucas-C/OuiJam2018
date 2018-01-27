@@ -17,7 +17,7 @@ export default class extends GameLevel {
 
   createStartCell() {
     const room = new PrisonCell(this.getRoomWidthInPx(), this.getRoomHeightInPx())
-    room.addSideWalls(DIRECTION.UP, DIRECTION.DOWN, DIRECTION.LEFT, DIRECTION.RIGHT)
+    room.addSideWalls(DIRECTION.UP, DIRECTION.DOWN, DIRECTION.LEFT)
     room.addNellaMandelson(3, 3)
     room.addExits('right')
     return room
