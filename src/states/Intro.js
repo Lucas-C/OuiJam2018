@@ -7,7 +7,7 @@ export default class extends Phaser.State {
   }
 
   preload() {
-    game.load.image('background', 'assets/images/to_change.jpg');
+    game.load.image('background', 'assets/images/wallpaper-jail.jpg');
 
     this.loaderBg = this.add.sprite(this.game.world.centerX, this.game.world.centerY, 'loaderBg')
     this.loaderBar = this.add.sprite(this.game.world.centerX, this.game.world.centerY, 'loaderBar')
@@ -26,6 +26,8 @@ export default class extends Phaser.State {
   create() {
     var bck = game.add.sprite(0, 0, 'background');
     bck.scale.setTo(1, 1);
+    bck.width = 800;
+    bck.height = 800;
 
     const titleText = 'THE KING MUST KNOW ! '
     const title = this.add.text(this.world.centerX, .2 * config.getGameHeight(), titleText, {
