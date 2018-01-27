@@ -11,7 +11,7 @@ export default class extends Phaser.State {
       game.world.setBounds(0, 0, 2000, 2000)
       this.rootGroup = new Phaser.Group(game, /*parent=*/null, /*name=*/'rootGroup')
 
-      this.levelGrid = new LevelGrid(config.cellsPerLine, config.levelGridWidth, config.levelGridHeight, this.rootGroup);
+      this.levelGrid = new LevelGrid(config.roomsPerLevelSide, config.levelGridWidth, config.levelGridHeight, this.rootGroup);
       //this.levelGrid.showForDebug();
 
       this.nextLevel = null // By default we consider the level to be the last one
@@ -44,8 +44,8 @@ export default class extends Phaser.State {
 
     update() {
         super.update()
-        game.camera.x = this.currentRoom.x// - config.getGameWidth() / 2;
-        game.camera.y = this.currentRoom.y// - config.getGameHeight() / 2;
+        game.camera.x = this.currentRoom.x
+        game.camera.y = this.currentRoom.y
         this.cursor.x = this.currentRoom.x
         this.cursor.y = this.currentRoom.y
         if (this.currentRoom.isEndCell) {

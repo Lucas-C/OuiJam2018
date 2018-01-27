@@ -1,14 +1,14 @@
 import Phaser from 'phaser'
 
-import config from '../config'
+import BaseRoom from './rooms/BaseRoom'
 
 export default class extends Phaser.Group {
   constructor (parent) {
     super(game, /*parent=*/parent, /*name=*/'cursor')
 
     this.fixedToCamera = true
-    this.cameraOffset.setTo(config.getGameWidth() / 2 - config.getRoomSize() / 2,
-                            config.getGameHeight() / 2 - config.getRoomSize() / 2)
+    this.cameraOffset.setTo(game.width / 2 - BaseRoom.getWidth() / 2,
+                            game.height / 2 - BaseRoom.getHeight() / 2)
 
     this.leftArrow = this.addArrow(0, 0.5, 1650)
     this.rightArrow = this.addArrow(1, 0.5, 1651)
@@ -17,8 +17,8 @@ export default class extends Phaser.Group {
   }
 
   addArrow(x, y, spriteSheetIndex, angle) {
-    const sprite = this.create(x * config.getRoomSize(), y * config.getRoomSize(), 'roguelikeSheet', spriteSheetIndex)
-    sprite.scale.setTo(config.spriteScale)
+    const sprite = this.create(x * BaseRoom.getWidth(), y * BaseRoom.getHeight(), 'roguelikeSheet', spriteSheetIndex)
+    sprite.scale.setTo(2)
     sprite.anchor.setTo(0.5)
     if (angle) {
       sprite.angle = angle

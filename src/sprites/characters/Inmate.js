@@ -8,7 +8,7 @@ export default class extends Phaser.Sprite {
     if (!this.animations.frameData || this.animations.frameData.total <= 1) {
         throw new Error('Failure parsing spritesheet')
     }
-    this.scale.setTo(config.spriteScale)
+    this.scale.setTo(config.characterSpriteScale)
     this.anchor.setTo(0.5)
   }
 

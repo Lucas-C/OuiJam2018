@@ -6,21 +6,12 @@ import DIRECTION from "../../const/Direction";
 export default class BaseRoom extends Phaser.Group {
   constructor() {
     super(game);
-    this.grid = new RoomGrid(config.cellsPerRoom, this.getWidth(), this.getHeight())
+    this.grid = new RoomGrid(config.cellsPerRoomSide, BaseRoom.getWidth(), BaseRoom.getHeight())
     //this.grid.showForDebug()
     this.exits = [Object.values(DIRECTION)]
-    this.exits = ['right', 'up', 'down', 'left']
     this.alliesCount = 0
     this.baddiesCount = 0
     this.isEndCell = false
-  }
-
-  getWidth() {
-    return config.levelGridWidth / config.cellsPerLine;
-  }
-
-  getHeight() {
-    return config.levelGridHeight / config.cellsPerLine;
   }
 
   /**********
@@ -33,20 +24,20 @@ export default class BaseRoom extends Phaser.Group {
   }) {
     // Corners:
     this.grid.placeAt(0, 0, this.create(0, 0, spriteSheet, topLeftIndex));
-    this.grid.placeAt(0, config.cellsPerRoom - 1, this.create(0, 0, spriteSheet, bottomLeftIndex));
-    this.grid.placeAt(config.cellsPerRoom - 1, 0, this.create(0, 0, spriteSheet, topRightIndex));
-    this.grid.placeAt(config.cellsPerRoom - 1, config.cellsPerRoom - 1, this.create(0, 0, spriteSheet, bottomRightIndex));
+    this.grid.placeAt(0, config.cellsPerRoomSide - 1, this.create(0, 0, spriteSheet, bottomLeftIndex));
+    this.grid.placeAt(config.cellsPerRoomSide - 1, 0, this.create(0, 0, spriteSheet, topRightIndex));
+    this.grid.placeAt(config.cellsPerRoomSide - 1, config.cellsPerRoomSide - 1, this.create(0, 0, spriteSheet, bottomRightIndex));
 
     // Sides:
-    for (let k = 1; k < config.cellsPerRoom - 1; k++) {
+    for (let k = 1; k < config.cellsPerRoomSide - 1; k++) {
       this.grid.placeAt(k, 0, this.create(0, 0, spriteSheet, topMiddleIndex));
-      this.grid.placeAt(k, config.cellsPerRoom - 1, this.create(0, 0, spriteSheet, bottomMiddleIndex));
+      this.grid.placeAt(k, config.cellsPerRoomSide - 1, this.create(0, 0, spriteSheet, bottomMiddleIndex));
       this.grid.placeAt(0, k, this.create(0, 0, spriteSheet, middleLeftIndex));
-      this.grid.placeAt(config.cellsPerRoom - 1, k, this.create(0, 0, spriteSheet, middleRightIndex));
+      this.grid.placeAt(config.cellsPerRoomSide - 1, k, this.create(0, 0, spriteSheet, middleRightIndex));
     }
     // Middle:
-    for (let i = 1; i < config.cellsPerRoom - 1; i++) {
-      for (let j = 1; j < config.cellsPerRoom - 1; j++) {
+    for (let i = 1; i < config.cellsPerRoomSide - 1; i++) {
+      for (let j = 1; j < config.cellsPerRoomSide - 1; j++) {
         this.grid.placeAt(i, j, this.create(0, 0, spriteSheet, middleIndex));
       }
     }
@@ -87,3 +78,6 @@ export default class BaseRoom extends Phaser.Group {
     console.log('addSideBarSprites', side)
   }
 }
+
+BaseRoom.getWidth = () => config.levelGridWidth / config.roomsPerLevelSide
+BaseRoom.getHeight = () => config.levelGridHeight / config.roomsPerLevelSide

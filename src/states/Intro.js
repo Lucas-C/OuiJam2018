@@ -30,7 +30,7 @@ export default class extends Phaser.State {
     bck.height = 800;
 
     const titleText = 'THE KING MUST KNOW ! '
-    const title = this.add.text(this.world.centerX, .2 * config.getGameHeight(), titleText, {
+    const title = this.add.text(this.world.centerX, .2 * game.height, titleText, {
       font: '80px Bangers',
       fill: '#D86785',
       smoothed: false,
@@ -40,15 +40,15 @@ export default class extends Phaser.State {
     title.padding.set(10, 16)
     title.anchor.setTo(0.5)
 
-    var bars = game.add.sprite(this.world.centerX, .4 * config.getGameHeight(), 'roguelikeSheet', 203);
+    var bars = game.add.sprite(this.world.centerX, .4 * game.height, 'roguelikeSheet', 203);
     bars.scale.setTo(8);
     bars.anchor.setTo(0.5);
 
-    this.makeGuard(this.world.centerX - 150, .4 * config.getGameHeight());
-    this.makeGuard(this.world.centerX + 150, .4 * config.getGameHeight());
+    this.makeGuard(this.world.centerX - 150, .4 * game.height);
+    this.makeGuard(this.world.centerX + 150, .4 * game.height);
 
     const gameDescText = 'You are Nella Mandelson, unjustly imprisoned.\nTo save thousands of innocent people, your letter must reach the king ! '
-    const gameDesc = this.add.text(this.world.centerX, .6 * config.getGameHeight(), gameDescText, {
+    const gameDesc = this.add.text(this.world.centerX, .6 * game.height, gameDescText, {
       font: '28px Bangers',
       fill: '#D86785',
       smoothed: false,
