@@ -3,27 +3,27 @@ import Phaser from 'phaser'
 import config from '../config'
 
 export default class extends Phaser.Group {
-  constructor ({ game }) {
-    super(game, /*parent=*/null, /*name=*/'cursor')
-    const halfRoomSize = config.getRoomSize() / 2 // in pixels
+  constructor (parent) {
+    super(game, /*parent=*/parent, /*name=*/'cursor')
 
     this.fixedToCamera = true
-    this.cameraOffset.setTo(config.getGameWidth() / 2 - halfRoomSize, config.getGameHeight() / 2 - halfRoomSize)
+    this.cameraOffset.setTo(config.getGameWidth() / 2 - config.getRoomSize() / 2,
+                            config.getGameHeight() / 2 - config.getRoomSize() / 2)
 
-    this.leftArrow = this.create(-halfRoomSize, 0, 'roguelikeSheet', 1650)
-    this.leftArrow.scale.setTo(config.spriteScale)
-    this.leftArrow.anchor.setTo(0.5)
-    this.rightArrow = this.create(halfRoomSize, 0, 'roguelikeSheet', 1651)
-    this.rightArrow.scale.setTo(config.spriteScale)
-    this.rightArrow.anchor.setTo(0.5)
-    this.upArrow = this.create(0, -halfRoomSize, 'roguelikeSheet', 1650)
-    this.upArrow.angle = 90
-    this.upArrow.scale.setTo(config.spriteScale)
-    this.upArrow.anchor.setTo(0.5)
-    this.downArrow = this.create(0, halfRoomSize, 'roguelikeSheet', 1651)
-    this.downArrow.angle = 90
-    this.downArrow.scale.setTo(config.spriteScale)
-    this.downArrow.anchor.setTo(0.5)
+    this.leftArrow = this.addArrow(0, 0.5, 1650)
+    this.rightArrow = this.addArrow(1, 0.5, 1651)
+    this.upArrow = this.addArrow(0.5, 0, 1650, 90)
+    this.downArrow = this.addArrow(0.5, 1, 1651, 90)
+  }
+
+  addArrow(x, y, spriteSheetIndex, angle) {
+    const sprite = this.create(x * config.getRoomSize(), y * config.getRoomSize(), 'roguelikeSheet', spriteSheetIndex)
+    sprite.scale.setTo(config.spriteScale)
+    sprite.anchor.setTo(0.5)
+    if (angle) {
+      sprite.angle = angle
+    }
+    return sprite
   }
 
   upArrowdate () {

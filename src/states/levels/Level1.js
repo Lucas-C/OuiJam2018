@@ -3,12 +3,8 @@ import Guard from '../../sprites/characters/Guard'
 import AlignGrid from "../../grid/AlignGrid";
 
 export default class extends GameLevel {
-    create() {
-        super.create()
-
-        this.mainGrid = new AlignGrid(5, 5);
-        this.mainGrid.show();
-
+    preload() {
+        super.preload()
         this.guard = new Guard({
             game: this.game,
             x: this.world.centerX,

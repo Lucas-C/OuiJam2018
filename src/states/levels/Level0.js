@@ -2,8 +2,8 @@ import GameLevel from '../GameLevel'
 import PrisonCell from "../../sprites/rooms/PrisonCell";
 
 export default class extends GameLevel {
-    create() {
-        super.create()
+    preload() {
+        super.preload()
         this.nextLevel = 'Level1'
 
         // Starting room:

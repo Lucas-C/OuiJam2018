@@ -8,7 +8,10 @@ export default class BaseRoom extends Phaser.Group {
     super(game);
     this.grid = new RoomGrid(config.cellsPerRoom, this.getWidth(), this.getHeight())
     //this.grid.showForDebug()
-    this.exits = [Object.values(DIRECTION)];
+    this.exits = [Object.values(DIRECTION)]
+    this.exits = ['right', 'up', 'down', 'left']
+    this.alliesCount = 0
+    this.baddiesCount = 0
     this.isEndCell = false
   }
 
@@ -18,19 +21,6 @@ export default class BaseRoom extends Phaser.Group {
 
   getHeight() {
       return config.levelGridHeight / config.cellsPerLine;
-  }
-
-  /**********
-   * Getters
-   *********/
-  exits() {
-      return this.exits
-  }
-  alliesCount() {
-      return 0
-  }
-  baddiesCount() {
-      return 0
   }
 
   /**********

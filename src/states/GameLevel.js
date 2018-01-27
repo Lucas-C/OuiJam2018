@@ -7,24 +7,38 @@ import LevelGrid from "../grid/LevelGrid";
 export default class extends Phaser.State {
     init() {}
 
-    preload() {}
+    preload() {
+      game.world.setBounds(0, 0, 2000, 2000)
+      this.rootGroup = new Phaser.Group(game, /*parent=*/null, /*name=*/'rootGroup')
+
+      this.levelGrid = new LevelGrid(config.cellsPerLine, config.levelGridWidth, config.levelGridHeight, this.rootGroup);
+      //this.levelGrid.showForDebug();
+
+      this.nextLevel = null // By default we consider the level to be the last one
+      this.currentRoom = null // Dummy, must be overriden by child level
+    }
 
     create() {
-        this.game.world.setBounds(0, 0, 2000, 2000)
+        this.cursor = new Cursor(this.rootGroup)
+        game.add.existing(this.cursor)
 
-        this.nextLevel = null // By default we consider the level to be the last one
-        this.levelGrid = new LevelGrid(config.cellsPerLine, config.levelGridWidth, config.levelGridHeight);
-        //this.levelGrid.showForDebug();
-        this.currentRoom = null // Dummy, must be overriden by child level
+        const cursorKeys = game.input.keyboard.createCursorKeys()
+        cursorKeys.left.onDown.add(() => this.moveCursor(-1, 0))
+        cursorKeys.right.onDown.add(() => this.moveCursor(1, 0))
+        cursorKeys.up.onDown.add(() => this.moveCursor(0, -1))
+        cursorKeys.down.onDown.add(() => this.moveCursor(0, 1))
+    }
 
-        this.cursor = new Cursor({game: this.game})
-        this.game.add.existing(this.cursor)
-
-        const cursorKeys = game.input.keyboard.createCursorKeys();
-        cursorKeys.left.onDown.add(() => this.currentRoom.x -= 1)
-        cursorKeys.right.onDown.add(() => this.currentRoom.x += 1)
-        cursorKeys.up.onDown.add(() => this.currentRoom.y -= 1)
-        cursorKeys.down.onDown.add(() => this.currentRoom.y += 1)
+    moveCursor(deltaX, deltaY) {
+      const [srcX, srcY] = [this.currentRoom.gridPosX, this.currentRoom.gridPosY]
+      const [dstX, dstY] = [srcX + deltaX, srcY + deltaY]
+      const newRoom = this.levelGrid.roomAtPos(dstX, dstY)
+      if (newRoom) {
+        this.currentRoom = newRoom
+        console.log('Moved from', [srcX, srcY], 'to', [dstX, dstY])
+      } else {
+        console.log('Cannot move from', [srcX, srcY], 'to', [dstX, dstY])
+      }
     }
 
     update() {
@@ -36,7 +50,7 @@ export default class extends Phaser.State {
         if (this.currentRoom.isEndCell) {
             // TODO: Show a test message beforehand
             this.state.start(this.nextLevel)
-        } else if (this.currentRoom.baddiesCount() > this.currentRoom.alliesCount()) {
+        } else if (this.currentRoom.baddiesCount > this.currentRoom.alliesCount) {
             // TODO: Show a test message beforehand
             this.state.start('Level0')
         }
@@ -44,7 +58,7 @@ export default class extends Phaser.State {
 
     render() {
         if (__DEV__) {
-            //this.game.debug.spriteInfo(this.guard, 32, 32)
+            //game.debug.spriteInfo(this.guard, 32, 32)
         }
     }
 }
