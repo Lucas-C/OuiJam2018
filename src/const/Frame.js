@@ -13,7 +13,17 @@ const FRAME = {
   },
 
   // couloir
-  FLOOR_CORRIDOR: 235,
+  FLOOR_CORRIDOR: {
+    TOP_LFT: 119,
+    TOP_MID: 119,
+    TOP_RGT: 119,
+    CTR_LFT: 119,
+    CTR_MID: 119,
+    CTR_RGT: 119,
+    BOT_LFT: 119,
+    BOT_MID: 119,
+    BOT_RGT: 119,
+  },
 
   // Fleches bleues
   ARROW_BLUE_BIG_LEFT: 1650,

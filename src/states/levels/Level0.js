@@ -1,5 +1,6 @@
 import GameLevel from '../GameLevel'
 import PrisonCell from "../../sprites/rooms/PrisonCell";
+import PrisonCorridor from "../../sprites/rooms/PrisonCorridor";
 import DIRECTION from "../../const/Direction";
 
 export default class extends GameLevel {
@@ -17,8 +18,14 @@ export default class extends GameLevel {
     this.levelGrid.addRoom(1, 1, this.currentRoom)
     this.levelGrid.addRoom(2, 1, this.createMiddleCell_1())
     this.levelGrid.addRoom(3, 1, this.createMiddleCell_2())
-    this.levelGrid.addRoom(3, 2, this.createBottomCell())
     this.levelGrid.addRoom(4, 1, this.createEndCell())
+    this.levelGrid.addRoom(1, 2, this.createCorridor())
+    this.levelGrid.addRoom(2, 2, this.createCorridor())
+    this.levelGrid.addRoom(3, 2, this.createBottomCell())
+    this.levelGrid.addRoom(4, 2, this.createCorridor())
+    this.levelGrid.addRoom(2, 3, this.createCorridor())
+    this.levelGrid.addRoom(3, 3, this.createCorridor())
+    this.levelGrid.addRoom(4, 3, this.createCorridor())
   }
 
   createStartCell() {
@@ -76,6 +83,17 @@ export default class extends GameLevel {
     room.addFurniture(3, 1)
     room.addExits('left')
     room.addEndWindow(6, 3)
+    return room
+  }
+
+  createCorridor() {
+    const room = new PrisonCorridor(this.getRoomWidthInPx(), this.getRoomHeightInPx());
+    let nbGuards = Math.floor(Math.random() * 4) + 1; // 1 to 4 guards
+    for (var i = 0; i < nbGuards; i++) {
+      var posX = Math.floor(Math.random() * 6) + 1;
+      var posY = Math.floor(Math.random() * 6) + 1;
+      room.addGuard(posX, posY);
+    }
     return room
   }
 }

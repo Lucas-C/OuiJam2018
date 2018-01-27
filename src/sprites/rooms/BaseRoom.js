@@ -69,6 +69,15 @@ export default class BaseRoom extends Phaser.Group {
     this.grid.placeAt(x, y, this.create(0, 0, 'roguelikeChar', this.selectOneInArray([270, 432, 541]))); // all in one
   }
 
+  addGuard(x, y) {
+    this.baddiesCount += 1
+    this.grid.placeAt(x, y, this.create(0, 0, 'roguelikeChar', this.selectOneInArray([0, 1])));
+    this.grid.placeAt(x, y, this.create(0, 0, 'roguelikeChar', this.selectOneInArray([3])));
+    this.grid.placeAt(x, y, this.create(0, 0, 'roguelikeChar', this.selectOneInArray([6])));
+    this.grid.placeAt(x, y, this.create(0, 0, 'roguelikeChar', this.selectOneInArray([28])));
+    this.grid.placeAt(x, y, this.create(0, 0, 'roguelikeChar', this.selectOneInArray([256])));
+    this.grid.placeAt(x, y, this.create(0, 0, 'roguelikeChar', this.selectOneInArray([49])));
+  }
   selectOneInArray(array) {
     return array[Math.floor(Math.random() * array.length)];
   }
