@@ -2,6 +2,7 @@
 import Phaser from 'phaser'
 import config from '../config'
 import Cursor from '../sprites/Cursor'
+import GameGrid from "../grid/GameGrid";
 
 export default class extends Phaser.State {
     init() {}
@@ -12,7 +13,8 @@ export default class extends Phaser.State {
         this.game.world.setBounds(0, 0, 2000, 2000)
 
         this.nextLevel = null // By default we consider the level to be the last one
-        this.mainGrid = null // Dummy, must be overriden by child level
+        this.mainGrid = new GameGrid(config.cellsPerLine, config.mainGridWidth, config.mainGridHeight);
+        this.mainGrid.showForDebug(config.debugColorMainGrid, config.debugSizeMainGrid);
         this.currentRoom = null // Dummy, must be overriden by child level
 
         this.cursor = new Cursor({game: this.game})

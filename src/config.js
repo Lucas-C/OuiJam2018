@@ -15,5 +15,13 @@ export default {
   getGameHeight() {
     const docElement = document.documentElement
     return docElement.clientHeight > this.gameHeight ? this.gameHeight : docElement.clientHeight
-  }
+  },
+  cellsPerLine: 5,
+  cellsPerRoom: 7,
+  mainGridWidth: 800,
+  mainGridHeight: 800,
+  debugColorMainGrid: 0xff0000,
+  debugColorRoomGrid: 0x0077ff,
+  debugSizeMainGrid: 4,
+  debugSizeRoomGrid: 2
 }

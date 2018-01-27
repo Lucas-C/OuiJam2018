@@ -1,14 +1,10 @@
 import GameLevel from '../GameLevel'
-import AlignGrid from "../../grid/AlignGrid";
 import Cell from "../../sprites/cells/Cell";
 
 export default class extends GameLevel {
     create() {
         super.create()
         this.nextLevel = 'Level1'
-
-        this.mainGrid = new AlignGrid(5, 5);
-        this.mainGrid.show();
 
         // Starting room:
         this.currentRoom = this.createStartCell()
