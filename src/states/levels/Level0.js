@@ -82,6 +82,7 @@ export default class extends GameLevel {
     room.addFurniture(2, 4)
     room.addFurniture(3, 1)
     room.addExits('left')
+    room.addAlly(5, 3)
     room.addEndWindow(6, 3)
     return room
   }

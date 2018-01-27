@@ -2,6 +2,7 @@
 import Phaser from 'phaser'
 import config from '../config'
 import Cursor from '../sprites/Cursor'
+import ScrollMessage from '../sprites/ScrollMessage'
 import LevelGrid from "../grid/LevelGrid";
 
 export default class extends Phaser.State {
@@ -42,13 +43,19 @@ export default class extends Phaser.State {
     cursorKeys.up.onDown.add(() => this.moveCursor('up', 0, -1))
     cursorKeys.down.onDown.add(() => this.moveCursor('down', 0, 1))
 
+    this.scrollMsg = new ScrollMessage()
+    game.add.existing(this.scrollMsg)
+
     if (this.currentRoom.onEnterPrecondition) {
       this.currentRoom.onEnterPrecondition()
     }
   }
 
   moveCursor(direction, deltaX, deltaY) {
-    this.dialogFrame.visible = false
+    if (this.dialogFrame.visible) {
+      this.dialogFrame.visible = false
+      return
+    }
     if (!this.currentRoom.exits.includes(direction)) {
       console.log('Cannot go ' + direction + ' in current room')
       return
@@ -62,9 +69,9 @@ export default class extends Phaser.State {
         return
       }
       this.currentRoom = newRoom
+      this.scrollMsg.moveTo(newRoom)
       console.log('Moved from', [srcX, srcY], 'to', [dstX, dstY])
       console.log('New room pos:', this.currentRoom.position)
-      console.log('cursor pos:', this.cursor.position)
       /*console.log('levelGrid 1st room world pos:', this.levelGrid.rooms[0][0].position)
        const sprite = this.levelGrid.rooms[0][0].topLeftCorner
        console.log('sprite world pos:', sprite.world)*/
@@ -81,15 +88,20 @@ export default class extends Phaser.State {
     //game.camera.focusOnXY(200, 200)
     //game.camera.focusOn(this.cursor)
 
+    if (this.scrollMsg.x === 0 && this.scrollMsg.y === 0) {
+      // First scroll apparition, must be done after the sprites world positions have been updated
+      this.scrollMsg.moveTo(this.currentRoom)
+    }
+
     const successMsg = 'Good job !'
     const failureMsg = "It's all lost !\nThe message bearer has been backstabbed by a fascist"
-    if (this.currentRoom.isEndCell) {
+    if (this.currentRoom.windowSprite) {
       if (!this.dialogFrame.visible && this.dialogFrame.text === successMsg) {
         this.state.start(this.nextLevel)
       } else {
         this.displayMessage(successMsg)
       }
-    } else if (this.currentRoom.baddiesCount > this.currentRoom.alliesCount) {
+    } else if (this.currentRoom.baddies.length > this.currentRoom.allies.length) {
       if (!this.dialogFrame.visible && this.dialogFrame.text === failureMsg) {
         this.state.start('Level0')
       } else {

@@ -7,12 +7,14 @@ import FRAME from "../../const/Frame";
 export default class BaseRoom extends Phaser.Group {
   constructor(roomWidth, roomHeight) {
     super(game);
+    this.roomWidth = roomWidth
+    this.roomHeight = roomHeight
     this.grid = new RoomGrid(config.cellsPerRoomSide, roomWidth, roomHeight)
     //this.grid.showForDebug()
     this.exits = [Object.values(DIRECTION)]
-    this.alliesCount = 0
-    this.baddiesCount = 0
-    this.isEndCell = false
+    this.allies = []
+    this.baddies = []
+    this.windowSprite = null
     this.groundTilesIndices = null; // Must be set by child classes
   }
 
@@ -48,25 +50,29 @@ export default class BaseRoom extends Phaser.Group {
   }
 
   addNellaMandelson(x, y) {
-    this.grid.placeAt(x, y, this.create(0, 0, 'roguelikeChar', FRAME.NELLA_MANDELSON)); // the pretty one
+    const sprite = this.create(0, 0, 'roguelikeChar', FRAME.NELLA_MANDELSON) // the pretty one
+    this.grid.placeAt(x, y, sprite)
+    this.allies.push(sprite)
   }
 
   addEndWindow(x, y) {
-    this.isEndCell = true
-    this.grid.placeAt(x, y, this.create(0, 0, BaseRoom.WALL_AND_FLOOR_SPRITE_SHEET, FRAME.WINDOW_1));
+    this.windowSprite = this.create(0, 0, BaseRoom.WALL_AND_FLOOR_SPRITE_SHEET, FRAME.WINDOW_1)
+    this.grid.placeAt(x, y, this.windowSprite);
     this.grid.placeAt(x, y, this.create(0, 0, BaseRoom.WALL_AND_FLOOR_SPRITE_SHEET, FRAME.CURTAINS_1));
   }
 
   addAlly(x, y) {
-    this.alliesCount += 1
-    this.grid.placeAt(x, y, this.create(0, 0, 'roguelikeChar', this.selectOneInArray([0, 1]))); // base
+    const sprite = this.create(0, 0, 'roguelikeChar', this.selectOneInArray([0, 1])) // base
+    this.grid.placeAt(x, y, sprite)
     this.grid.placeAt(x, y, this.create(0, 0, 'roguelikeChar', this.selectOneInArray([10, 14, 327, 381])), -1, 1); // clothes
     this.grid.placeAt(x, y, this.create(0, 0, 'roguelikeChar', this.selectOneInArray([19, 21])), -1, 1); // hair
+    this.allies.push(sprite)
   }
 
   addBaddy(x, y) {
-    this.baddiesCount += 1
-    this.grid.placeAt(x, y, this.create(0, 0, 'roguelikeChar', this.selectOneInArray([270, 432, 541]))); // all in one
+    const sprite = this.create(0, 0, 'roguelikeChar', this.selectOneInArray([270, 432, 541])) // all in one
+    this.grid.placeAt(x, y, sprite)
+    this.baddies.push(sprite)
   }
 
   addGuard(x, y) {
