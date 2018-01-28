@@ -17,6 +17,7 @@ From DeviantArt:
 
 From OpenGameArt.org:
 - [24x32-black-character-pack](https://opengameart.org/content/24x32-black-character-pack)
+- [rpg-portraits](https://opengameart.org/content/rpg-portraits)
 
 From OpenClipArt.org:
 - [Skulls](https://openclipart.org/detail/271180/skull-emoji)

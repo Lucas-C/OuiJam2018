@@ -118,6 +118,8 @@ export default class GameLevel extends Phaser.State {
   update() {
     super.update()
     this.cursor.moveTo(this.currentRoom.x, this.currentRoom.y);
+
+    //game.camera.position = ...
     //game.camera.focusOnXY(200, 200)
     //game.camera.focusOn(this.cursor)
 

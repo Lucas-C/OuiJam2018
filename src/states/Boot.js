@@ -13,7 +13,14 @@ export default class extends Phaser.State {
       google: {
         families: ['Bangers', 'VT323']
       },
-      active: this.fontsLoaded
+      // The following should ideally allow us to load the font locally,
+      // but webfontloader never attempt to fetch googlefonts.css :(
+      /*custom: {
+        families: ['Bangers', 'VT323'],
+        url: ['googlefonts.css']
+      },*/
+      active: this.fontsLoaded,
+      inactive: () => console.error('Fonts loading failed (5s timeout)')
     })
 
     let text = this.add.text(this.world.centerX, this.world.centerY, 'loading fonts', { font: '32px Arial', fill: '#333', align: 'center' })

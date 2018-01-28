@@ -21,6 +21,8 @@ export default class extends Phaser.State {
     this.load.spritesheet('roguelikeDungeon', './assets/images/roguelikeDungeon_transparent.png', 16, 16, /*frameMax=*/521, /*margin=*/0, /*space=*/1)
     this.load.spritesheet('roguelikeIndoor', './assets/images/roguelikeIndoor_transparent.png', 16, 16, /*frameMax=*/503, /*margin=*/0, /*space=*/1)
     this.load.spritesheet('roguelikeSheet', './assets/images/roguelikeSheet_transparent.png', 16, 16, /*frameMax=*/1824, /*margin=*/0, /*space=*/1)
+    this.load.spritesheet('rpgportraits', './assets/images/rpgportraits.png', 32, 32, /*frameMax=*/27, /*margin=*/4, /*space=*/4)
+    this.load.spritesheet('skull', './assets/images/skullemoji-800px.png', 173, 231, /*frameMax=*/12, /*margin=*/0, /*space=*/36) // Should be 36 horizontally and 89 vertically :(
 
     this.load.image('portraitNellaMandelson', './assets/images/NellaMandelson2.png', 32, 32);
     this.load.image('line', './assets/images/line.png', 600, 2);
