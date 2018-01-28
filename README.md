@@ -1,4 +1,3 @@
-
 # THE KING MUST KNOW !
 
 **Oh no !** 
@@ -8,6 +7,10 @@ The hand of the King is comploting the extermination of thousands of innocent
 
 Only you, Nella, may attempt to deliver **THE** important letter to the king and avoid the massacre.
 But will you manage to avoid ambushes and to do it in time ?
+
+Online version : https://lucas-c.github.io/OuiJam2018/build
+
+GGJ 2 page : https://globalgamejam.org/2018/games/king-must-know
 
 ![alt text](press/GameIntroScreenshot.png "The king must know !")
 
