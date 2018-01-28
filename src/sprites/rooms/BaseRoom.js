@@ -70,10 +70,10 @@ export default class BaseRoom extends Phaser.Group {
   }
 
   addNellaMandelson(x, y) {
-    const character = new Inmate({frames: [FRAME.NELLA_MANDELSON], isAlly: true, room: this})
+    const character = new Inmate({frames: [FRAME.NELLA_MANDELSON], isAlly: true, room: this, name: 'Nella Mandelson'})
     this.grid.placeAt(x, y, character)
     this.characters.push(character)
-    return this
+    return character
   }
 
   addEndWindow(x, y) {

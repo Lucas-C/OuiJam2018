@@ -41,130 +41,151 @@ export default class extends GameLevel {
   }
 
   createStartCell() {
-    const room = super.makePrisonCell(0, 0, true);
-    room.addSideWalls(DIRECTION.LEFT, DIRECTION.DOWN)
-    room.addSideMetalBars(DIRECTION.UP, DIRECTION.RIGHT)
-    room.addExits(DIRECTION.UP, DIRECTION.RIGHT)
-    return room
+    return super.makePrisonCell({
+      sideMetalBars: [DIRECTION.UP, DIRECTION.RIGHT],
+      sideWalls: [DIRECTION.LEFT, DIRECTION.DOWN],
+      exits: [DIRECTION.UP, DIRECTION.RIGHT],
+      withNelly: true
+    })
   }
 
   createCellTop_1() {
-    const room = super.makePrisonCell(2, 1);
-    room.addSideWalls(DIRECTION.UP, DIRECTION.LEFT);
-    room.addExits(DIRECTION.DOWN, DIRECTION.RIGHT)
-    return room
+    return super.makePrisonCell({
+      sideWalls: [DIRECTION.UP, DIRECTION.LEFT],
+      exits: [DIRECTION.DOWN, DIRECTION.RIGHT],
+      nbAllies: 2,
+      nbBaddies: 1
+    })
   }
 
   createCellMiddleHigh_1() {
-    const room = super.makePrisonCell(1, 0);
-    room.addSideWalls(DIRECTION.LEFT)
-    room.addSideMetalBars(DIRECTION.RIGHT, DIRECTION.UP)
-    room.addExits(DIRECTION.DOWN, DIRECTION.UP)
-    return room
+    return super.makePrisonCell({
+      sideMetalBars: [DIRECTION.RIGHT, DIRECTION.UP],
+      sideWalls: [DIRECTION.LEFT],
+      exits: [DIRECTION.DOWN, DIRECTION.UP],
+      nbAllies: 1
+    })
   }
 
   createCellMiddleLow_1() {
-    const room = super.makePrisonCell(3, 0);
-    room.addSideWalls(DIRECTION.LEFT)
-    room.addSideMetalBars(DIRECTION.RIGHT, DIRECTION.UP)
-    room.addExits(DIRECTION.DOWN, DIRECTION.UP)
-    return room
+    return super.makePrisonCell({
+      sideMetalBars: [DIRECTION.RIGHT, DIRECTION.UP],
+      sideWalls: [DIRECTION.LEFT],
+      exits: [DIRECTION.DOWN, DIRECTION.UP],
+      nbAllies: 3
+    })
   }
 
   createCellTop_2() {
-    const room = super.makePrisonCell(0, 0);
-    room.addSideWalls(DIRECTION.UP)
-    room.addSideMetalBars(DIRECTION.DOWN, DIRECTION.LEFT)
-    room.addExits(DIRECTION.LEFT, DIRECTION.RIGHT)
-    return room
+    return super.makePrisonCell({
+      sideMetalBars: [DIRECTION.DOWN, DIRECTION.LEFT],
+      sideWalls: [DIRECTION.UP],
+      exits: [DIRECTION.LEFT, DIRECTION.RIGHT],
+    })
   }
 
   createCellBottom_2() {
-    const room = super.makePrisonCell(4, 5);
-    room.addSideWalls(DIRECTION.DOWN)
-    room.addSideMetalBars(DIRECTION.UP)
-    room.addExits(DIRECTION.LEFT, DIRECTION.RIGHT)
-    return room
+    return super.makePrisonCell({
+      sideMetalBars: [DIRECTION.UP],
+      sideWalls: [DIRECTION.DOWN],
+      exits: [DIRECTION.LEFT, DIRECTION.RIGHT],
+      nbAllies: 4,
+      nbBaddies: 5
+    })
   }
 
   createCellTop_3() {
-    const room = super.makePrisonCell(2, 0);
-    room.addSideWalls(DIRECTION.UP, DIRECTION.RIGHT)
-    room.addSideMetalBars(DIRECTION.LEFT)
-    room.addExits(DIRECTION.LEFT, DIRECTION.DOWN)
-    return room
+    return super.makePrisonCell({
+      sideMetalBars: [DIRECTION.LEFT],
+      sideWalls: [DIRECTION.UP, DIRECTION.RIGHT],
+      exits: [DIRECTION.LEFT, DIRECTION.DOWN],
+      nbAllies: 2
+    })
   }
 
   createCellMiddleHigh_3() {
-    const room = super.makePrisonCell(3, 1);
-    room.addSideMetalBars(DIRECTION.LEFT)
-    room.addExits(DIRECTION.UP, DIRECTION.RIGHT, DIRECTION.DOWN)
-    return room
+    return super.makePrisonCell({
+      sideWalls: [DIRECTION.LEFTP],
+      exits: [DIRECTION.UP, DIRECTION.RIGHT, DIRECTION.DOWN],
+      nbAllies: 3,
+      nbBaddies: 1
+    })
   }
 
   createCellMiddleLow_3() {
-    const room = super.makePrisonCell(1, 0);
-    room.addSideMetalBars(DIRECTION.LEFT, DIRECTION.RIGHT)
-    room.addExits(DIRECTION.UP, DIRECTION.DOWN)
-    return room
+    return super.makePrisonCell({
+      sideMetalBars: [DIRECTION.LEFT, DIRECTION.RIGHT],
+      exits: [DIRECTION.UP, DIRECTION.DOWN],
+      nbAllies: 1
+    })
   }
 
   createCellBottom_3() {
-    const room = super.makePrisonCell(2, 0);
-    room.addSideMetalBars(DIRECTION.DOWN)
-    room.addSideMetalBars(DIRECTION.UP, DIRECTION.RIGHT)
-    room.addExits(DIRECTION.UP, DIRECTION.RIGHT, DIRECTION.LEFT)
-    return room
+    return super.makePrisonCell({
+      sideMetalBars: [DIRECTION.DOWN, DIRECTION.UP, DIRECTION.RIGHT],
+      exits: [DIRECTION.UP, DIRECTION.RIGHT, DIRECTION.LEFT],
+      nbAllies: 2
+    })
   }
 
   createCellMiddleHigh_4() {
-    const room = super.makePrisonCell(3, 1);
-    room.addSideWalls(DIRECTION.UP)
-    room.addSideMetalBars(DIRECTION.LEFT, DIRECTION.DOWN)
-    room.addExits(DIRECTION.LEFT, DIRECTION.RIGHT)
-    return room
+    return super.makePrisonCell({
+      sideMetalBars: [DIRECTION.LEFT, DIRECTION.DOWN],
+      sideWalls: [DIRECTION.UP],
+      exits: [DIRECTION.LEFT, DIRECTION.RIGHT],
+      nbAllies: 3,
+      nbBaddies: 1
+    })
   }
 
   createCellBottom_4() {
-    const room = super.makePrisonCell(4, 0);
-    room.addSideWalls(DIRECTION.DOWN)
-    room.addSideMetalBars(DIRECTION.UP)
-    room.addExits(DIRECTION.LEFT, DIRECTION.RIGHT)
-    return room
+    return super.makePrisonCell({
+      sideMetalBars: [DIRECTION.UP],
+      sideWalls: [DIRECTION.DOWN],
+      exits: [DIRECTION.LEFT, DIRECTION.RIGHT],
+      nbAllies: 4
+    })
   }
 
   // Exit
   createCellTop_5() {
-    const room = super.makePrisonCell(2, 0);
-    room.addSideWalls(DIRECTION.UP, DIRECTION.LEFT, DIRECTION.RIGHT)
-    room.addExits(DIRECTION.DOWNT)
-    room.addEndWindow(3, 0)
-    return room
+    return super.makePrisonCell({
+      sideWalls: [DIRECTION.UP, DIRECTION.LEFT, DIRECTION.RIGHT],
+      exits: [DIRECTION.DOWN],
+      nbAllies: 3,
+      endWindow: [3, 0]
+    })
   }
 
   createCellMiddleHigh_5() {
-    const room = super.makePrisonCell(3, 1);
-    room.addSideWalls(DIRECTION.RIGHT)
-    room.addSideMetalBars(DIRECTION.UP, DIRECTION.LEFT)
-    room.addExits(DIRECTION.UP, DIRECTION.DOWN, DIRECTION.LEFT)
+    const room = super.makePrisonCell({
+      sideMetalBars: [DIRECTION.UP, DIRECTION.LEFT],
+      sideWalls: [DIRECTION.RIGHT],
+      exits: [DIRECTION.UP, DIRECTION.DOWN, DIRECTION.LEFT],
+      nbAllies: 3,
+      nbBaddies: 1
+    })
     room.onEnterPrecondition = () => this.displayMessage('I am proud of you =^-^= ')
     return room
   }
 
   createCellMiddleLow_5() {
-    const room = super.makePrisonCell(2, 3);
-    room.addSideWalls(DIRECTION.RIGHT)
-    room.addSideMetalBars(DIRECTION.UP, DIRECTION.LEFT)
-    room.addExits(DIRECTION.UP, DIRECTION.DOWN)
-    return room
+    return super.makePrisonCell({
+      sideMetalBars: [DIRECTION.UP, DIRECTION.LEFT],
+      sideWalls: [DIRECTION.RIGHT],
+      exits: [DIRECTION.UP, DIRECTION.DOWN],
+      nbAllies: 2,
+      nbBaddies: 3
+    })
   }
 
   createCellBottom_5() {
-    const room = super.makePrisonCell(2, 0);
-    room.addSideWalls(DIRECTION.DOWN, DIRECTION.RIGHT)
-    room.addSideMetalBars(DIRECTION.UP)
-    room.addExits(DIRECTION.LEFT, DIRECTION.UP)
-    return room
+    return super.makePrisonCell({
+      sideMetalBars: [DIRECTION.UP],
+      sideWalls: [DIRECTION.DOWN, DIRECTION.RIGHT],
+      exits: [DIRECTION.LEFT, DIRECTION.UP],
+      nbAllies: 2
+    })
   }
 
   update() {

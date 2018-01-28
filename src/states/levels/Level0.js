@@ -33,29 +33,35 @@ export default class extends GameLevel {
   }
 
   createStartCell() {
-    const room = super.makePrisonCell(0, 0, true);
-    room.addSideMetalBars( DIRECTION.DOWN);
-    room.addSideWalls(DIRECTION.LEFT, DIRECTION.UP)
-    room.addExits('right')
+    const room = super.makePrisonCell({
+      sideMetalBars: [DIRECTION.DOWN],
+      sideWalls: [DIRECTION.LEFT, DIRECTION.UP],
+      exits: ['right'],
+      withNelly: true
+    })
     room.onEnterPrecondition = () => this.displayMessage('Quick, bring this message outside the prison ! ')
     return room
   }
 
   createTopCell_2() {
-    const room = super.makePrisonCell(0, 0);
-    room.addSideMetalBars(DIRECTION.LEFT, DIRECTION.DOWN);
-    room.addSideWalls(DIRECTION.UP)
-    room.addExits('left', 'right')
+    const room = super.makePrisonCell({
+      sideMetalBars: [DIRECTION.LEFT, DIRECTION.DOWN],
+      sideWalls: [DIRECTION.UP],
+      exits: ['left', 'right']
+    })
     room.onEnterPrecondition = () => this.displayMessage('Do not enter cells where there are\nless friendly inmates than fascist ones : ',
                                                          {spriteSheet: 'roguelikeChar', indices: FRAME.BADDIES, percentX: .9, percentY: .1, scale: 3})
     return room
   }
 
   createTopCell_3() {
-    const room = super.makePrisonCell(2, 1);
-    room.addSideMetalBars(DIRECTION.DOWN);
-    room.addSideWalls(DIRECTION.UP)
-    room.addExits('left', 'down', 'right')
+    const room = super.makePrisonCell({
+      sideMetalBars: [DIRECTION.DOWN],
+      sideWalls: [DIRECTION.UP],
+      exits: ['left', 'down', 'right'],
+      nbAllies: 2,
+      nbBaddies: 1
+    })
     const arrowIndices = Object.values(Cursor.ICON_MOVEMENT_PANIK).map(dir => dir.iconFrame)
     const arrowAngles = Object.values(Cursor.ICON_MOVEMENT_PANIK).map(dir => dir.iconRotation)
     room.onEnterPrecondition = () => this.displayMessage('In a cell with at least one fascist,\nthe stress will make you loose your way ! ',
@@ -64,18 +70,20 @@ export default class extends GameLevel {
   }
 
   createMiddleCell_3() {
-    const room = super.makePrisonCell(0, 1);
-    room.addSideMetalBars( DIRECTION.LEFT, DIRECTION.RIGHT, DIRECTION.DOWN);
-    room.addExits('up')
-    return room
+    return super.makePrisonCell({
+      sideMetalBars: [DIRECTION.LEFT, DIRECTION.RIGHT, DIRECTION.DOWN],
+      exits: ['up'],
+      nbBaddies: 1
+    })
   }
 
   createEndCell() {
-    const room = super.makePrisonCell(1, 0);
-    room.addSideMetalBars(DIRECTION.LEFT, DIRECTION.DOWN);
-    room.addSideWalls(DIRECTION.UP, DIRECTION.RIGHT)
-    room.addExits('left')
-    room.addEndWindow(6, 3)
-    return room
+    return super.makePrisonCell({
+      sideMetalBars: [DIRECTION.LEFT, DIRECTION.DOWN],
+      sideWalls: [DIRECTION.UP, DIRECTION.RIGHT],
+      exits: ['left'],
+      nbAllies: 1,
+      endWindow: [6, 3]
+    })
   }
 }

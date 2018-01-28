@@ -13,7 +13,9 @@ export default class GameLevel extends Phaser.State {
 
   init() {
     this.roomsPerLevelSide = 5 // Can be overriden per level
-    this.deadTimer = new DeadTimer(this.game, this, () => {this._addSkullInCurrentRoom(); });
+    this.deadTimer = new DeadTimer(this.game, this, () => {
+      this._addSkullInCurrentRoom();
+    });
   }
 
   getRoomWidthInPx() {
@@ -50,6 +52,7 @@ export default class GameLevel extends Phaser.State {
 
     this.scrollMsg = new ScrollMessage()
     game.add.existing(this.scrollMsg)
+    game.time.events.add(500, () => this.scrollMsg.sendTo(this.nellaMandelson))
 
     if (this.currentRoom.onEnterPrecondition) {
       this.currentRoom.onEnterPrecondition()
@@ -73,46 +76,48 @@ export default class GameLevel extends Phaser.State {
     const [srcX, srcY] = [this.currentRoom.gridPosX, this.currentRoom.gridPosY]
     const [dstX, dstY] = [srcX + wantedMovement.deltaX, srcY + wantedMovement.deltaY]
     const newRoom = this.levelGrid.roomAtPos(dstX, dstY)
-    if (newRoom) {
-      if (newRoom.onEnterPrecondition && newRoom.onEnterPrecondition() === false) {
-        console.log('newRoom.onEnterPrecondition exists and returned false => not entering it')
-        return
-      }
-      this.currentRoom = newRoom;
-      this.scrollMsg.moveTo(newRoom);
-      this.deadTimer.stop();
-      console.log('Moved from', [srcX, srcY], 'to', [dstX, dstY])
-      console.log('New room pos:', this.currentRoom.position)
-      /*console.log('levelGrid 1st room world pos:', this.levelGrid.rooms[0][0].position)
-       const sprite = this.levelGrid.rooms[0][0].topLeftCorner
-       console.log('sprite world pos:', sprite.world)*/
-
-      if (this.isGameLost()) {
-        this._addSkullInCurrentRoom();
-      } else if (this.currentRoom.isDangerous()) {
-        // Warning sign (it will desapear)
-        var warnSign = this.game.add.sprite(this.currentRoom.centerX, this.currentRoom.centerY, 'warning');
-        warnSign.scale.setTo(0.3);
-        warnSign.anchor.setTo(0.5);
-        warnSign.alpha = 0.5;
-        game.add.tween(warnSign).to({alpha: 0}, 2000, "Linear", true);
-
-        // shuffle the arrows and put them in RED
-        this.cursor.randomizeMovements();
-        this.deadTimer.launch();
-      } else {
-        // reset arrows order and color
-        this.cursor.resetOriginalMovements();
-      }
-
-    } else {
+    if (!newRoom) {
       console.log('Cannot move from', [srcX, srcY], 'to', [dstX, dstY])
+      return
+    }
+    if (newRoom.onEnterPrecondition && newRoom.onEnterPrecondition() === false) {
+      console.log('newRoom.onEnterPrecondition exists and returned false => not entering it')
+      return
+    }
+    if (this.scrollMsg.owner.room === this.currentRoom && this.scrollMsg.owner.canMoveTo(newRoom)) {
+      this.scrollMsg.owner.moveTo(newRoom)
+    } else if (newRoom.allies()[0]) {
+      this.scrollMsg.sendTo(newRoom.allies()[0])
+    }
+    this.currentRoom = newRoom
+    this.deadTimer.stop()
+    console.log('Moved from', [srcX, srcY], 'to', [dstX, dstY])
+    console.log('New room pos:', this.currentRoom.position)
+    /*console.log('levelGrid 1st room world pos:', this.levelGrid.rooms[0][0].position)
+     const sprite = this.levelGrid.rooms[0][0].topLeftCorner
+     console.log('sprite world pos:', sprite.world)*/
+
+    if (this.isGameLost()) {
+      this._addSkullInCurrentRoom()
+    } else if (this.currentRoom.isDangerous()) {
+      // Warning sign (it will desapear)
+      var warnSign = this.game.add.sprite(this.currentRoom.centerX, this.currentRoom.centerY, 'warning');
+      warnSign.scale.setTo(0.3);
+      warnSign.anchor.setTo(0.5);
+      warnSign.alpha = 0.5;
+      game.add.tween(warnSign).to({alpha: 0}, 2000, "Linear", true);
+      // shuffle the arrows and put them in RED
+      this.cursor.randomizeMovements()
+      this.deadTimer.launch()
+    } else {
+      // reset arrows order and color
+      this.cursor.resetOriginalMovements();
     }
   }
 
   _addSkullInCurrentRoom() {
     // Skull sign (it will disappear)
-    var skullSign = this.game.add.sprite(this.currentRoom.centerX, this.currentRoom.centerY, this.selectOneInArray(['skull1','skull2','skull3']), Math.floor(Math.random() * 12));
+    var skullSign = this.game.add.sprite(this.currentRoom.centerX, this.currentRoom.centerY, this.selectOneInArray(['skull1', 'skull2', 'skull3']), Math.floor(Math.random() * 12));
     skullSign.scale.setTo(0.5);
     skullSign.anchor.setTo(0.5);
     skullSign.alpha = 0.5;
@@ -127,11 +132,6 @@ export default class GameLevel extends Phaser.State {
     //game.camera.position = ...
     //game.camera.focusOnXY(200, 200)
     //game.camera.focusOn(this.cursor)
-
-    if (this.scrollMsg.x === 0 && this.scrollMsg.y === 0) {
-      // First scroll apparition, must be done after the sprites world positions have been updated
-      this.scrollMsg.moveTo(this.currentRoom)
-    }
 
     if (this.isGameWon()) { // end cell
       this.onGameWon();
@@ -267,19 +267,29 @@ export default class GameLevel extends Phaser.State {
     levelNumber.anchor.setTo(0.5);
   }
 
-  makePrisonCell(nbAllies, nbBaddies, withNelly=false) {
+  makePrisonCell({nbAllies = 0, nbBaddies = 0, sideMetalBars, sideWalls, exits, withNelly = false, endWindow}) {
     const room = new PrisonCell(this.getRoomWidthInPx(), this.getRoomHeightInPx())
 
+    if (sideMetalBars) {
+      room.addSideMetalBars(...sideMetalBars)
+    }
+    if (sideWalls) {
+      room.addSideWalls(...sideWalls)
+    }
+    if (exits) {
+      room.addExits(...exits)
+    }
+
     let allPossibilities = [
-      [1,1],[1,2],[1,3],[1,4],[1,5],
-      [2,1],[2,2],[2,3],[2,4],[2,5],
-      [3,1],[3,2],[3,4],[3,5],
-      [4,1],[4,2],[4,3],[4,4],[4,5],
-      [5,1],[5,2],[5,3],[5,4],[5,5]
+      [1, 1], [1, 2], [1, 3], [1, 4], [1, 5],
+      [2, 1], [2, 2], [2, 3], [2, 4], [2, 5],
+      [3, 1], [3, 2], [3, 4], [3, 5],
+      [4, 1], [4, 2], [4, 3], [4, 4], [4, 5],
+      [5, 1], [5, 2], [5, 3], [5, 4], [5, 5]
     ];
 
     if (!withNelly) {
-      allPossibilities.push([3,3]);
+      allPossibilities.push([3, 3]);
     }
 
     let randomPossibilities = this.shuffle(allPossibilities);
@@ -287,37 +297,41 @@ export default class GameLevel extends Phaser.State {
 
     // NELLY
     if (withNelly) {
-      room.addNellaMandelson(3, 3);
-    }
-
-    // ALLIES
-    for (var ally=0; ally<nbAllies; ally++) {
-      let coord = randomPossibilities[index];
-      index = index+1
-      room.addAlly(coord[0], coord[1]);
-    }
-
-    // BADDIES
-    for (var bad=0; bad<nbBaddies; bad++) {
-      let coord = randomPossibilities[index];
-      index = index+1
-      room.addBaddy(coord[0], coord[1]);
+      this.nellaMandelson = room.addNellaMandelson(3, 3);
     }
 
     // FURNITURES
     let nbFurnitures = Math.floor(Math.random() * 4) + 1;
-    for (var fur=0; fur<nbFurnitures; fur++) {
+    for (var fur = 0; fur < nbFurnitures; fur++) {
       let coord = randomPossibilities[index];
-      index = index+1
+      index = index + 1
       room.addFurniture(coord[0], coord[1]);
     }
 
     // DECO
     let nbDeco = Math.floor(Math.random() * 6) + 2;
-    for (var dec=0; dec<nbDeco; dec++) {
+    for (var dec = 0; dec < nbDeco; dec++) {
       let coord = randomPossibilities[index];
-      index = index+1
+      index = index + 1
       room.addDecoCell(coord[0], coord[1]);
+    }
+
+    // ALLIES
+    for (var ally = 0; ally < nbAllies; ally++) {
+      let coord = randomPossibilities[index];
+      index = index + 1
+      room.addAlly(coord[0], coord[1]);
+    }
+
+    // BADDIES
+    for (var bad = 0; bad < nbBaddies; bad++) {
+      let coord = randomPossibilities[index];
+      index = index + 1
+      room.addBaddy(coord[0], coord[1]);
+    }
+
+    if (endWindow) {
+      room.addEndWindow(...endWindow)
     }
 
     return room
@@ -338,11 +352,11 @@ export default class GameLevel extends Phaser.State {
     const room = new PrisonCorridor(this.getRoomWidthInPx(), this.getRoomHeightInPx())
 
     let allPossibilities = [
-      [1,1],[1,2],[1,3],[1,4],[1,5],
-      [2,1],[2,2],[2,3],[2,4],[2,5],
-      [3,1],[3,2],[3,3],[3,4],[3,5],
-      [4,1],[4,2],[4,3],[4,4],[4,5],
-      [5,1],[5,2],[5,3],[5,4],[5,5]
+      [1, 1], [1, 2], [1, 3], [1, 4], [1, 5],
+      [2, 1], [2, 2], [2, 3], [2, 4], [2, 5],
+      [3, 1], [3, 2], [3, 3], [3, 4], [3, 5],
+      [4, 1], [4, 2], [4, 3], [4, 4], [4, 5],
+      [5, 1], [5, 2], [5, 3], [5, 4], [5, 5]
     ];
 
     let randomPossibilities = this.shuffle(allPossibilities);
@@ -352,15 +366,15 @@ export default class GameLevel extends Phaser.State {
     let nbGuards = Math.floor(Math.random() * 3) + 1; // 1 to 4 guards
     for (var i = 0; i < nbGuards; i++) {
       let coord = randomPossibilities[index];
-      index = index+1
+      index = index + 1
       room.addGuard(coord[0], coord[1]);
     }
 
     // DECO
     let nbDeco = Math.floor(Math.random() * 6) + 2;
-    for (var dec=0; dec<nbDeco; dec++) {
+    for (var dec = 0; dec < nbDeco; dec++) {
       let coord = randomPossibilities[index];
-      index = index+1
+      index = index + 1
       room.addDecoCorridor(coord[0], coord[1]);
     }
 
