@@ -8,6 +8,7 @@ import DIRECTION from "../const/Direction";
 import Frame from "../const/Frame";
 
 export default class GameLevel extends Phaser.State {
+
   init() {
     this.roomsPerLevelSide = 5 // Can be overriden per level
   }
@@ -177,5 +178,18 @@ export default class GameLevel extends Phaser.State {
 
   selectOneInArray(array) {
     return array[Math.floor(Math.random() * array.length)];
+  }
+
+  setLevelNumber(number) {
+    let levelNumber = this.add.text(70, this.game.height / 2, 'LVL\n' + number + ' ', {
+      font: '60px Bangers',
+      fill: '#D86785',
+      smoothed: false,
+      stroke: '#000000',
+      strokeThickness: 8,
+      align: 'center'
+    });
+    levelNumber.lineSpacing = -15;
+    levelNumber.anchor.setTo(0.5);
   }
 }

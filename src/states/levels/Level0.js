@@ -11,6 +11,7 @@ export default class extends GameLevel {
 
   preload() {
     super.preload()
+    super.setLevelNumber(0)
     this.nextLevel = 'Level1'
 
     // Starting room:
