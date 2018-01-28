@@ -32,6 +32,7 @@ export default class extends Phaser.State {
     game.load.audio('medievalPrison', ['assets/audio/medieval_prison.mp3']);
     game.load.audio('move1', ['assets/audio/move_1.mp3']);
     game.load.audio('move2', ['assets/audio/move_2.mp3']);
+    game.load.audio('clock', ['assets/audio/clock.ogg']);
   }
 
   create() {

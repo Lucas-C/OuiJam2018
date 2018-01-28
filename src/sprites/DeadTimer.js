@@ -9,10 +9,13 @@ export default class DeadTimer {
     this.remainingSecondsTxt;
     this.onTimerEnd = onTimerEnd;
     this.isEnded = false;
+    this.music;
   }
 
   launch() {
     console.log('Start dead timer');
+    this.music = this.game.add.audio('clock');
+    this.music.play();
     this.remainingTime = config.deadTimerInSeconds;
     this._drawInfo();
     this.id = setInterval(() => this._decreaseTime(), 1000);
@@ -31,6 +34,9 @@ export default class DeadTimer {
 
   stop() {
     console.log('Stop dead timer');
+    if (this.music) {
+      this.music.stop();
+    }
     this._clearInfo();
     clearInterval(this.id);
   }
