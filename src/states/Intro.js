@@ -21,11 +21,11 @@ export default class extends Phaser.State {
     this.load.spritesheet('roguelikeDungeon', './assets/images/roguelikeDungeon_transparent.png', 16, 16, /*frameMax=*/521, /*margin=*/0, /*space=*/1)
     this.load.spritesheet('roguelikeIndoor', './assets/images/roguelikeIndoor_transparent.png', 16, 16, /*frameMax=*/503, /*margin=*/0, /*space=*/1)
     this.load.spritesheet('roguelikeSheet', './assets/images/roguelikeSheet_transparent.png', 16, 16, /*frameMax=*/1824, /*margin=*/0, /*space=*/1)
-    this.load.image('portraitNM1', './assets/images/nm1.png', 32, 32);
-    this.load.image('portraitNM2', './assets/images/nm2.png', 32, 32);
+    this.load.spritesheet('skull', './assets/images/skullemoji-800px.png', 173, 231, /*frameMax=*/12, /*margin=*/0, /*space=*/36) // Should be 36 horizontally and 89 vertically :(
+
+    this.load.image('portraitNellaMandelson', './assets/images/NellaMandelson2.png', 32, 32);
     this.load.image('line', './assets/images/line.png', 600, 2);
     this.load.image('warning', './assets/images/warning.png', 128, 128);
-    this.load.image('skull', './assets/images/skull.png', 128, 128);
 
     game.load.audio('medievalPrison', ['assets/audio/medieval_prison.mp3']);
     game.load.audio('move1', ['assets/audio/move_1.mp3']);

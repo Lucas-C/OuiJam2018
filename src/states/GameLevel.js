@@ -39,15 +39,7 @@ export default class GameLevel extends Phaser.State {
     this.cursor = new Cursor(this.getRoomWidthInPx(), this.getRoomHeightInPx(), this.rootGroup)
     game.add.existing(this.cursor)
 
-
-    this.dialogPicture = this.add.sprite(60, 60, this.selectOneInArray(['portraitNM1', 'portraitNM2']));
-    this.dialogPicture.scale.setTo(2.5);
-    this.dialogPicture.anchor.setTo(0.5);
-
-    this.dialogLine = this.add.sprite(90, 90, 'line');
-    this.dialogLine.scale.setTo(1);
-
-    this.dialogFrame = this._createDialogFrame()
+    this._createDialogFrame()
 
     const cursorKeys = game.input.keyboard.createCursorKeys()
     cursorKeys.left.onDown.add(() => this.moveCursor(DIRECTION.LEFT))
@@ -65,9 +57,10 @@ export default class GameLevel extends Phaser.State {
 
   moveCursor(inputDirection) {
     if (this.dialogFrame.visible) {
-      this.dialogFrame.visible = false
-      this.dialogPicture.visible = false
-      this.dialogLine.visible = false
+      this._hideMessage()
+      if (this.isGameWon() || this.isGameLost()) {
+        return
+      }
     }
     const wantedMovement = this.cursor.getMovementByName(inputDirection);
     const direction = wantedMovement.directionName;
@@ -93,8 +86,8 @@ export default class GameLevel extends Phaser.State {
        console.log('sprite world pos:', sprite.world)*/
 
       if (this.currentRoom.isDoomed()) {
-        // Skull sign (it will desapear)
-        var skullSign = this.game.add.sprite(this.currentRoom.centerX, this.currentRoom.centerY, 'skull');
+        // Skull sign (it will disappear)
+        var skullSign = this.game.add.sprite(this.currentRoom.centerX, this.currentRoom.centerY, 'skull', Math.floor(Math.random() * 12));
         skullSign.scale.setTo(0.8);
         skullSign.anchor.setTo(0.5);
         skullSign.alpha = 0.7;
@@ -135,14 +128,14 @@ export default class GameLevel extends Phaser.State {
 
     const successMsg = 'Good job !'
     const failureMsg = "It's all lost !\nThe message bearer has been backstabbed by a fascist"
-    if (this.currentRoom.windowSprite) {
+    if (this.isGameWon()) { // end cell
       if (!this.dialogFrame.visible && this.dialogFrame.text === successMsg) {
         this.cursor.resetOriginalMovements();
         this.state.start(this.nextLevel)
       } else {
         this.displayMessage(successMsg)
       }
-    } else if (this.currentRoom.baddies.length > this.currentRoom.allies.length) {
+    } else if (this.isGameLost()) {
       if (!this.dialogFrame.visible && this.dialogFrame.text === failureMsg) {
         this.cursor.resetOriginalMovements();
         this.state.start('Level0')
@@ -152,23 +145,42 @@ export default class GameLevel extends Phaser.State {
     }
   }
 
+  isGameWon() {
+    return this.currentRoom.windowSprite // end cell
+  }
+
+  isGameLost() {
+    return this.currentRoom.baddies.length > this.currentRoom.allies.length
+  }
+
   _createDialogFrame() {
-    const dialogFrame = this.add.text((config.gameWidth / 2) + 40, config.gameHeight * .08, '', {
+    this.dialogFrame = this.add.text(config.gameWidth * .65, config.gameHeight * .08, '', {
       font: '36px VT323',
       fill: '#427a64',
       smoothed: false,
-      align: "center",
+      align: 'center',
     })
-    dialogFrame.lineSpacing = 0
-    dialogFrame.anchor.setTo(0.5)
-    dialogFrame.visible = false
+    this.dialogFrame.scale.setTo(.9)
+    this.dialogFrame.anchor.setTo(0.6)
+
+    this.dialogPicture = this.add.sprite(config.gameWidth * .1, config.gameHeight * .1, 'portraitNellaMandelson');
+    this.dialogPicture.scale.setTo(1.8);
+    this.dialogPicture.anchor.setTo(0.5);
+
+    this.dialogLine = this.add.sprite(config.gameWidth * .2, config.gameHeight * .1, 'line');
+    //this.dialogLine.scale.setTo(1);
+
+    this._hideMessage()
 
     this.game.input.keyboard.onPressCallback = () => {
-      dialogFrame.visible = false
-      this.dialogPicture.visible = false
-      this.dialogLine.visible = false
+      this._hideMessage()
     }
-    return dialogFrame
+  }
+
+  _hideMessage() {
+    this.dialogFrame.visible = false
+    this.dialogPicture.visible = false
+    this.dialogLine.visible = false
   }
 
   displayMessage(msg) {
