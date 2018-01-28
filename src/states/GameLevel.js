@@ -155,7 +155,7 @@ export default class GameLevel extends Phaser.State {
   }
 
   isGameLost() {
-    return this.currentRoom.baddies.length > this.currentRoom.allies.length || this.deadTimer.isEnded;
+    return this.currentRoom.baddies().length > this.currentRoom.allies().length || this.deadTimer.isEnded;
   }
 
   onGameLost() {
