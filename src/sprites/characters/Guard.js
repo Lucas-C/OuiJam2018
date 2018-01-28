@@ -1,17 +1,7 @@
-import Phaser from 'phaser'
+import Character from './Character'
 
-import config from '../../config'
-
-export default class extends Phaser.Sprite {
-  constructor ({ game, x, y }) {
-    super(game, x, y, 'roguelikeChar', 433)
-    if (!this.animations.frameData || this.animations.frameData.total <= 1) {
-        throw new Error('Failure parsing spritesheet')
-    }
-    this.scale.setTo(config.characterSpriteScale)
-    this.anchor.setTo(0.5)
-  }
-
-  update () {
+export default class extends Character {
+  constructor({ x, y, frames, room }) {
+    super({x, y, spriteSheet:'roguelikeChar', frames, room, isAlly: false, name: 'Guard'})
   }
 }

@@ -1,6 +1,7 @@
 import Phaser from "phaser-ce/build/custom/phaser-split";
-import RoomGrid from "../../grid/RoomGrid";
 import config from "../../config";
+import RoomGrid from "../../grid/RoomGrid";
+import Inmate from "../../sprites/characters/Inmate";
 import DIRECTION from "../../const/Direction";
 import FRAME from "../../const/Frame";
 
@@ -12,23 +13,34 @@ export default class BaseRoom extends Phaser.Group {
     this.grid = new RoomGrid(config.cellsPerRoomSide, roomWidth, roomHeight)
     //this.grid.showForDebug()
     this.exits = [Object.values(DIRECTION)]
-    this.allies = []
-    this.baddies = []
+    this.characters = []
     this.windowSprite = null
     this.groundTilesIndices = null; // Must be set by child classes
   }
 
-  isDangerous() {
-    return this.baddies.length > 0;
+  allies() {
+    return this.characters.filter(c => c.isAlly)
   }
 
-  isDoomed() {
-    return this.baddies.length > this.allies.length;
+  baddies() {
+    return this.characters.filter(c => !c.isAlly)
+  }
+
+  isDangerous() {
+    return this.baddies().length > 0;
   }
 
   /**********
    * Setters
    *********/
+  setUniformBackground(color) {
+    this.background = game.add.graphics(0, 0)
+    this.add(this.background)
+    this.background.beginFill(color)
+    this.background.drawRect(0, 0, this.roomWidth, this.roomHeight)
+    this.background.endFill()
+  }
+
   setGroundTiles() {
     /*
     // Corners:
@@ -58,9 +70,9 @@ export default class BaseRoom extends Phaser.Group {
   }
 
   addNellaMandelson(x, y) {
-    const sprite = this.create(0, 0, 'roguelikeChar', FRAME.NELLA_MANDELSON) // the pretty one
-    this.grid.placeAt(x, y, sprite)
-    this.allies.push(sprite)
+    const character = new Inmate({frames: [FRAME.NELLA_MANDELSON], isAlly: true, room: this})
+    this.grid.placeAt(x, y, character)
+    this.characters.push(character)
     return this
   }
 
@@ -72,18 +84,21 @@ export default class BaseRoom extends Phaser.Group {
   }
 
   addAlly(x, y) {
-    const sprite = this.create(0, 0, 'roguelikeChar', this.selectOneInArray([0, 1])) // base
-    this.grid.placeAt(x, y, sprite)
-    this.grid.placeAt(x, y, this.create(0, 0, 'roguelikeChar', this.selectOneInArray([10, 14, 327, 381])), -1, 1); // clothes
-    this.grid.placeAt(x, y, this.create(0, 0, 'roguelikeChar', this.selectOneInArray([19, 21])), -1, 1); // hair
-    this.allies.push(sprite)
+    const frames = [
+      this.selectOneInArray([0, 1]), // bases
+      this.selectOneInArray([10, 14, 327, 381]), // clothes
+      this.selectOneInArray([19, 21]) // hair
+    ]
+    const character = new Inmate({frames: frames, isAlly: true, room: this})
+    this.grid.placeAt(x, y, character)
+    this.characters.push(character)
     return this
   }
 
   addBaddy(x, y) {
-    const sprite = this.create(0, 0, 'roguelikeChar', this.selectOneInArray(FRAME.BADDIES)) // all in one
-    this.grid.placeAt(x, y, sprite)
-    this.baddies.push(sprite)
+    const character = new Inmate({frames: [this.selectOneInArray(FRAME.BADDIES)], isAlly: false, room: this})
+    this.grid.placeAt(x, y, character)
+    this.characters.push(character)
     return this
   }
 

@@ -6,7 +6,6 @@ export default class PrisonCell extends BaseRoom {
 
   constructor(roomWidth, roomHeight) {
     super(roomWidth, roomHeight)
-    this.groundTilesIndices = Frame.FLOOR_CELL_BASIC;
-    this.setGroundTiles()
+    this.setUniformBackground(0xCCCCCC)
   }
 }

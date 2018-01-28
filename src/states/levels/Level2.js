@@ -1,8 +1,5 @@
 import GameLevel from '../GameLevel'
-import PrisonCell from "../../sprites/rooms/PrisonCell";
-import Guard from '../../sprites/characters/Guard'
 import DIRECTION from "../../const/Direction";
-import PrisonCorridor from "../../sprites/rooms/PrisonCorridor";
 
 export default class extends GameLevel {
 

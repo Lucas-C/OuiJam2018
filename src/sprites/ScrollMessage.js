@@ -9,23 +9,24 @@ export default class extends Phaser.Sprite {
   }
 
   moveTo(newRoom) {
-    if (newRoom.allies[0]) {
-      const destX = newRoom.allies[0].world.x + 0.04 * newRoom.roomWidth
-      const destY = newRoom.allies[0].world.y + 0.04 * newRoom.roomHeight
-      const transmissionTween = game.add.tween(this).to({x: destX, y: destY},
-        /*duration=*/500, /*ease=*/Phaser.Easing.Cubic.InOut)
-      transmissionTween.onComplete.add(() => this.visible = true) // so that we don't see Nella receive it
-      if (newRoom.windowSprite) {
-        const finalDestX = destX + (newRoom.windowSprite.world.x - destX) * 100
-        const finalDestY = destY + (newRoom.windowSprite.world.y - destY) * 100
-        transmissionTween.chain(game.add.tween(this).to({x: finalDestX, y: finalDestY},
-          /*duration=*/1500, /*ease=*/Phaser.Easing.Cubic.InOut))
-      }
-      transmissionTween.start()
-      var moveSound = game.add.audio(this.selectOneInArray(['move1','move2']));
-      moveSound.volume += - 0.9;
-      moveSound.play();
+    if (!newRoom.allies()[0]) {
+      return
     }
+    const destX = newRoom.allies()[0].worldPosition.x + 0.04 * newRoom.roomWidth
+    const destY = newRoom.allies()[0].worldPosition.y + 0.04 * newRoom.roomHeight
+    const transmissionTween = game.add.tween(this).to({x: destX, y: destY},
+      /*duration=*/500, /*ease=*/Phaser.Easing.Cubic.InOut)
+    transmissionTween.onComplete.add(() => this.visible = true) // so that we don't see Nella receive it
+    if (newRoom.windowSprite) {
+      const finalDestX = destX + (newRoom.windowSprite.world.x - destX) * 100
+      const finalDestY = destY + (newRoom.windowSprite.world.y - destY) * 100
+      transmissionTween.chain(game.add.tween(this).to({x: finalDestX, y: finalDestY},
+        /*duration=*/1500, /*ease=*/Phaser.Easing.Cubic.InOut))
+    }
+    transmissionTween.start()
+    var moveSound = game.add.audio(this.selectOneInArray(['move1', 'move2']));
+    moveSound.volume += -0.9;
+    moveSound.play();
   }
 
   selectOneInArray(array) {

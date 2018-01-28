@@ -84,7 +84,7 @@ export default class GameLevel extends Phaser.State {
        const sprite = this.levelGrid.rooms[0][0].topLeftCorner
        console.log('sprite world pos:', sprite.world)*/
 
-      if (this.currentRoom.isDoomed()) {
+      if (this.isGameLost()) {
         // Skull sign (it will disappear)
         var skullSign = this.game.add.sprite(this.currentRoom.centerX, this.currentRoom.centerY, this.selectOneInArray(['skull1','skull2','skull3']), Math.floor(Math.random() * 12));
         skullSign.scale.setTo(0.5);
@@ -151,7 +151,7 @@ export default class GameLevel extends Phaser.State {
   }
 
   isGameLost() {
-    return this.currentRoom.baddies.length > this.currentRoom.allies.length
+    return this.currentRoom.baddies().length > this.currentRoom.allies().length
   }
 
   _createDialogFrame() {
