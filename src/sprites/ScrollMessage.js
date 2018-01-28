@@ -23,6 +23,7 @@ export default class extends Phaser.Sprite {
       }
       transmissionTween.start()
       var moveSound = game.add.audio(this.selectOneInArray(['move1','move2']));
+      moveSound.volume += - 0.9;
       moveSound.play();
     }
   }
