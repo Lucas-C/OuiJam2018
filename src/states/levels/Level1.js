@@ -13,7 +13,7 @@ export default class extends GameLevel {
 
   preload() {
     super.preload()
-    super.setLevelNumber(1)
+    super.setLevelNumber(2)
     this.nextLevel = 'Level2'
 
     this.currentRoom = this.createStartCell()
@@ -29,16 +29,9 @@ export default class extends GameLevel {
     this.levelGrid.addRoom(3, 2, this.createMiddleCell_3())
     this.levelGrid.addRoom(3, 3, this.createBottomCell_3())
 
-    this.levelGrid.addRoom(4, 1, this.createTopCell_4())
+    this.levelGrid.addRoom(4, 1, this.createTopCell_4()) // exiting room
     this.levelGrid.addRoom(4, 2, this.createMiddleCell_4())
     this.levelGrid.addRoom(4, 3, this.createCorridor()).addSideWalls(DIRECTION.RIGHT, DIRECTION.DOWN)
-
-    // this.guard = new Guard({
-    //   game: this.game,
-    //   x: this.world.centerX,
-    //   y: this.world.centerY
-    // })
-    // this.game.add.existing(this.guard)
   }
 
   createStartCell() {
@@ -170,8 +163,10 @@ export default class extends GameLevel {
     room.addSideWalls(DIRECTION.UP, DIRECTION.RIGHT)
     room.addExits(DIRECTION.DOWN)
     room
+      .addAlly(3, 1)
       .addFurniture(2, 2)
       .addFurniture(5, 1)
+    room.addEndWindow(3, 0)
     return room
   }
 
@@ -192,7 +187,6 @@ export default class extends GameLevel {
 
   update() {
     super.update()
-    //this.guard.update()
   }
 
   createCorridor() {

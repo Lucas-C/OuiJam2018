@@ -7,6 +7,7 @@ import BootState from './states/Boot'
 import IntroState from './states/Intro'
 import Level0 from './states/levels/Level0'
 import Level1 from './states/levels/Level1'
+import Level2 from './states/levels/Level2'
 
 class Game extends Phaser.Game {
   constructor () {
@@ -19,6 +20,7 @@ class Game extends Phaser.Game {
     this.state.add('Intro', IntroState, false)
     this.state.add('Level0', Level0, false)
     this.state.add('Level1', Level1, false)
+    this.state.add('Level2', Level2, false)
 
     // with Cordova with need to wait that the device is ready so we will call the Boot state in another file
     if (!window.cordova) {
