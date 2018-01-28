@@ -6,6 +6,11 @@ import PrisonCorridor from "../../sprites/rooms/PrisonCorridor";
 
 export default class extends GameLevel {
 
+  init() {
+    super.init()
+    this.roomsPerLevelSide = 6
+  }
+
   preload() {
     super.preload()
     super.setLevelNumber(1)
