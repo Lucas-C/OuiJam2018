@@ -31,6 +31,12 @@ const FRAME = {
   ARROW_BLUE_MED_LEFT: 1707,
   ARROW_BLUE_MED_RIGHT: 1708,
 
+  // Fleches rouges
+  ARROW_RED_BIG_LEFT: 1648,
+  ARROW_RED_BIG_RIGHT: 1649,
+  ARROW_RED_MED_LEFT: 1705,
+  ARROW_RED_MED_RIGHT: 1706,
+
   // Chaise type 1 (assise rouge, bord carré)
   CHAIR_FRONT_1: 133,
   CHAIR_SIDE_LEFT_1: 135,

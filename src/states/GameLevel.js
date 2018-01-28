@@ -5,6 +5,7 @@ import Cursor from '../sprites/Cursor'
 import ScrollMessage from '../sprites/ScrollMessage'
 import LevelGrid from "../grid/LevelGrid";
 import DIRECTION from "../const/Direction";
+import Frame from "../const/Frame";
 
 export default class GameLevel extends Phaser.State {
   init() {
@@ -87,7 +88,23 @@ export default class GameLevel extends Phaser.State {
       /*console.log('levelGrid 1st room world pos:', this.levelGrid.rooms[0][0].position)
        const sprite = this.levelGrid.rooms[0][0].topLeftCorner
        console.log('sprite world pos:', sprite.world)*/
-      this.currentRoom.isDangerous() ? this.cursor.randomizeMovements() : this.cursor.resetOriginalMovements();
+
+      if (this.currentRoom.isDangerous()) {
+        // Warning sign (it will desapear)
+        var warnSign = this.game.add.sprite(this.currentRoom.centerX, this.currentRoom.centerY, 'warning');
+        warnSign.scale.setTo(0.8);
+        warnSign.anchor.setTo(0.5);
+        warnSign.alpha = 0.3;
+        game.add.tween(warnSign).to({alpha: 0}, 2000, "Linear", true);
+
+        // shuffle the arrows and put them in RED
+        this.cursor.randomizeMovements();
+
+      } else {
+        // reset arrows order and color
+        this.cursor.resetOriginalMovements();
+      }
+
     } else {
       console.log('Cannot move from', [srcX, srcY], 'to', [dstX, dstY])
     }

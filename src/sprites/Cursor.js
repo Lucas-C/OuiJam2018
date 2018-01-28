@@ -53,10 +53,10 @@ export default class Cursor extends Phaser.Group {
     this.currentMovements.DOWN = this._cloneObject(Cursor.ORIGINAL_MOVEMENT[shuffledMovements[2]]);
     this.currentMovements.LEFT = this._cloneObject(Cursor.ORIGINAL_MOVEMENT[shuffledMovements[3]]);
 
-    this.currentMovements[shuffledMovements[0]].icon = Cursor.ICON_MOVEMENT.UP;
-    this.currentMovements[shuffledMovements[1]].icon = Cursor.ICON_MOVEMENT.RIGHT;
-    this.currentMovements[shuffledMovements[2]].icon = Cursor.ICON_MOVEMENT.DOWN;
-    this.currentMovements[shuffledMovements[3]].icon = Cursor.ICON_MOVEMENT.LEFT;
+    this.currentMovements[shuffledMovements[0]].icon = Cursor.ICON_MOVEMENT_PANIK.UP;
+    this.currentMovements[shuffledMovements[1]].icon = Cursor.ICON_MOVEMENT_PANIK.RIGHT;
+    this.currentMovements[shuffledMovements[2]].icon = Cursor.ICON_MOVEMENT_PANIK.DOWN;
+    this.currentMovements[shuffledMovements[3]].icon = Cursor.ICON_MOVEMENT_PANIK.LEFT;
     this._reDraw();
   }
 
@@ -110,6 +110,29 @@ Cursor.ICON_MOVEMENT = {
   DOWN: {
     directionName: DIRECTION.DOWN,
     iconFrame: FRAME.ARROW_BLUE_BIG_RIGHT,
+    iconRotation: 90
+  }
+}
+
+Cursor.ICON_MOVEMENT_PANIK = {
+  LEFT: {
+    directionName: DIRECTION.LEFT,
+    iconFrame: FRAME.ARROW_RED_BIG_LEFT,
+    iconRotation: 0
+  },
+  RIGHT: {
+    directionName: DIRECTION.RIGHT,
+    iconFrame: FRAME.ARROW_RED_BIG_RIGHT,
+    iconRotation: 0
+  },
+  UP: {
+    directionName: DIRECTION.UP,
+    iconFrame: FRAME.ARROW_RED_BIG_LEFT,
+    iconRotation: 90
+  },
+  DOWN: {
+    directionName: DIRECTION.DOWN,
+    iconFrame: FRAME.ARROW_RED_BIG_RIGHT,
     iconRotation: 90
   }
 }
