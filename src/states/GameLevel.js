@@ -7,11 +7,13 @@ import LevelGrid from "../grid/LevelGrid";
 import DIRECTION from "../const/Direction";
 import PrisonCell from "../sprites/rooms/PrisonCell";
 import PrisonCorridor from "../sprites/rooms/PrisonCorridor";
+import DeadTimer from "../sprites/DeadTimer";
 
 export default class GameLevel extends Phaser.State {
 
   init() {
     this.roomsPerLevelSide = 5 // Can be overriden per level
+    this.deadTimer = new DeadTimer(this.game, this, () => {this._addSkullInCurrentRoom(); });
   }
 
   getRoomWidthInPx() {
@@ -77,7 +79,8 @@ export default class GameLevel extends Phaser.State {
         return
       }
       this.currentRoom = newRoom;
-      this.scrollMsg.moveTo(newRoom)
+      this.scrollMsg.moveTo(newRoom);
+      this.deadTimer.stop();
       console.log('Moved from', [srcX, srcY], 'to', [dstX, dstY])
       console.log('New room pos:', this.currentRoom.position)
       /*console.log('levelGrid 1st room world pos:', this.levelGrid.rooms[0][0].position)
@@ -85,14 +88,7 @@ export default class GameLevel extends Phaser.State {
        console.log('sprite world pos:', sprite.world)*/
 
       if (this.isGameLost()) {
-        // Skull sign (it will disappear)
-        var skullSign = this.game.add.sprite(this.currentRoom.centerX, this.currentRoom.centerY, this.selectOneInArray(['skull1','skull2','skull3']), Math.floor(Math.random() * 12));
-        skullSign.scale.setTo(0.5);
-        skullSign.anchor.setTo(0.5);
-        skullSign.alpha = 0.5;
-
-        this.cursor.kill();
-
+        this._addSkullInCurrentRoom();
       } else if (this.currentRoom.isDangerous()) {
         // Warning sign (it will desapear)
         var warnSign = this.game.add.sprite(this.currentRoom.centerX, this.currentRoom.centerY, 'warning');
@@ -103,7 +99,7 @@ export default class GameLevel extends Phaser.State {
 
         // shuffle the arrows and put them in RED
         this.cursor.randomizeMovements();
-
+        this.deadTimer.launch();
       } else {
         // reset arrows order and color
         this.cursor.resetOriginalMovements();
@@ -112,6 +108,16 @@ export default class GameLevel extends Phaser.State {
     } else {
       console.log('Cannot move from', [srcX, srcY], 'to', [dstX, dstY])
     }
+  }
+
+  _addSkullInCurrentRoom() {
+    // Skull sign (it will disappear)
+    var skullSign = this.game.add.sprite(this.currentRoom.centerX, this.currentRoom.centerY, this.selectOneInArray(['skull1','skull2','skull3']), Math.floor(Math.random() * 12));
+    skullSign.scale.setTo(0.5);
+    skullSign.anchor.setTo(0.5);
+    skullSign.alpha = 0.5;
+
+    this.cursor.kill();
   }
 
   update() {
@@ -127,22 +133,38 @@ export default class GameLevel extends Phaser.State {
       this.scrollMsg.moveTo(this.currentRoom)
     }
 
-    const successMsg = 'Good job !'
-    const failureMsg = "It's all lost !\nThe message has been stolen by a fascist"
     if (this.isGameWon()) { // end cell
-      if (!this.dialogFrame.visible && this.dialogFrame.text === successMsg) {
-        this.cursor.resetOriginalMovements();
-        this.state.start(this.nextLevel)
-      } else {
-        this.displayMessage(successMsg)
-      }
+      this.onGameWon();
     } else if (this.isGameLost()) {
-      if (!this.dialogFrame.visible && this.dialogFrame.text === failureMsg) {
-        this.cursor.resetOriginalMovements();
-        this.state.start('Level0')
-      } else {
-        this.displayMessage(failureMsg)
-      }
+      this.onGameLost();
+    }
+  }
+
+  isGameWon() {
+    return this.currentRoom.windowSprite // end cell
+  }
+
+  onGameWon() {
+    const successMsg = 'Good job !';
+    if (!this.dialogFrame.visible && this.dialogFrame.text === successMsg) {
+      this.cursor.resetOriginalMovements();
+      this.state.start(this.nextLevel)
+    } else {
+      this.displayMessage(successMsg)
+    }
+  }
+
+  isGameLost() {
+    return this.currentRoom.baddies.length > this.currentRoom.allies.length || this.deadTimer.isEnded;
+  }
+
+  onGameLost() {
+    const failureMsg = "It's all lost !\nThe message has been stolen by a fascist";
+    if (!this.dialogFrame.visible && this.dialogFrame.text === failureMsg) {
+      this.cursor.resetOriginalMovements();
+      this.state.start('Level0')
+    } else {
+      this.displayMessage(failureMsg)
     }
   }
 
