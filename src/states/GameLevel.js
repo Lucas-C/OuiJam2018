@@ -4,8 +4,9 @@ import config from '../config'
 import Cursor from '../sprites/Cursor'
 import ScrollMessage from '../sprites/ScrollMessage'
 import LevelGrid from "../grid/LevelGrid";
+import DIRECTION from "../const/Direction";
 
-export default class extends Phaser.State {
+export default class GameLevel extends Phaser.State {
   init() {
     this.roomsPerLevelSide = 5 // Can be overriden per level
   }
@@ -37,10 +38,10 @@ export default class extends Phaser.State {
     this.dialogFrame = this._createDialogFrame()
 
     const cursorKeys = game.input.keyboard.createCursorKeys()
-    cursorKeys.left.onDown.add(() => this.moveCursor('left', -1, 0))
-    cursorKeys.right.onDown.add(() => this.moveCursor('right', 1, 0))
-    cursorKeys.up.onDown.add(() => this.moveCursor('up', 0, -1))
-    cursorKeys.down.onDown.add(() => this.moveCursor('down', 0, 1))
+    cursorKeys.left.onDown.add(() => this.moveCursor(DIRECTION.LEFT))
+    cursorKeys.right.onDown.add(() => this.moveCursor(DIRECTION.RIGHT))
+    cursorKeys.up.onDown.add(() => this.moveCursor(DIRECTION.UP))
+    cursorKeys.down.onDown.add(() => this.moveCursor(DIRECTION.DOWN))
 
     this.scrollMsg = new ScrollMessage()
     game.add.existing(this.scrollMsg)
@@ -50,30 +51,34 @@ export default class extends Phaser.State {
     }
   }
 
-  moveCursor(direction, deltaX, deltaY) {
+  moveCursor(inputDirection) {
     if (this.dialogFrame.visible) {
+        console.log(`Input direction ${inputDirection}. Want to go ${direction}.`);
       this.dialogFrame.visible = false
       return
     }
+    const direction = wantedMovement.directionName;
+    console.log(`Input direction ${inputDirection}. Want to go ${direction}.`);
     if (!this.currentRoom.exits.includes(direction)) {
       console.log('Cannot go ' + direction + ' in current room')
       return
     }
     const [srcX, srcY] = [this.currentRoom.gridPosX, this.currentRoom.gridPosY]
-    const [dstX, dstY] = [srcX + deltaX, srcY + deltaY]
+    const [dstX, dstY] = [srcX + wantedMovement.deltaX, srcY + wantedMovement.deltaY]
     const newRoom = this.levelGrid.roomAtPos(dstX, dstY)
     if (newRoom) {
       if (newRoom.onEnterPrecondition && newRoom.onEnterPrecondition() === false) {
         console.log('newRoom.onEnterPrecondition exists and returned false => not entering it')
         return
       }
-      this.currentRoom = newRoom
+      this.currentRoom = newRoom;
       this.scrollMsg.moveTo(newRoom)
       console.log('Moved from', [srcX, srcY], 'to', [dstX, dstY])
       console.log('New room pos:', this.currentRoom.position)
       /*console.log('levelGrid 1st room world pos:', this.levelGrid.rooms[0][0].position)
        const sprite = this.levelGrid.rooms[0][0].topLeftCorner
        console.log('sprite world pos:', sprite.world)*/
+      this.currentRoom.baddiesCount > 0 ? this.cursor.randomizeMovements() : this.cursor.resetOriginalMovements();
     } else {
       console.log('Cannot move from', [srcX, srcY], 'to', [dstX, dstY])
     }
@@ -81,9 +86,7 @@ export default class extends Phaser.State {
 
   update() {
     super.update()
-
-    this.cursor.x = this.currentRoom.x
-    this.cursor.y = this.currentRoom.y
+    this.cursor.moveTo(this.currentRoom.x, this.currentRoom.y);
     //game.camera.focusOnXY(200, 200)
     //game.camera.focusOn(this.cursor)
 
@@ -96,12 +99,14 @@ export default class extends Phaser.State {
     const failureMsg = "It's all lost !\nThe message bearer has been backstabbed by a fascist"
     if (this.currentRoom.windowSprite) {
       if (!this.dialogFrame.visible && this.dialogFrame.text === successMsg) {
+        this.cursor.resetOriginalMovements();
         this.state.start(this.nextLevel)
       } else {
         this.displayMessage(successMsg)
       }
     } else if (this.currentRoom.baddies.length > this.currentRoom.allies.length) {
       if (!this.dialogFrame.visible && this.dialogFrame.text === failureMsg) {
+        this.cursor.resetOriginalMovements();
         this.state.start('Level0')
       } else {
         this.displayMessage(failureMsg)
