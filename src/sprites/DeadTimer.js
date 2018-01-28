@@ -43,7 +43,7 @@ export default class DeadTimer {
 
   _drawInfo() {
     this._clearInfo();
-    this.remainingSecondsTxt = this.itemInWhichToDraw.add.text(70, (this.game.height / 2) + (this.game.height / 4), 'HURRY UP!\n' + this.remainingTime + ' ', {
+    this.remainingSecondsTxt = this.itemInWhichToDraw.add.text(70, (this.game.height / 2) + (this.game.height / 4), 'HURRY \nUP! \n' + this.remainingTime + ' ', {
       font: '40px Bangers',
       fill: '#b65e26',
       smoothed: false,
