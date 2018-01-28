@@ -53,7 +53,6 @@ export default class GameLevel extends Phaser.State {
 
   moveCursor(inputDirection) {
     if (this.dialogFrame.visible) {
-        console.log(`Input direction ${inputDirection}. Want to go ${direction}.`);
       this.dialogFrame.visible = false
       return
     }
@@ -79,7 +78,7 @@ export default class GameLevel extends Phaser.State {
       /*console.log('levelGrid 1st room world pos:', this.levelGrid.rooms[0][0].position)
        const sprite = this.levelGrid.rooms[0][0].topLeftCorner
        console.log('sprite world pos:', sprite.world)*/
-      this.currentRoom.baddiesCount > 0 ? this.cursor.randomizeMovements() : this.cursor.resetOriginalMovements();
+      this.currentRoom.isDangerous() ? this.cursor.randomizeMovements() : this.cursor.resetOriginalMovements();
     } else {
       console.log('Cannot move from', [srcX, srcY], 'to', [dstX, dstY])
     }

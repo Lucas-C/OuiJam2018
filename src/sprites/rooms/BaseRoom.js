@@ -18,6 +18,10 @@ export default class BaseRoom extends Phaser.Group {
     this.groundTilesIndices = null; // Must be set by child classes
   }
 
+  isDangerous() {
+    return this.baddies.length > 0;
+  }
+
   /**********
    * Setters
    *********/
