@@ -129,7 +129,7 @@ export default class GameLevel extends Phaser.State {
     }
 
     const successMsg = 'Good job !'
-    const failureMsg = "It's all lost !\nThe message bearer has been backstabbed by a fascist"
+    const failureMsg = "It's all lost !\nThe message has been stolen by a fascist"
     if (this.isGameWon()) { // end cell
       if (!this.dialogFrame.visible && this.dialogFrame.text === successMsg) {
         this.cursor.resetOriginalMovements();
