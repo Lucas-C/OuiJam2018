@@ -64,7 +64,6 @@ export default class GameLevel extends Phaser.State {
       this.dialogFrame.visible = false
       this.dialogPicture.visible = false
       this.dialogLine.visible = false
-      return
     }
     const wantedMovement = this.cursor.getMovementByName(inputDirection);
     const direction = wantedMovement.directionName;
