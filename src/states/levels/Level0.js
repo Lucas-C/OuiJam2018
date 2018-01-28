@@ -1,7 +1,7 @@
 import GameLevel from '../GameLevel'
-import PrisonCell from "../../sprites/rooms/PrisonCell";
-import PrisonCorridor from "../../sprites/rooms/PrisonCorridor";
+import Cursor from '../../sprites/Cursor'
 import DIRECTION from "../../const/Direction";
+import FRAME from "../../const/Frame";
 
 export default class extends GameLevel {
   init() {
@@ -33,7 +33,7 @@ export default class extends GameLevel {
   }
 
   createStartCell() {
-    const room = super.prepareRoom(0, 0, true);
+    const room = super.makePrisonCell(0, 0, true);
     room.addSideMetalBars( DIRECTION.DOWN);
     room.addSideWalls(DIRECTION.LEFT, DIRECTION.UP)
     room.addExits('right')
@@ -42,32 +42,36 @@ export default class extends GameLevel {
   }
 
   createTopCell_2() {
-    const room = super.prepareRoom(0, 0);
+    const room = super.makePrisonCell(0, 0);
     room.addSideMetalBars(DIRECTION.LEFT, DIRECTION.DOWN);
     room.addSideWalls(DIRECTION.UP)
     room.addExits('left', 'right')
-    room.onEnterPrecondition = () => this.displayMessage('Do not enter cells where there are\nless friendly inmates than fascist ones ! ')
+    room.onEnterPrecondition = () => this.displayMessage('Do not enter cells where there are\nless friendly inmates than fascist ones : ',
+                                                         {spriteSheet: 'roguelikeChar', indices: FRAME.BADDIES, percentX: .9, percentY: .1, scale: 3})
     return room
   }
 
   createTopCell_3() {
-    const room = super.prepareRoom(2, 1);
+    const room = super.makePrisonCell(2, 1);
     room.addSideMetalBars(DIRECTION.DOWN);
     room.addSideWalls(DIRECTION.UP)
     room.addExits('left', 'down', 'right')
-    room.onEnterPrecondition = () => this.displayMessage('In a cell with at least one fascist,\nthe stress will make you loose your way ! ')
+    const arrowIndices = Object.values(Cursor.ICON_MOVEMENT_PANIK).map(dir => dir.iconFrame)
+    const arrowAngles = Object.values(Cursor.ICON_MOVEMENT_PANIK).map(dir => dir.iconRotation)
+    room.onEnterPrecondition = () => this.displayMessage('In a cell with at least one fascist,\nthe stress will make you loose your way ! ',
+                                                         {spriteSheet: 'roguelikeSheet', indices: arrowIndices, angles: arrowAngles, percentX: .9, percentY: .1, scale: 3})
     return room
   }
 
   createMiddleCell_3() {
-    const room = super.prepareRoom(0, 1);
+    const room = super.makePrisonCell(0, 1);
     room.addSideMetalBars( DIRECTION.LEFT, DIRECTION.RIGHT, DIRECTION.DOWN);
     room.addExits('up')
     return room
   }
 
   createEndCell() {
-    const room = super.prepareRoom(1, 0);
+    const room = super.makePrisonCell(1, 0);
     room.addSideMetalBars(DIRECTION.LEFT, DIRECTION.DOWN);
     room.addSideWalls(DIRECTION.UP, DIRECTION.RIGHT)
     room.addExits('left')

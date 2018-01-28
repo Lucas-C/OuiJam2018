@@ -1,3 +1,7 @@
+![Game intro screenshot](D:\devhome\tools\cygwin\opt\OuiJam2018\GameIntroScreenshot.png)
+
+## Code
+
 Fork of https://github.com/lean/phaser-es6-webpack
 
     npm install

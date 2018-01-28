@@ -93,6 +93,7 @@ const FRAME = {
   // Barreaux (spritesheet : indoor)
   METAL_BAR: 123,
 
+  BADDIES: [270, 432, 541],
   NELLA_MANDELSON: 271
 };
 

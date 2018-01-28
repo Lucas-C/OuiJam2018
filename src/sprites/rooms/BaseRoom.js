@@ -81,7 +81,7 @@ export default class BaseRoom extends Phaser.Group {
   }
 
   addBaddy(x, y) {
-    const sprite = this.create(0, 0, 'roguelikeChar', this.selectOneInArray([270, 432, 541])) // all in one
+    const sprite = this.create(0, 0, 'roguelikeChar', this.selectOneInArray(FRAME.BADDIES)) // all in one
     this.grid.placeAt(x, y, sprite)
     this.baddies.push(sprite)
     return this

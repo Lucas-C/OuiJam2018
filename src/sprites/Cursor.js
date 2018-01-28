@@ -70,7 +70,6 @@ export default class Cursor extends Phaser.Group {
   }
 
   resetOriginalMovements() {
-    console.log('reset movements');
     this.currentMovements = this._cloneObject(Cursor.ORIGINAL_MOVEMENT);
     this._reDraw();
   }

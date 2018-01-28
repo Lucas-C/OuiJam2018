@@ -5,7 +5,6 @@ import Cursor from '../sprites/Cursor'
 import ScrollMessage from '../sprites/ScrollMessage'
 import LevelGrid from "../grid/LevelGrid";
 import DIRECTION from "../const/Direction";
-import Frame from "../const/Frame";
 import PrisonCell from "../sprites/rooms/PrisonCell";
 import PrisonCorridor from "../sprites/rooms/PrisonCorridor";
 
@@ -170,7 +169,6 @@ export default class GameLevel extends Phaser.State {
     this.dialogPicture.anchor.setTo(0.5);
 
     this.dialogLine = this.add.sprite(config.gameWidth * .13, config.gameHeight * .13, 'line');
-    //this.dialogLine.scale.setTo(1);
 
     this._hideMessage()
 
@@ -183,20 +181,49 @@ export default class GameLevel extends Phaser.State {
     this.dialogFrame.visible = false
     this.dialogPicture.visible = false
     this.dialogLine.visible = false
+    if (this.dialogExtraSprite) {
+      this.dialogExtraSprite.visible = false
+    }
+    if (this.dialogExtraSpriteInterval) {
+      clearInterval(this.dialogExtraSpriteInterval)
+    }
   }
 
-  displayMessage(msg) {
+  displayMessage(msg, extraSprite) {
     this.dialogFrame.text = msg
     // this.dialogFrame.fontSize = fontSize
     this.dialogFrame.lineSpacing = -15;
     this.dialogFrame.visible = true
     this.dialogPicture.visible = true
     this.dialogLine.visible = true
+    if (extraSprite) {
+      const {spriteSheet, indices, angles, percentX, percentY, scale} = extraSprite
+      if (this.dialogExtraSprite) {
+        this.dialogExtraSprite.destroy()
+      }
+      this.dialogExtraSprite = this.add.sprite(percentX * config.gameWidth, percentY * config.gameHeight, spriteSheet, indices[0])
+      this.dialogExtraSprite.angle = (angles && angles[0]) || 0
+      this.dialogExtraSprite.scale.setTo(scale)
+      this.dialogExtraSprite.anchor.setTo(0.5)
+      if (indices.length > 1) {
+        if (this.dialogExtraSpriteInterval) {
+          clearInterval(this.dialogExtraSpriteInterval)
+        }
+        let i = 0
+        this.dialogExtraSpriteInterval = setInterval(() => {
+          i++
+          this.dialogExtraSprite.frame = indices[i % indices.length]
+          if (angles) {
+            this.dialogExtraSprite.angle = angles[i % angles.length]
+          }
+        }, 500)
+      }
+    }
   }
 
   render() {
     if (__DEV__) {
-      //game.debug.spriteInfo(this.dialogFrame, 400, 600)
+      //if (this.dialogExtraSprite) { game.debug.spriteInfo(this.dialogExtraSprite, 400, 600) }
       //game.debug.cameraInfo(game.camera, 32, 32)
     }
   }
@@ -218,7 +245,7 @@ export default class GameLevel extends Phaser.State {
     levelNumber.anchor.setTo(0.5);
   }
 
-  prepareRoom(nbAllies, nbBaddies, withNelly=false) {
+  makePrisonCell(nbAllies, nbBaddies, withNelly=false) {
     const room = new PrisonCell(this.getRoomWidthInPx(), this.getRoomHeightInPx())
 
     let allPossibilities = [
