@@ -146,6 +146,7 @@ export default class extends GameLevel {
     const room = super.prepareRoom(3, 1);
     room.addSideWalls(DIRECTION.RIGHT)
     room.addExits(DIRECTION.UP, DIRECTION.DOWN, DIRECTION.LEFT)
+    room.onEnterPrecondition = () => this.displayMessage('I am proud of you =^-^= ')
     return room
   }
 

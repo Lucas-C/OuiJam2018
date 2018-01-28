@@ -87,19 +87,19 @@ export default class GameLevel extends Phaser.State {
 
       if (this.currentRoom.isDoomed()) {
         // Skull sign (it will disappear)
-        var skullSign = this.game.add.sprite(this.currentRoom.centerX, this.currentRoom.centerY, 'skull', Math.floor(Math.random() * 12));
-        skullSign.scale.setTo(0.8);
+        var skullSign = this.game.add.sprite(this.currentRoom.centerX, this.currentRoom.centerY, this.selectOneInArray(['skull1','skull2','skull3']), Math.floor(Math.random() * 12));
+        skullSign.scale.setTo(0.5);
         skullSign.anchor.setTo(0.5);
-        skullSign.alpha = 0.7;
+        skullSign.alpha = 0.5;
 
         this.cursor.kill();
 
       } else if (this.currentRoom.isDangerous()) {
         // Warning sign (it will desapear)
         var warnSign = this.game.add.sprite(this.currentRoom.centerX, this.currentRoom.centerY, 'warning');
-        warnSign.scale.setTo(0.8);
+        warnSign.scale.setTo(0.3);
         warnSign.anchor.setTo(0.5);
-        warnSign.alpha = 0.3;
+        warnSign.alpha = 0.5;
         game.add.tween(warnSign).to({alpha: 0}, 2000, "Linear", true);
 
         // shuffle the arrows and put them in RED
@@ -154,7 +154,7 @@ export default class GameLevel extends Phaser.State {
   }
 
   _createDialogFrame() {
-    this.dialogFrame = this.add.text(config.gameWidth * .65, config.gameHeight * .08, '', {
+    this.dialogFrame = this.add.text(config.gameWidth * .6, config.gameHeight * .1, '', {
       font: '36px VT323',
       fill: '#427a64',
       smoothed: false,
@@ -163,11 +163,11 @@ export default class GameLevel extends Phaser.State {
     this.dialogFrame.scale.setTo(.9)
     this.dialogFrame.anchor.setTo(0.6)
 
-    this.dialogPicture = this.add.sprite(config.gameWidth * .1, config.gameHeight * .1, 'portraitNellaMandelson');
-    this.dialogPicture.scale.setTo(1.8);
+    this.dialogPicture = this.add.sprite(config.gameWidth * .08, config.gameHeight * .08, 'portraitNellaMandelson');
+    this.dialogPicture.scale.setTo(1.5);
     this.dialogPicture.anchor.setTo(0.5);
 
-    this.dialogLine = this.add.sprite(config.gameWidth * .2, config.gameHeight * .1, 'line');
+    this.dialogLine = this.add.sprite(config.gameWidth * .13, config.gameHeight * .13, 'line');
     //this.dialogLine.scale.setTo(1);
 
     this._hideMessage()
