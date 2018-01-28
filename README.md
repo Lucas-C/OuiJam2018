@@ -10,7 +10,7 @@ But will you manage to avoid ambushes and to do it in time ?
 
 Online version : https://lucas-c.github.io/OuiJam2018/build
 
-GGJ 2 page : https://globalgamejam.org/2018/games/king-must-know
+GGJ 2018 page : https://globalgamejam.org/2018/games/king-must-know
 
 ![alt text](press/GameIntroScreenshot.png "The king must know !")
 
