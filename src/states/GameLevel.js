@@ -57,6 +57,7 @@ export default class GameLevel extends Phaser.State {
       this.dialogFrame.visible = false
       return
     }
+    const wantedMovement = this.cursor.getMovementByName(inputDirection);
     const direction = wantedMovement.directionName;
     console.log(`Input direction ${inputDirection}. Want to go ${direction}.`);
     if (!this.currentRoom.exits.includes(direction)) {
