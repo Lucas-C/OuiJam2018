@@ -114,6 +114,22 @@ export default class BaseRoom extends Phaser.Group {
     return this;
   }
 
+  addDecoCell(x, y) {
+    let decoArray = [58, 59, 60, 61, 62, 63, 64, 65, 36, 7];
+    this.addDeco(x, y, 'roguelikeDungeon', decoArray);
+  }
+
+  addDecoCorridor(x, y) {
+    let decoArray = [7, 16, 17, 122, 286, 293];
+    this.addDeco(x, y, 'roguelikeIndoor', decoArray);
+  }
+
+  addDeco(x, y, spriteSheet, indices) {
+    var decoration = this.create(0, 0, spriteSheet, this.selectOneInArray(indices));
+    decoration.alpha = 0.5;
+    this.grid.placeAt(x, y, decoration);
+    return this;
+  }
 
   addSideMetalBars(...sides) {
     this.sides = sides;

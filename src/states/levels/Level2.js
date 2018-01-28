@@ -22,13 +22,10 @@ export default class extends GameLevel {
   }
 
   createStartCell() {
-    const room = new PrisonCell(this.getRoomWidthInPx(), this.getRoomHeightInPx())
+    const room = super.prepareRoom(0, 0, true);
     room.addSideWalls(DIRECTION.LEFT)
     room.addExits(DIRECTION.RIGHT, DIRECTION.UP)
     room.addSideMetalBars(DIRECTION.UP);
-    room.addNellaMandelson(3, 3)
-    room.addFurniture(1, 2)
-    room.addFurniture(5, 5)
     return room
   }
 

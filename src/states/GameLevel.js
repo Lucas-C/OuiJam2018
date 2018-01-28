@@ -7,6 +7,7 @@ import LevelGrid from "../grid/LevelGrid";
 import DIRECTION from "../const/Direction";
 import Frame from "../const/Frame";
 import PrisonCell from "../sprites/rooms/PrisonCell";
+import PrisonCorridor from "../sprites/rooms/PrisonCorridor";
 
 export default class GameLevel extends Phaser.State {
 
@@ -203,19 +204,28 @@ export default class GameLevel extends Phaser.State {
     levelNumber.anchor.setTo(0.5);
   }
 
-  prepareRoom(nbAllies, nbBaddies) {
+  prepareRoom(nbAllies, nbBaddies, withNelly=false) {
     const room = new PrisonCell(this.getRoomWidthInPx(), this.getRoomHeightInPx())
 
     let allPossibilities = [
       [1,1],[1,2],[1,3],[1,4],[1,5],
       [2,1],[2,2],[2,3],[2,4],[2,5],
-      [3,1],[3,2],[3,3],[3,4],[3,5],
+      [3,1],[3,2],[3,4],[3,5],
       [4,1],[4,2],[4,3],[4,4],[4,5],
       [5,1],[5,2],[5,3],[5,4],[5,5]
     ];
 
+    if (!withNelly) {
+      allPossibilities.push([3,3]);
+    }
+
     let randomPossibilities = this.shuffle(allPossibilities);
     let index = 0;
+
+    // NELLY
+    if (withNelly) {
+      room.addNellaMandelson(3, 3);
+    }
 
     // ALLIES
     for (var ally=0; ally<nbAllies; ally++) {
@@ -233,11 +243,18 @@ export default class GameLevel extends Phaser.State {
 
     // FURNITURES
     let nbFurnitures = Math.floor(Math.random() * 4) + 1;
-
     for (var fur=0; fur<nbFurnitures; fur++) {
       let coord = randomPossibilities[index];
       index = index+1
       room.addFurniture(coord[0], coord[1]);
+    }
+
+    // DECO
+    let nbDeco = Math.floor(Math.random() * 6) + 2;
+    for (var dec=0; dec<nbDeco; dec++) {
+      let coord = randomPossibilities[index];
+      index = index+1
+      room.addDecoCell(coord[0], coord[1]);
     }
 
     return room
@@ -252,5 +269,38 @@ export default class GameLevel extends Phaser.State {
       a[j] = x;
     }
     return a;
+  }
+
+  createCorridor() {
+    const room = new PrisonCorridor(this.getRoomWidthInPx(), this.getRoomHeightInPx())
+
+    let allPossibilities = [
+      [1,1],[1,2],[1,3],[1,4],[1,5],
+      [2,1],[2,2],[2,3],[2,4],[2,5],
+      [3,1],[3,2],[3,3],[3,4],[3,5],
+      [4,1],[4,2],[4,3],[4,4],[4,5],
+      [5,1],[5,2],[5,3],[5,4],[5,5]
+    ];
+
+    let randomPossibilities = this.shuffle(allPossibilities);
+    let index = 0;
+
+    // GUARDS
+    let nbGuards = Math.floor(Math.random() * 3) + 1; // 1 to 4 guards
+    for (var i = 0; i < nbGuards; i++) {
+      let coord = randomPossibilities[index];
+      index = index+1
+      room.addGuard(coord[0], coord[1]);
+    }
+
+    // DECO
+    let nbDeco = Math.floor(Math.random() * 6) + 2;
+    for (var dec=0; dec<nbDeco; dec++) {
+      let coord = randomPossibilities[index];
+      index = index+1
+      room.addDecoCorridor(coord[0], coord[1]);
+    }
+
+    return room
   }
 }

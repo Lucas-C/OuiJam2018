@@ -33,13 +33,9 @@ export default class extends GameLevel {
   }
 
   createStartCell() {
-    // Do not 'prepare' the starting cell
-    const room = new PrisonCell(this.getRoomWidthInPx(), this.getRoomHeightInPx())
+    const room = super.prepareRoom(0, 0, true);
     room.addSideMetalBars( DIRECTION.DOWN);
     room.addSideWalls(DIRECTION.LEFT, DIRECTION.UP)
-    room.addNellaMandelson(3, 3)
-    room.addFurniture(1, 2)
-    room.addFurniture(5, 5)
     room.addExits('right')
     room.onEnterPrecondition = () => this.displayMessage('Quick, bring this message outside the prison ! ')
     return room
@@ -71,26 +67,11 @@ export default class extends GameLevel {
   }
 
   createEndCell() {
-    // Do not 'prepare' the end room :-)
-    const room = new PrisonCell(this.getRoomWidthInPx(), this.getRoomHeightInPx());
+    const room = super.prepareRoom(1, 0);
     room.addSideMetalBars(DIRECTION.LEFT, DIRECTION.DOWN);
     room.addSideWalls(DIRECTION.UP, DIRECTION.RIGHT)
-    room.addFurniture(2, 4)
-    room.addFurniture(3, 1)
     room.addExits('left')
-    room.addAlly(5, 3)
     room.addEndWindow(6, 3)
-    return room
-  }
-
-  createCorridor() {
-    const room = new PrisonCorridor(this.getRoomWidthInPx(), this.getRoomHeightInPx());
-    let nbGuards = Math.floor(Math.random() * 3) + 1; // 1 to 4 guards
-    for (var i = 0; i < nbGuards; i++) {
-      var posX = Math.floor(Math.random() * 5) + 1;
-      var posY = Math.floor(Math.random() * 5) + 1;
-      room.addGuard(posX, posY);
-    }
     return room
   }
 }
