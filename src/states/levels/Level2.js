@@ -44,21 +44,21 @@ export default class extends GameLevel {
   }
 
   createStartCell() {
-    const room = super.prepareRoom(0, 0, true);
+    const room = super.makePrisonCell(0, 0, true);
     room.addSideWalls(DIRECTION.LEFT, DIRECTION.DOWN)
     room.addExits(DIRECTION.UP, DIRECTION.RIGHT)
     return room
   }
 
   createCellTop_1() {
-    const room = super.prepareRoom(2, 1);
+    const room = super.makePrisonCell(2, 1);
     room.addSideWalls(DIRECTION.UP, DIRECTION.LEFT);
     room.addExits(DIRECTION.DOWN, DIRECTION.RIGHT)
     return room
   }
 
   createCellMiddleHigh_1() {
-    const room = super.prepareRoom(1, 0);
+    const room = super.makePrisonCell(1, 0);
     room.addSideWalls(DIRECTION.LEFT)
     room.addSideMetalBars(DIRECTION.RIGHT)
     room.addExits(DIRECTION.DOWN, DIRECTION.UP)
@@ -66,7 +66,7 @@ export default class extends GameLevel {
   }
 
   createCellMiddleLow_1() {
-    const room = super.prepareRoom(3, 0);
+    const room = super.makePrisonCell(3, 0);
     room.addSideWalls(DIRECTION.LEFT)
     room.addSideMetalBars(DIRECTION.RIGHT)
     room.addExits(DIRECTION.DOWN, DIRECTION.UP)
@@ -74,7 +74,7 @@ export default class extends GameLevel {
   }
 
   createCellTop_2() {
-    const room = super.prepareRoom(0, 0);
+    const room = super.makePrisonCell(0, 0);
     room.addSideWalls(DIRECTION.UP)
     room.addSideMetalBars(DIRECTION.DOWN)
     room.addExits(DIRECTION.LEFT, DIRECTION.RIGHT)
@@ -82,7 +82,7 @@ export default class extends GameLevel {
   }
 
   createCellBottom_2() {
-    const room = super.prepareRoom(4, 5);
+    const room = super.makePrisonCell(4, 5);
     room.addSideWalls(DIRECTION.DOWN)
     room.addSideMetalBars(DIRECTION.UP)
     room.addExits(DIRECTION.LEFT, DIRECTION.RIGHT)
@@ -90,35 +90,35 @@ export default class extends GameLevel {
   }
 
   createCellTop_3() {
-    const room = super.prepareRoom(2, 0);
+    const room = super.makePrisonCell(2, 0);
     room.addSideWalls(DIRECTION.UP, DIRECTION.RIGHT)
     room.addExits(DIRECTION.LEFT, DIRECTION.DOWN)
     return room
   }
 
   createCellMiddleHigh_3() {
-    const room = super.prepareRoom(3, 1);
+    const room = super.makePrisonCell(3, 1);
     room.addSideMetalBars(DIRECTION.LEFT)
     room.addExits(DIRECTION.UP, DIRECTION.RIGHT, DIRECTION.DOWN)
     return room
   }
 
   createCellMiddleLow_3() {
-    const room = super.prepareRoom(1, 0);
+    const room = super.makePrisonCell(1, 0);
     room.addSideMetalBars(DIRECTION.LEFT, DIRECTION.RIGHT)
     room.addExits(DIRECTION.UP, DIRECTION.DOWN)
     return room
   }
 
   createCellBottom_3() {
-    const room = super.prepareRoom(2, 0);
+    const room = super.makePrisonCell(2, 0);
     room.addSideMetalBars(DIRECTION.DOWN)
     room.addExits(DIRECTION.UP, DIRECTION.RIGHT, DIRECTION.LEFT)
     return room
   }
 
   createCellMiddleHigh_4() {
-    const room = super.prepareRoom(3, 1);
+    const room = super.makePrisonCell(3, 1);
     room.addSideWalls(DIRECTION.UP)
     room.addSideMetalBars(DIRECTION.DOWN)
     room.addExits(DIRECTION.LEFT, DIRECTION.RIGHT)
@@ -126,7 +126,7 @@ export default class extends GameLevel {
   }
 
   createCellBottom_4() {
-    const room = super.prepareRoom(4, 0);
+    const room = super.makePrisonCell(4, 0);
     room.addSideWalls(DIRECTION.DOWN)
     room.addSideMetalBars(DIRECTION.UP)
     room.addExits(DIRECTION.LEFT, DIRECTION.RIGHT)
@@ -135,7 +135,7 @@ export default class extends GameLevel {
 
   // Exit
   createCellTop_5() {
-    const room = super.prepareRoom(2, 0);
+    const room = super.makePrisonCell(2, 0);
     room.addSideWalls(DIRECTION.UP, DIRECTION.LEFT, DIRECTION.RIGHT)
     room.addExits(DIRECTION.DOWNT)
     room.addEndWindow(3, 0)
@@ -143,7 +143,7 @@ export default class extends GameLevel {
   }
 
   createCellMiddleHigh_5() {
-    const room = super.prepareRoom(3, 1);
+    const room = super.makePrisonCell(3, 1);
     room.addSideWalls(DIRECTION.RIGHT)
     room.addExits(DIRECTION.UP, DIRECTION.DOWN, DIRECTION.LEFT)
     room.onEnterPrecondition = () => this.displayMessage('I am proud of you =^-^= ')
@@ -151,7 +151,7 @@ export default class extends GameLevel {
   }
 
   createCellMiddleLow_5() {
-    const room = super.prepareRoom(2, 3);
+    const room = super.makePrisonCell(2, 3);
     room.addSideWalls(DIRECTION.RIGHT)
     room.addSideMetalBars(DIRECTION.LEFT)
     room.addExits(DIRECTION.UP, DIRECTION.DOWN)
@@ -159,7 +159,7 @@ export default class extends GameLevel {
   }
 
   createCellBottom_5() {
-    const room = super.prepareRoom(2, 0);
+    const room = super.makePrisonCell(2, 0);
     room.addSideWalls(DIRECTION.DOWN, DIRECTION.RIGHT)
     room.addExits(DIRECTION.LEFT, DIRECTION.UP)
     return room
