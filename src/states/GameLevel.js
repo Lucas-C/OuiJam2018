@@ -35,6 +35,14 @@ export default class GameLevel extends Phaser.State {
     this.cursor = new Cursor(this.getRoomWidthInPx(), this.getRoomHeightInPx(), this.rootGroup)
     game.add.existing(this.cursor)
 
+
+    this.dialogPicture = this.add.sprite(60, 60, this.selectOneInArray(['portraitNM1', 'portraitNM2']));
+    this.dialogPicture.scale.setTo(2.5);
+    this.dialogPicture.anchor.setTo(0.5);
+
+    this.dialogLine = this.add.sprite(90, 90, 'line');
+    this.dialogLine.scale.setTo(1);
+
     this.dialogFrame = this._createDialogFrame()
 
     const cursorKeys = game.input.keyboard.createCursorKeys()
@@ -54,6 +62,8 @@ export default class GameLevel extends Phaser.State {
   moveCursor(inputDirection) {
     if (this.dialogFrame.visible) {
       this.dialogFrame.visible = false
+      this.dialogPicture.visible = false
+      this.dialogLine.visible = false
       return
     }
     const wantedMovement = this.cursor.getMovementByName(inputDirection);
@@ -115,7 +125,7 @@ export default class GameLevel extends Phaser.State {
   }
 
   _createDialogFrame() {
-    const dialogFrame = this.add.text(config.gameWidth / 2, config.gameHeight * .08, '', {
+    const dialogFrame = this.add.text((config.gameWidth / 2) + 40, config.gameHeight * .08, '', {
       font: '36px VT323',
       fill: '#427a64',
       smoothed: false,
@@ -124,13 +134,22 @@ export default class GameLevel extends Phaser.State {
     dialogFrame.lineSpacing = 0
     dialogFrame.anchor.setTo(0.5)
     dialogFrame.visible = false
-    this.game.input.keyboard.onPressCallback = () => dialogFrame.visible = false
+
+    this.game.input.keyboard.onPressCallback = () => {
+      dialogFrame.visible = false
+      this.dialogPicture.visible = false
+      this.dialogLine.visible = false
+    }
     return dialogFrame
   }
 
   displayMessage(msg) {
     this.dialogFrame.text = msg
+    // this.dialogFrame.fontSize = fontSize
+    this.dialogFrame.lineSpacing = -15;
     this.dialogFrame.visible = true
+    this.dialogPicture.visible = true
+    this.dialogLine.visible = true
   }
 
   render() {
@@ -138,5 +157,9 @@ export default class GameLevel extends Phaser.State {
       //game.debug.spriteInfo(this.dialogFrame, 400, 600)
       //game.debug.cameraInfo(game.camera, 32, 32)
     }
+  }
+
+  selectOneInArray(array) {
+    return array[Math.floor(Math.random() * array.length)];
   }
 }

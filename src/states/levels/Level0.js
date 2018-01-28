@@ -16,22 +16,24 @@ export default class extends GameLevel {
     // Starting room:
     this.currentRoom = this.createStartCell()
     this.levelGrid.addRoom(1, 1, this.currentRoom)
-    this.levelGrid.addRoom(2, 1, this.createMiddleCell_1())
-    this.levelGrid.addRoom(3, 1, this.createMiddleCell_2())
-    this.levelGrid.addRoom(4, 1, this.createEndCell())
-    this.levelGrid.addRoom(3, 2, this.createBottomCell())
-
     this.levelGrid.addRoom(1, 2, this.createCorridor()).addSideWalls(DIRECTION.LEFT, DIRECTION.DOWN)
+
+    this.levelGrid.addRoom(2, 1, this.createTopCell_2())
     this.levelGrid.addRoom(2, 2, this.createCorridor())
     this.levelGrid.addRoom(2, 3, this.createCorridor()).addSideWalls(DIRECTION.LEFT, DIRECTION.DOWN)
+
+    this.levelGrid.addRoom(3, 1, this.createTopCell_3())
+    this.levelGrid.addRoom(3, 2, this.createMiddleCell_3())
     this.levelGrid.addRoom(3, 3, this.createCorridor()).addSideWalls(DIRECTION.DOWN)
+
+    this.levelGrid.addRoom(4, 1, this.createEndCell())
     this.levelGrid.addRoom(4, 2, this.createCorridor()).addSideWalls(DIRECTION.RIGHT)
     this.levelGrid.addRoom(4, 3, this.createCorridor()).addSideWalls(DIRECTION.RIGHT, DIRECTION.DOWN)
   }
 
   createStartCell() {
     const room = new PrisonCell(this.getRoomWidthInPx(), this.getRoomHeightInPx())
-    room.addSideMetalBars(DIRECTION.RIGHT, DIRECTION.DOWN);
+    room.addSideMetalBars( DIRECTION.DOWN);
     room.addSideWalls(DIRECTION.LEFT, DIRECTION.UP)
     room.addNellaMandelson(3, 3)
     room.addFurniture(1, 2)
@@ -41,7 +43,7 @@ export default class extends GameLevel {
     return room
   }
 
-  createMiddleCell_1() {
+  createTopCell_2() {
     const room = new PrisonCell(this.getRoomWidthInPx(), this.getRoomHeightInPx());
     room.addSideMetalBars(DIRECTION.LEFT, DIRECTION.DOWN);
     room.addSideWalls(DIRECTION.UP)
@@ -52,9 +54,9 @@ export default class extends GameLevel {
     return room
   }
 
-  createMiddleCell_2() {
+  createTopCell_3() {
     const room = new PrisonCell(this.getRoomWidthInPx(), this.getRoomHeightInPx());
-    room.addSideMetalBars(DIRECTION.RIGHT, DIRECTION.DOWN);
+    room.addSideMetalBars(DIRECTION.DOWN);
     room.addSideWalls(DIRECTION.UP)
     room.addAlly(2, 3)
     room.addAlly(4, 4)
@@ -65,9 +67,9 @@ export default class extends GameLevel {
     return room
   }
 
-  createBottomCell() {
+  createMiddleCell_3() {
     const room = new PrisonCell(this.getRoomWidthInPx(), this.getRoomHeightInPx());
-    room.addSideMetalBars(DIRECTION.UP, DIRECTION.LEFT, DIRECTION.RIGHT, DIRECTION.DOWN);
+    room.addSideMetalBars( DIRECTION.LEFT, DIRECTION.RIGHT, DIRECTION.DOWN);
     room.addBaddy(3, 3)
     room.addFurniture(1, 5)
     room.addFurniture(4, 5)
