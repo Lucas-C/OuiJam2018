@@ -22,6 +22,10 @@ export default class BaseRoom extends Phaser.Group {
     return this.baddies.length > 0;
   }
 
+  isDoomed() {
+    return this.baddies.length > this.allies.length;
+  }
+
   /**********
    * Setters
    *********/

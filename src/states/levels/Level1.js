@@ -35,6 +35,7 @@ export default class extends GameLevel {
   }
 
   createStartCell() {
+    // Do not 'prepare' the starting cell
     const room = new PrisonCell(this.getRoomWidthInPx(), this.getRoomHeightInPx())
     room.addSideWalls(DIRECTION.LEFT)
     room.addExits(DIRECTION.RIGHT, DIRECTION.UP)
@@ -47,118 +48,69 @@ export default class extends GameLevel {
   }
 
   createTopCell_1() {
-    const room = new PrisonCell(this.getRoomWidthInPx(), this.getRoomHeightInPx());
+    const room = super.prepareRoom(2, 3);
     room.addSideWalls(DIRECTION.UP, DIRECTION.LEFT)
     room.addExits(DIRECTION.DOWN, DIRECTION.RIGHT)
-    room
-      .addBaddy(2, 2)
-      .addBaddy(4, 1)
-      .addBaddy(2, 1)
-      .addAlly(5, 1)
-      .addAlly(2, 3)
-      .addFurniture(2, 3)
-      .addFurniture(5, 4)
     return room
   }
 
   createBottomCell_1() {
-    const room = new PrisonCell(this.getRoomWidthInPx(), this.getRoomHeightInPx());
+    const room = super.prepareRoom(2, 1);
     room.addSideWalls(DIRECTION.UP, DIRECTION.DOWN, DIRECTION.LEFT)
-
     room.addExits(DIRECTION.RIGHT)
-    room
-      .addBaddy(5, 4)
-      .addAlly(1, 4)
-      .addAlly(3, 3)
-      .addFurniture(2, 5)
-      .addFurniture(4, 1)
-      .addFurniture(5, 2)
     return room
   }
 
   createTopCell_2() {
-    const room = new PrisonCell(this.getRoomWidthInPx(), this.getRoomHeightInPx());
+    const room = super.prepareRoom(2, 1);
     room.addSideWalls(DIRECTION.UP)
     room.addSideMetalBars(DIRECTION.LEFT);
     room.addExits(DIRECTION.LEFT, DIRECTION.RIGHT, DIRECTION.DOWN);
-    room
-      .addBaddy(3, 1)
-      .addAlly(2, 3)
-      .addAlly(5, 5)
-      .addFurniture(1, 3)
-      .addFurniture(4, 2)
-      .addFurniture(3, 2)
     return room
   }
 
   createMiddleCell_2() {
-    const room = new PrisonCell(this.getRoomWidthInPx(), this.getRoomHeightInPx());
+    const room = super.prepareRoom(1, 0);
     room.addSideWalls(DIRECTION.RIGHT)
     room.addSideMetalBars(DIRECTION.UP);
     room.addExits(DIRECTION.LEFT, DIRECTION.DOWN, DIRECTION.UP)
-    room
-      .addAlly(1, 2)
-      .addFurniture(2, 2)
-      .addFurniture(5, 1)
     room.onEnterPrecondition = () => this.displayMessage('It seems you have understood :-D ')
     return room
   }
 
   createBottomCell_2() {
-    const room = new PrisonCell(this.getRoomWidthInPx(), this.getRoomHeightInPx());
+    const room = super.prepareRoom(1, 0);
     room.addSideWalls(DIRECTION.DOWN, DIRECTION.RIGHT)
     room.addSideMetalBars(DIRECTION.LEFT, DIRECTION.UP);
     room.addExits(DIRECTION.LEFT, DIRECTION.UP)
-    room
-      .addAlly(4, 5)
-      .addFurniture(3, 3)
-      .addFurniture(1, 5)
-      .addFurniture(1, 2)
     return room
   }
 
   createTopCell_3() {
-    const room = new PrisonCell(this.getRoomWidthInPx(), this.getRoomHeightInPx());
+    const room = super.prepareRoom(2, 1);
     room.addSideWalls(DIRECTION.UP, DIRECTION.RIGHT)
     room.addSideMetalBars(DIRECTION.LEFT);
     room.addExits(DIRECTION.LEFT, DIRECTION.DOWN)
-    room
-      .addBaddy(3, 2)
-      .addAlly(1, 1)
-      .addAlly(2, 1)
-      .addFurniture(4, 5)
     return room
   }
 
   createMiddleCell_3() {
-    const room = new PrisonCell(this.getRoomWidthInPx(), this.getRoomHeightInPx());
+    const room = super.prepareRoom(1, 0);
     room.addSideMetalBars(DIRECTION.UP);
     room.addExits(DIRECTION.UP, DIRECTION.RIGHT, DIRECTION.DOWN)
-    room
-      .addAlly(5, 4)
-      .addFurniture(3, 5)
-      .addFurniture(1, 3)
     return room
   }
 
   createBottomCell_3() {
-    const room = new PrisonCell(this.getRoomWidthInPx(), this.getRoomHeightInPx());
+    const room = super.prepareRoom(1, 5);
     room.addSideWalls(DIRECTION.DOWN)
     room.addSideMetalBars(DIRECTION.UP, DIRECTION.RIGHT);
     room.addExits(DIRECTION.UP)
-    room
-      .addBaddy(1, 1)
-      .addBaddy(1, 2)
-      .addBaddy(1, 3)
-      .addBaddy(1, 4)
-      .addBaddy(1, 5)
-      .addAlly(5, 4)
-      .addFurniture(3, 5)
-      .addFurniture(4, 1)
     return room
   }
 
   createTopCell_4() {
+    // Do not 'prepare' the exiting cell
     const room = new PrisonCell(this.getRoomWidthInPx(), this.getRoomHeightInPx());
     room.addSideWalls(DIRECTION.UP, DIRECTION.RIGHT)
     room.addExits(DIRECTION.DOWN)
@@ -171,17 +123,10 @@ export default class extends GameLevel {
   }
 
   createMiddleCell_4() {
-    const room = new PrisonCell(this.getRoomWidthInPx(), this.getRoomHeightInPx());
+    const room = super.prepareRoom(2, 0);
     room.addSideWalls(DIRECTION.RIGHT);
-    room.addSideMetalBars(DIRECTION.UP, DIRECTION.DOWN);
-    room.addSideMetalBars(DIRECTION.LEFT);
+    room.addSideMetalBars(DIRECTION.LEFT, DIRECTION.UP, DIRECTION.DOWN);
     room.addExits(DIRECTION.UP, DIRECTION.LEFT)
-    room
-      .addAlly(1, 1)
-      .addAlly(2, 4)
-      .addFurniture(2, 3)
-      .addFurniture(5, 4)
-      .addFurniture(5, 3)
     return room
   }
 

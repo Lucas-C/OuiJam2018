@@ -6,6 +6,7 @@ import ScrollMessage from '../sprites/ScrollMessage'
 import LevelGrid from "../grid/LevelGrid";
 import DIRECTION from "../const/Direction";
 import Frame from "../const/Frame";
+import PrisonCell from "../sprites/rooms/PrisonCell";
 
 export default class GameLevel extends Phaser.State {
 
@@ -90,7 +91,16 @@ export default class GameLevel extends Phaser.State {
        const sprite = this.levelGrid.rooms[0][0].topLeftCorner
        console.log('sprite world pos:', sprite.world)*/
 
-      if (this.currentRoom.isDangerous()) {
+      if (this.currentRoom.isDoomed()) {
+        // Skull sign (it will desapear)
+        var skullSign = this.game.add.sprite(this.currentRoom.centerX, this.currentRoom.centerY, 'skull');
+        skullSign.scale.setTo(0.8);
+        skullSign.anchor.setTo(0.5);
+        skullSign.alpha = 0.7;
+
+        this.cursor.kill();
+
+      } else if (this.currentRoom.isDangerous()) {
         // Warning sign (it will desapear)
         var warnSign = this.game.add.sprite(this.currentRoom.centerX, this.currentRoom.centerY, 'warning');
         warnSign.scale.setTo(0.8);
@@ -191,5 +201,56 @@ export default class GameLevel extends Phaser.State {
     });
     levelNumber.lineSpacing = -15;
     levelNumber.anchor.setTo(0.5);
+  }
+
+  prepareRoom(nbAllies, nbBaddies) {
+    const room = new PrisonCell(this.getRoomWidthInPx(), this.getRoomHeightInPx())
+
+    let allPossibilities = [
+      [1,1],[1,2],[1,3],[1,4],[1,5],
+      [2,1],[2,2],[2,3],[2,4],[2,5],
+      [3,1],[3,2],[3,3],[3,4],[3,5],
+      [4,1],[4,2],[4,3],[4,4],[4,5],
+      [5,1],[5,2],[5,3],[5,4],[5,5]
+    ];
+
+    let randomPossibilities = this.shuffle(allPossibilities);
+    let index = 0;
+
+    // ALLIES
+    for (var ally=0; ally<nbAllies; ally++) {
+      let coord = randomPossibilities[index];
+      index = index+1
+      room.addAlly(coord[0], coord[1]);
+    }
+
+    // BADDIES
+    for (var bad=0; bad<nbBaddies; bad++) {
+      let coord = randomPossibilities[index];
+      index = index+1
+      room.addBaddy(coord[0], coord[1]);
+    }
+
+    // FURNITURES
+    let nbFurnitures = Math.floor(Math.random() * 4) + 1;
+
+    for (var fur=0; fur<nbFurnitures; fur++) {
+      let coord = randomPossibilities[index];
+      index = index+1
+      room.addFurniture(coord[0], coord[1]);
+    }
+
+    return room
+  }
+
+  shuffle(a) {
+    var j, x, i;
+    for (i = a.length - 1; i > 0; i--) {
+      j = Math.floor(Math.random() * (i + 1));
+      x = a[i];
+      a[i] = a[j];
+      a[j] = x;
+    }
+    return a;
   }
 }

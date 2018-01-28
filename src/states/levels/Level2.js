@@ -17,6 +17,7 @@ export default class extends GameLevel {
     this.nextLevel = 'Level3'
 
     this.currentRoom = this.createStartCell()
+    this.levelGrid.addRoom(1, 1, super.prepareRoom(4, 2))
     this.levelGrid.addRoom(1, 2, this.currentRoom)
   }
 

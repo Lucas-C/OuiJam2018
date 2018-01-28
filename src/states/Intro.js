@@ -25,6 +25,7 @@ export default class extends Phaser.State {
     this.load.image('portraitNM2', './assets/images/nm2.png', 32, 32);
     this.load.image('line', './assets/images/line.png', 600, 2);
     this.load.image('warning', './assets/images/warning.png', 128, 128);
+    this.load.image('skull', './assets/images/skull.png', 128, 128);
 
     game.load.audio('medievalPrison', ['assets/audio/medieval_prison.mp3']);
     game.load.audio('move1', ['assets/audio/move_1.mp3']);

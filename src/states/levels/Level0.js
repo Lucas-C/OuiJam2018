@@ -33,6 +33,7 @@ export default class extends GameLevel {
   }
 
   createStartCell() {
+    // Do not 'prepare' the starting cell
     const room = new PrisonCell(this.getRoomWidthInPx(), this.getRoomHeightInPx())
     room.addSideMetalBars( DIRECTION.DOWN);
     room.addSideWalls(DIRECTION.LEFT, DIRECTION.UP)
@@ -45,41 +46,32 @@ export default class extends GameLevel {
   }
 
   createTopCell_2() {
-    const room = new PrisonCell(this.getRoomWidthInPx(), this.getRoomHeightInPx());
+    const room = super.prepareRoom(0, 0);
     room.addSideMetalBars(DIRECTION.LEFT, DIRECTION.DOWN);
     room.addSideWalls(DIRECTION.UP)
-    room.addFurniture(2, 3)
-    room.addFurniture(5, 4)
     room.addExits('left', 'right')
     room.onEnterPrecondition = () => this.displayMessage('Do not enter cells where there are\nless friendly inmates than fascist ones ! ')
     return room
   }
 
   createTopCell_3() {
-    const room = new PrisonCell(this.getRoomWidthInPx(), this.getRoomHeightInPx());
+    const room = super.prepareRoom(2, 1);
     room.addSideMetalBars(DIRECTION.DOWN);
     room.addSideWalls(DIRECTION.UP)
-    room.addAlly(2, 3)
-    room.addAlly(4, 4)
-    room.addBaddy(3, 5)
-    room.addFurniture(5, 1)
     room.addExits('left', 'down', 'right')
     room.onEnterPrecondition = () => this.displayMessage('In a cell with at least one fascist,\nthe stress will make you loose your way ! ')
     return room
   }
 
   createMiddleCell_3() {
-    const room = new PrisonCell(this.getRoomWidthInPx(), this.getRoomHeightInPx());
+    const room = super.prepareRoom(0, 1);
     room.addSideMetalBars( DIRECTION.LEFT, DIRECTION.RIGHT, DIRECTION.DOWN);
-    room.addBaddy(3, 3)
-    room.addFurniture(1, 5)
-    room.addFurniture(4, 5)
-    room.addFurniture(5, 1)
     room.addExits('up')
     return room
   }
 
   createEndCell() {
+    // Do not 'prepare' the end room :-)
     const room = new PrisonCell(this.getRoomWidthInPx(), this.getRoomHeightInPx());
     room.addSideMetalBars(DIRECTION.LEFT, DIRECTION.DOWN);
     room.addSideWalls(DIRECTION.UP, DIRECTION.RIGHT)
