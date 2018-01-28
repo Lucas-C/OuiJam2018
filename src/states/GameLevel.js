@@ -12,6 +12,7 @@ import DeadTimer from "../sprites/DeadTimer";
 export default class GameLevel extends Phaser.State {
 
   init() {
+    this.msgsAlreadyDisplayed = new Set()
     this.roomsPerLevelSide = 5 // Can be overriden per level
     this.deadTimer = new DeadTimer(this.game, this, () => {
       this._addSkullInCurrentRoom();
@@ -159,21 +160,18 @@ export default class GameLevel extends Phaser.State {
   }
 
   onGameLost() {
-    const failureMsg = "It's all lost !\nThe message has been stolen by a fascist";
-    if (!this.dialogFrame.visible && this.dialogFrame.text === failureMsg) {
+    const tooSlowFail = "Too slow !\nA fascist in this cell stole your message "
+    const badCellFail = "Bad decision !\nThe message has been stolen by a fascist "
+    if (!this.dialogFrame.visible && (this.dialogFrame.text === tooSlowFail || this.dialogFrame.text === badCellFail)) {
       this.cursor.resetOriginalMovements();
       this.state.start('Level0')
     } else {
-      this.displayMessage(failureMsg)
+      if (this.deadTimer.isEnded) {
+        this.displayMessage(tooSlowFail)
+      } else {
+        this.displayMessage(badCellFail)
+      }
     }
-  }
-
-  isGameWon() {
-    return this.currentRoom.windowSprite // end cell
-  }
-
-  isGameLost() {
-    return this.currentRoom.baddies().length > this.currentRoom.allies().length
   }
 
   _createDialogFrame() {
@@ -212,6 +210,9 @@ export default class GameLevel extends Phaser.State {
   }
 
   displayMessage(msg, extraSprite) {
+    if (this.msgsAlreadyDisplayed.has(msg)) {return}
+    this.msgsAlreadyDisplayed.add(msg)
+
     this.dialogFrame.text = msg
     // this.dialogFrame.fontSize = fontSize
     this.dialogFrame.lineSpacing = -15;

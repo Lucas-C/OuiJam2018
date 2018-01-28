@@ -123,6 +123,7 @@ export default class extends GameLevel {
   createCellBottom_3() {
     return super.makePrisonCell({
       sideMetalBars: [DIRECTION.DOWN, DIRECTION.UP, DIRECTION.RIGHT],
+      sideWalls: [DIRECTION.DOWN],
       exits: [DIRECTION.UP, DIRECTION.RIGHT, DIRECTION.LEFT],
       nbAllies: 2
     })
