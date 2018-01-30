@@ -44,13 +44,12 @@ A big thanks to [Lucas Fleurance](https://globalgamejam.org/users/lucasfleur) wh
 **OpenGameArt.org :**
 - [24x32-black-character-pack](https://opengameart.org/content/24x32-black-character-pack)
 - [rpg-portraits](https://opengameart.org/content/rpg-portraits)
+- The clock sound comes from [there](https://opengameart.org/content/clock-ticking)
+- All the other sounds come from [this rpg-sound-pack](https://opengameart.org/content/rpg-sound-pack).
 
 **OpenClipArt.org :**
 - [Skulls](https://openclipart.org/detail/271180/skull-emoji)
 - [Warning sign](https://openclipart.org/detail/293958/warningsigngeneral1)
-
-**Sounds :**
-- The sounds came from [this rpg-sound-pack](https://opengameart.org/content/rpg-sound-pack).
 
 ## License
 
