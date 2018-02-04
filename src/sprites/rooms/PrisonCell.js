@@ -1,10 +1,7 @@
-import BaseRoom from "./BaseRoom";
-
-import Frame from "../../const/Frame";
+import BaseRoom from './BaseRoom'
 
 export default class PrisonCell extends BaseRoom {
-
-  constructor(roomWidth, roomHeight) {
+  constructor (roomWidth, roomHeight) {
     super(roomWidth, roomHeight)
     this.setUniformBackground(0xCCCCCC)
   }

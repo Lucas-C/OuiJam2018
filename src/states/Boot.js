@@ -15,10 +15,10 @@ export default class extends Phaser.State {
       },
       // The following should ideally allow us to load the font locally,
       // but webfontloader never attempt to fetch googlefonts.css :(
-      /*custom: {
+      /* custom: {
         families: ['Bangers', 'VT323'],
         url: ['googlefonts.css']
-      },*/
+      }, */
       active: this.fontsLoaded,
       inactive: () => console.error('Fonts loading failed (5s timeout)')
     })
