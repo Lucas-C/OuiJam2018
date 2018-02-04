@@ -9,7 +9,7 @@ const FRAME = {
     CTR_RGT: 1487,
     BOT_LFT: 1542,
     BOT_MID: 1543,
-    BOT_RGT: 1544,
+    BOT_RGT: 1544
   },
 
   // couloir
@@ -22,7 +22,7 @@ const FRAME = {
     CTR_RGT: 119,
     BOT_LFT: 119,
     BOT_MID: 119,
-    BOT_RGT: 119,
+    BOT_RGT: 119
   },
 
   // Fleches bleues
@@ -95,6 +95,6 @@ const FRAME = {
 
   BADDIES: [270, 432, 541],
   NELLA_MANDELSON: 271
-};
+}
 
-export default FRAME;
+export default FRAME

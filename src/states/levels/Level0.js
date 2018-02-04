@@ -1,15 +1,15 @@
 import GameLevel from '../GameLevel'
 import Cursor from '../../sprites/Cursor'
-import DIRECTION from "../../const/Direction";
-import FRAME from "../../const/Frame";
+import DIRECTION from '../../const/Direction'
+import FRAME from '../../const/Frame'
 
 export default class extends GameLevel {
-  init() {
+  init () {
     super.init()
     this.roomsPerLevelSide = 6
   }
 
-  preload() {
+  preload () {
     super.preload()
     super.setLevelNumber(1)
     this.nextLevel = 'Level1'
@@ -19,12 +19,12 @@ export default class extends GameLevel {
     this.levelGrid.addRoom(1, 1, this.currentRoom)
     this.levelGrid.addRoom(1, 2, this.createCorridor()).addSideWalls(DIRECTION.LEFT, DIRECTION.DOWN)
 
-    this.levelGrid.addRoom(2, 1, this.createTopCell_2())
+    this.levelGrid.addRoom(2, 1, this.createTopCell2())
     this.levelGrid.addRoom(2, 2, this.createCorridor())
     this.levelGrid.addRoom(2, 3, this.createCorridor()).addSideWalls(DIRECTION.LEFT, DIRECTION.DOWN)
 
-    this.levelGrid.addRoom(3, 1, this.createTopCell_3())
-    this.levelGrid.addRoom(3, 2, this.createMiddleCell_3())
+    this.levelGrid.addRoom(3, 1, this.createTopCell3())
+    this.levelGrid.addRoom(3, 2, this.createMiddleCell3())
     this.levelGrid.addRoom(3, 3, this.createCorridor()).addSideWalls(DIRECTION.DOWN)
 
     this.levelGrid.addRoom(4, 1, this.createEndCell())
@@ -32,7 +32,7 @@ export default class extends GameLevel {
     this.levelGrid.addRoom(4, 3, this.createCorridor()).addSideWalls(DIRECTION.RIGHT, DIRECTION.DOWN)
   }
 
-  createStartCell() {
+  createStartCell () {
     const room = super.makePrisonCell({
       sideMetalBars: [DIRECTION.DOWN],
       sideWalls: [DIRECTION.LEFT, DIRECTION.UP],
@@ -43,18 +43,18 @@ export default class extends GameLevel {
     return room
   }
 
-  createTopCell_2() {
+  createTopCell2 () {
     const room = super.makePrisonCell({
       sideMetalBars: [DIRECTION.LEFT, DIRECTION.DOWN],
       sideWalls: [DIRECTION.UP],
       exits: ['left', 'right']
     })
     room.onEnterPrecondition = () => this.displayMessage('Do not enter cells where there are\nless friendly inmates than fascist ones : ',
-                                                         {spriteSheet: 'roguelikeChar', indices: FRAME.BADDIES, percentX: .9, percentY: .1, scale: 3})
+                                                         {spriteSheet: 'roguelikeChar', indices: FRAME.BADDIES, percentX: 0.9, percentY: 0.1, scale: 3})
     return room
   }
 
-  createTopCell_3() {
+  createTopCell3 () {
     const room = super.makePrisonCell({
       sideMetalBars: [DIRECTION.DOWN],
       sideWalls: [DIRECTION.UP],
@@ -65,11 +65,11 @@ export default class extends GameLevel {
     const arrowIndices = Object.values(Cursor.ICON_MOVEMENT_PANIK).map(dir => dir.iconFrame)
     const arrowAngles = Object.values(Cursor.ICON_MOVEMENT_PANIK).map(dir => dir.iconRotation)
     room.onEnterPrecondition = () => this.displayMessage('In a cell with at least one fascist,\nthe stress will make you loose your way ! ',
-                                                         {spriteSheet: 'roguelikeSheet', indices: arrowIndices, angles: arrowAngles, percentX: .9, percentY: .1, scale: 3})
+                                                         {spriteSheet: 'roguelikeSheet', indices: arrowIndices, angles: arrowAngles, percentX: 0.9, percentY: 0.1, scale: 3})
     return room
   }
 
-  createMiddleCell_3() {
+  createMiddleCell3 () {
     return super.makePrisonCell({
       sideMetalBars: [DIRECTION.LEFT, DIRECTION.RIGHT, DIRECTION.DOWN],
       exits: ['up'],
@@ -77,7 +77,7 @@ export default class extends GameLevel {
     })
   }
 
-  createEndCell() {
+  createEndCell () {
     return super.makePrisonCell({
       sideMetalBars: [DIRECTION.LEFT, DIRECTION.DOWN],
       sideWalls: [DIRECTION.UP, DIRECTION.RIGHT],

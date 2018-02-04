@@ -3,8 +3,8 @@ import Phaser from 'phaser'
 import config from '../../config'
 
 export default class extends Phaser.Group {
-  constructor({ x = 0, y = 0, frames, spriteSheet, room, isAlly, name }) {
-    super(game, room, name || 'Character')
+  constructor ({ x = 0, y = 0, frames, spriteSheet, room, isAlly, name }) {
+    super(window.game, room, name || 'Character')
     this.room = room
     this.isAlly = isAlly
     this.hasScrollMsg = false
@@ -23,11 +23,11 @@ export default class extends Phaser.Group {
     room.add(this)
   }
 
-  canMoveTo(room) {
+  canMoveTo (room) {
     return false // TODO
   }
 
-  move(newRoom, x, y) { // TODO: add tween + handle scrollMsg movement too
+  move (newRoom, x, y) { // TODO: add tween + handle scrollMsg movement too
     const self = this
     this.room.characters = this.room.characters.filter((e) => e !== self)
     this.move(newRoom)

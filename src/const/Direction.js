@@ -3,6 +3,6 @@ const DIRECTION = {
   UP: 'up',
   DOWN: 'down',
   LEFT: 'left'
-};
+}
 
-export default DIRECTION;
+export default DIRECTION
