@@ -4,15 +4,17 @@ import RoomGrid from '../../grid/RoomGrid'
 import Inmate from '../../sprites/characters/Inmate'
 import DIRECTION from '../../const/Direction'
 import FRAME from '../../const/Frame'
+import {selectOneInArray} from '../../utils'
 
 export default class BaseRoom extends Phaser.Group {
   constructor (roomWidth, roomHeight) {
     super(window.game)
     this.roomWidth = roomWidth
     this.roomHeight = roomHeight
-    this.grid = new RoomGrid(config.cellsPerRoomSide, roomWidth, roomHeight)
-    // this.grid.showForDebug()
-    this.exits = [Object.values(DIRECTION)]
+    this.cellsGrid = new RoomGrid(config.cellsPerRoomSide, roomWidth, roomHeight)
+    // this.cellsGrid.showForDebug()
+    this.sideWalls = []
+    this.sideBars = []
     this.characters = []
     this.windowSprite = null
     this.groundTilesIndices = null // Must be set by child classes
@@ -30,6 +32,50 @@ export default class BaseRoom extends Phaser.Group {
     return this.baddies().length > 0
   }
 
+  getRoomInDirection ({deltaX, deltaY}) {
+    const [dstX, dstY] = [this.gridPosX + deltaX, this.gridPosY + deltaY]
+    return this.parentLevelGrid.roomAtPos(dstX, dstY)
+  }
+
+  getDirectionToRoom (destRoom) {
+    if (this.gridPosX !== destRoom.gridPosX && this.gridPosY !== destRoom.gridPosY) {
+      throw new Error('Rooms are not aligned')
+    }
+    if (this.gridPosX === destRoom.gridPosX && this.gridPosY === destRoom.gridPosY) {
+      throw new Error('Rooms are at the same position')
+    }
+    if (this.gridPosX === destRoom.gridPosX) {
+      return destRoom.gridPosY > this.gridPosY ? DIRECTION.DOWN : DIRECTION.UP
+    } else {
+      return destRoom.gridPosX > this.gridPosX ? DIRECTION.RIGHT : DIRECTION.LEFT
+    }
+  }
+
+  getPassingToRoom (destRoom) {
+    if (Math.abs(this.gridPosY - destRoom.gridPosY) !== 1 && Math.abs(this.gridPosY - destRoom.gridPosY)) {
+      throw new Error('Cannot pass to a room that is not at a distance of exactly 1')
+    }
+    const passing = {
+      bars: false,
+      walls: false
+    }
+    const dirToDest = this.getDirectionToRoom(destRoom)
+    if (this.sideBars.includes(dirToDest)) {
+      passing.bars = true
+    }
+    if (this.sideWalls.includes(dirToDest)) {
+      passing.walls = true
+    }
+    const dirFromDest = destRoom.getDirectionToRoom(this)
+    if (destRoom.sideBars.includes(dirFromDest)) {
+      passing.bars = true
+    }
+    if (destRoom.sideWalls.includes(dirFromDest)) {
+      passing.walls = true
+    }
+    return passing
+  }
+
   /**********
    * Setters
    *********/
@@ -44,77 +90,68 @@ export default class BaseRoom extends Phaser.Group {
   setGroundTiles () {
     /*
     // Corners:
-    this.grid.placeAt(0, 0, this.create(0, 0, BaseRoom.WALL_AND_FLOOR_SPRITE_SHEET, this.groundTilesIndices.TOP_LFT));
-    this.grid.placeAt(0, config.cellsPerRoomSide - 1, this.create(0, 0, BaseRoom.WALL_AND_FLOOR_SPRITE_SHEET, this.groundTilesIndices.BOT_LFT));
-    this.grid.placeAt(config.cellsPerRoomSide - 1, 0, this.create(0, 0, BaseRoom.WALL_AND_FLOOR_SPRITE_SHEET, this.groundTilesIndices.TOP_RGT));
-    this.grid.placeAt(config.cellsPerRoomSide - 1, config.cellsPerRoomSide - 1, this.create(0, 0, BaseRoom.WALL_AND_FLOOR_SPRITE_SHEET, this.groundTilesIndices.BOT_RGT));
+    this.cellsGrid.placeAt(0, 0, this.create(0, 0, BaseRoom.WALL_AND_FLOOR_SPRITE_SHEET, this.groundTilesIndices.TOP_LFT));
+    this.cellsGrid.placeAt(0, config.cellsPerRoomSide - 1, this.create(0, 0, BaseRoom.WALL_AND_FLOOR_SPRITE_SHEET, this.groundTilesIndices.BOT_LFT));
+    this.cellsGrid.placeAt(config.cellsPerRoomSide - 1, 0, this.create(0, 0, BaseRoom.WALL_AND_FLOOR_SPRITE_SHEET, this.groundTilesIndices.TOP_RGT));
+    this.cellsGrid.placeAt(config.cellsPerRoomSide - 1, config.cellsPerRoomSide - 1, this.create(0, 0, BaseRoom.WALL_AND_FLOOR_SPRITE_SHEET, this.groundTilesIndices.BOT_RGT));
 
     // Sides:
     for (let k = 1; k < config.cellsPerRoomSide - 1; k++) {
-      this.grid.placeAt(k, 0, this.create(0, 0, BaseRoom.WALL_AND_FLOOR_SPRITE_SHEET, this.groundTilesIndices.TOP_MID));
-      this.grid.placeAt(k, config.cellsPerRoomSide - 1, this.create(0, 0, BaseRoom.WALL_AND_FLOOR_SPRITE_SHEET, this.groundTilesIndices.BOT_MID));
-      this.grid.placeAt(0, k, this.create(0, 0, BaseRoom.WALL_AND_FLOOR_SPRITE_SHEET, this.groundTilesIndices.CTR_LFT));
-      this.grid.placeAt(config.cellsPerRoomSide - 1, k, this.create(0, 0, BaseRoom.WALL_AND_FLOOR_SPRITE_SHEET, this.groundTilesIndices.CTR_RGT));
+      this.cellsGrid.placeAt(k, 0, this.create(0, 0, BaseRoom.WALL_AND_FLOOR_SPRITE_SHEET, this.groundTilesIndices.TOP_MID));
+      this.cellsGrid.placeAt(k, config.cellsPerRoomSide - 1, this.create(0, 0, BaseRoom.WALL_AND_FLOOR_SPRITE_SHEET, this.groundTilesIndices.BOT_MID));
+      this.cellsGrid.placeAt(0, k, this.create(0, 0, BaseRoom.WALL_AND_FLOOR_SPRITE_SHEET, this.groundTilesIndices.CTR_LFT));
+      this.cellsGrid.placeAt(config.cellsPerRoomSide - 1, k, this.create(0, 0, BaseRoom.WALL_AND_FLOOR_SPRITE_SHEET, this.groundTilesIndices.CTR_RGT));
     }
     */
     // Middle:
     for (let i = 0; i < config.cellsPerRoomSide; i++) {
       for (let j = 0; j < config.cellsPerRoomSide; j++) {
-        this.grid.placeAt(i, j, this.create(0, 0, BaseRoom.WALL_AND_FLOOR_SPRITE_SHEET, this.groundTilesIndices.CTR_MID))
+        this.cellsGrid.placeAt(i, j, this.create(0, 0, BaseRoom.WALL_AND_FLOOR_SPRITE_SHEET, this.groundTilesIndices.CTR_MID))
       }
     }
   }
 
-  addExits (...exits) {
-    this.exits = exits
-  }
-
   addNellaMandelson (x, y) {
     const character = new Inmate({frames: [FRAME.NELLA_MANDELSON], isAlly: true, room: this, name: 'Nella Mandelson'})
-    this.grid.placeAt(x, y, character)
+    this.cellsGrid.placeAt(x, y, character)
     this.characters.push(character)
     return character
   }
 
   addEndWindow (x, y) {
     this.windowSprite = this.create(0, 0, BaseRoom.WALL_AND_FLOOR_SPRITE_SHEET, FRAME.WINDOW_1)
-    this.grid.placeAt(x, y, this.windowSprite)
-    this.grid.placeAt(x, y, this.create(0, 0, BaseRoom.WALL_AND_FLOOR_SPRITE_SHEET, FRAME.CURTAINS_1))
+    this.cellsGrid.placeAt(x, y, this.windowSprite)
+    this.cellsGrid.placeAt(x, y, this.create(0, 0, BaseRoom.WALL_AND_FLOOR_SPRITE_SHEET, FRAME.CURTAINS_1))
     return this
   }
 
   addAlly (x, y) {
     const frames = [
-      this.selectOneInArray([0, 1]), // bases
-      this.selectOneInArray([10, 14, 327, 381]), // clothes
-      this.selectOneInArray([19, 21]) // hair
+      selectOneInArray([0, 1]), // bases
+      selectOneInArray([10, 14, 327, 381]), // clothes
+      selectOneInArray([19, 21]) // hair
     ]
     const character = new Inmate({frames: frames, isAlly: true, room: this})
-    this.grid.placeAt(x, y, character)
+    this.cellsGrid.placeAt(x, y, character)
     this.characters.push(character)
     return this
   }
 
   addBaddy (x, y) {
-    const character = new Inmate({frames: [this.selectOneInArray(FRAME.BADDIES)], isAlly: false, room: this})
-    this.grid.placeAt(x, y, character)
+    const character = new Inmate({frames: [selectOneInArray(FRAME.BADDIES)], isAlly: false, room: this})
+    this.cellsGrid.placeAt(x, y, character)
     this.characters.push(character)
     return this
   }
 
   addGuard (x, y) {
-    this.baddiesCount += 1
-    this.grid.placeAt(x, y, this.create(0, 0, 'roguelikeChar', this.selectOneInArray([0, 1])))
-    this.grid.placeAt(x, y, this.create(0, 0, 'roguelikeChar', this.selectOneInArray([3])))
-    this.grid.placeAt(x, y, this.create(0, 0, 'roguelikeChar', this.selectOneInArray([6])))
-    this.grid.placeAt(x, y, this.create(0, 0, 'roguelikeChar', this.selectOneInArray([28])))
-    this.grid.placeAt(x, y, this.create(0, 0, 'roguelikeChar', this.selectOneInArray([256])))
-    this.grid.placeAt(x, y, this.create(0, 0, 'roguelikeChar', this.selectOneInArray([49])))
+    this.cellsGrid.placeAt(x, y, this.create(0, 0, 'roguelikeChar', selectOneInArray([0, 1])))
+    this.cellsGrid.placeAt(x, y, this.create(0, 0, 'roguelikeChar', selectOneInArray([3])))
+    this.cellsGrid.placeAt(x, y, this.create(0, 0, 'roguelikeChar', selectOneInArray([6])))
+    this.cellsGrid.placeAt(x, y, this.create(0, 0, 'roguelikeChar', selectOneInArray([28])))
+    this.cellsGrid.placeAt(x, y, this.create(0, 0, 'roguelikeChar', selectOneInArray([256])))
+    this.cellsGrid.placeAt(x, y, this.create(0, 0, 'roguelikeChar', selectOneInArray([49])))
     return this
-  }
-
-  selectOneInArray (array) {
-    return array[Math.floor(Math.random() * array.length)]
   }
 
   addFurniture (x, y) {
@@ -125,7 +162,7 @@ export default class BaseRoom extends Phaser.Group {
       FRAME.BED_SIDE_LEFT_1, FRAME.BED_SIDE_RIGHT_1, FRAME.BED_FRONT_1, FRAME.BED_BACK_1,
       FRAME.BED_SIDE_LEFT_2, FRAME.BED_SIDE_RIGHT_2, FRAME.BED_FRONT_2, FRAME.BED_BACK_2
     ]
-    this.grid.placeAt(x, y, this.create(0, 0, 'roguelikeSheet', this.selectOneInArray(furnitureArray))) // all in one
+    this.cellsGrid.placeAt(x, y, this.create(0, 0, 'roguelikeSheet', selectOneInArray(furnitureArray))) // all in one
     return this
   }
 
@@ -140,16 +177,16 @@ export default class BaseRoom extends Phaser.Group {
   }
 
   addDeco (x, y, spriteSheet, indices) {
-    var decoration = this.create(0, 0, spriteSheet, this.selectOneInArray(indices))
+    var decoration = this.create(0, 0, spriteSheet, selectOneInArray(indices))
     decoration.alpha = 0.5
-    this.grid.placeAt(x, y, decoration)
+    this.cellsGrid.placeAt(x, y, decoration)
     return this
   }
 
-  addSideMetalBars (...sides) {
-    this.sides = sides
-    sides.forEach(side => {
-      switch (side) {
+  addSideMetalBars (...sideBars) {
+    this.sideBars = sideBars
+    sideBars.forEach(sideBar => {
+      switch (sideBar) {
         case DIRECTION.UP:
           this._addTopSideMetalBar()
           break
@@ -172,7 +209,7 @@ export default class BaseRoom extends Phaser.Group {
       const metalBar = this.create(0, 0, BaseRoom.METAL_BAR_SPRITE_SHEET, FRAME.METAL_BAR)
       metalBar.anchor.setTo(0.4, 1)
       metalBar.angle = 90
-      this.grid.placeAt(i, 0, metalBar)
+      this.cellsGrid.placeAt(i, 0, metalBar)
     }
   }
 
@@ -181,7 +218,7 @@ export default class BaseRoom extends Phaser.Group {
       const metalBar = this.create(0, 0, BaseRoom.METAL_BAR_SPRITE_SHEET, FRAME.METAL_BAR)
       metalBar.anchor.setTo(0.5, 1)
       metalBar.angle = 90
-      this.grid.placeAt(i, config.cellsPerRoomSide, metalBar)
+      this.cellsGrid.placeAt(i, config.cellsPerRoomSide, metalBar)
     }
   }
 
@@ -189,7 +226,7 @@ export default class BaseRoom extends Phaser.Group {
     for (let i = 0; i < config.cellsPerRoomSide; i++) {
       const metalBar = this.create(0, 0, BaseRoom.METAL_BAR_SPRITE_SHEET, FRAME.METAL_BAR)
       metalBar.anchor.setTo(0.4, 0)
-      this.grid.placeAt(0, i, metalBar)
+      this.cellsGrid.placeAt(0, i, metalBar)
     }
   }
 
@@ -197,14 +234,14 @@ export default class BaseRoom extends Phaser.Group {
     for (let i = 0; i < config.cellsPerRoomSide; i++) {
       const metalBar = this.create(0, 0, BaseRoom.METAL_BAR_SPRITE_SHEET, FRAME.METAL_BAR)
       metalBar.anchor.setTo(0.5, 0)
-      this.grid.placeAt(config.cellsPerRoomSide, i, metalBar)
+      this.cellsGrid.placeAt(config.cellsPerRoomSide, i, metalBar)
     }
   }
 
-  addSideWalls (...sides) {
-    this.sides = sides
-    sides.forEach(side => {
-      switch (side) {
+  addSideWalls (...sideWalls) {
+    this.sideWalls = sideWalls
+    sideWalls.forEach(sideWall => {
+      switch (sideWall) {
         case DIRECTION.UP:
           this._addTopSideWall()
           break
@@ -225,61 +262,61 @@ export default class BaseRoom extends Phaser.Group {
   _addTopSideWall () {
     const yPos = 0
     for (let i = 1; i < config.cellsPerRoomSide - 1; i++) {
-      this.grid.placeAt(i, yPos, this.create(0, 0, BaseRoom.WALL_AND_FLOOR_SPRITE_SHEET, FRAME.WALL_MIDDLE_HORIZONTAL))
+      this.cellsGrid.placeAt(i, yPos, this.create(0, 0, BaseRoom.WALL_AND_FLOOR_SPRITE_SHEET, FRAME.WALL_MIDDLE_HORIZONTAL))
     }
     const endLeftSprite = this.hasLeftSideWall() ? FRAME.WALL_CORNER_TOP_LEFT : FRAME.WALL_DEADEND_LEFT
-    this.grid.placeAt(0, yPos, this.create(0, 0, BaseRoom.WALL_AND_FLOOR_SPRITE_SHEET, endLeftSprite))
+    this.cellsGrid.placeAt(0, yPos, this.create(0, 0, BaseRoom.WALL_AND_FLOOR_SPRITE_SHEET, endLeftSprite))
     const endRightSprite = this.hasRightSideWall() ? FRAME.WALL_CORNER_TOP_RIGHT : FRAME.WALL_DEADEND_RIGHT
-    this.grid.placeAt(config.cellsPerRoomSide - 1, yPos, this.create(0, 0, BaseRoom.WALL_AND_FLOOR_SPRITE_SHEET, endRightSprite))
+    this.cellsGrid.placeAt(config.cellsPerRoomSide - 1, yPos, this.create(0, 0, BaseRoom.WALL_AND_FLOOR_SPRITE_SHEET, endRightSprite))
   }
 
   _addBottomSideWall () {
     const yPos = config.cellsPerRoomSide - 1
     for (let i = 1; i < config.cellsPerRoomSide - 1; i++) {
-      this.grid.placeAt(i, yPos, this.create(0, 0, BaseRoom.WALL_AND_FLOOR_SPRITE_SHEET, FRAME.WALL_MIDDLE_HORIZONTAL))
+      this.cellsGrid.placeAt(i, yPos, this.create(0, 0, BaseRoom.WALL_AND_FLOOR_SPRITE_SHEET, FRAME.WALL_MIDDLE_HORIZONTAL))
     }
     const endLeftSprite = this.hasLeftSideWall() ? FRAME.WALL_CORNER_BOT_LEFT : FRAME.WALL_DEADEND_LEFT
-    this.grid.placeAt(0, yPos, this.create(0, 0, BaseRoom.WALL_AND_FLOOR_SPRITE_SHEET, endLeftSprite))
+    this.cellsGrid.placeAt(0, yPos, this.create(0, 0, BaseRoom.WALL_AND_FLOOR_SPRITE_SHEET, endLeftSprite))
     const endRightSprite = this.hasRightSideWall() ? FRAME.WALL_CORNER_BOT_RIGHT : FRAME.WALL_DEADEND_RIGHT
-    this.grid.placeAt(config.cellsPerRoomSide - 1, yPos, this.create(0, 0, BaseRoom.WALL_AND_FLOOR_SPRITE_SHEET, endRightSprite))
+    this.cellsGrid.placeAt(config.cellsPerRoomSide - 1, yPos, this.create(0, 0, BaseRoom.WALL_AND_FLOOR_SPRITE_SHEET, endRightSprite))
   }
 
   _addLeftSideWall () {
     const xPos = 0
     for (let i = 1; i < config.cellsPerRoomSide - 1; i++) {
-      this.grid.placeAt(xPos, i, this.create(0, 0, BaseRoom.WALL_AND_FLOOR_SPRITE_SHEET, FRAME.WALL_MIDDLE_VERTICAL))
+      this.cellsGrid.placeAt(xPos, i, this.create(0, 0, BaseRoom.WALL_AND_FLOOR_SPRITE_SHEET, FRAME.WALL_MIDDLE_VERTICAL))
     }
     const endTopSprite = this.hasTopSideWall() ? FRAME.WALL_CORNER_TOP_LEFT : FRAME.WALL_DEADEND_TOP
-    this.grid.placeAt(xPos, 0, this.create(0, 0, BaseRoom.WALL_AND_FLOOR_SPRITE_SHEET, endTopSprite))
+    this.cellsGrid.placeAt(xPos, 0, this.create(0, 0, BaseRoom.WALL_AND_FLOOR_SPRITE_SHEET, endTopSprite))
     const endBottomSprite = this.hasBottomSideWall() ? FRAME.WALL_CORNER_BOT_LEFT : FRAME.WALL_DEADEND_BOTTOM
-    this.grid.placeAt(xPos, config.cellsPerRoomSide - 1, this.create(0, 0, BaseRoom.WALL_AND_FLOOR_SPRITE_SHEET, endBottomSprite))
+    this.cellsGrid.placeAt(xPos, config.cellsPerRoomSide - 1, this.create(0, 0, BaseRoom.WALL_AND_FLOOR_SPRITE_SHEET, endBottomSprite))
   }
 
   _addRightSideWall () {
     const xPos = config.cellsPerRoomSide - 1
     for (let i = 1; i < config.cellsPerRoomSide - 1; i++) {
-      this.grid.placeAt(xPos, i, this.create(0, 0, BaseRoom.WALL_AND_FLOOR_SPRITE_SHEET, FRAME.WALL_MIDDLE_VERTICAL))
+      this.cellsGrid.placeAt(xPos, i, this.create(0, 0, BaseRoom.WALL_AND_FLOOR_SPRITE_SHEET, FRAME.WALL_MIDDLE_VERTICAL))
     }
     const endTopSprite = this.hasTopSideWall() ? FRAME.WALL_CORNER_TOP_RIGHT : FRAME.WALL_DEADEND_TOP
-    this.grid.placeAt(xPos, 0, this.create(0, 0, BaseRoom.WALL_AND_FLOOR_SPRITE_SHEET, endTopSprite))
+    this.cellsGrid.placeAt(xPos, 0, this.create(0, 0, BaseRoom.WALL_AND_FLOOR_SPRITE_SHEET, endTopSprite))
     const endBottomSprite = this.hasBottomSideWall() ? FRAME.WALL_CORNER_BOT_RIGHT : FRAME.WALL_DEADEND_BOTTOM
-    this.grid.placeAt(xPos, config.cellsPerRoomSide - 1, this.create(0, 0, BaseRoom.WALL_AND_FLOOR_SPRITE_SHEET, endBottomSprite))
+    this.cellsGrid.placeAt(xPos, config.cellsPerRoomSide - 1, this.create(0, 0, BaseRoom.WALL_AND_FLOOR_SPRITE_SHEET, endBottomSprite))
   }
 
   hasLeftSideWall () {
-    return this.sides.includes(DIRECTION.LEFT)
+    return this.sideWalls.includes(DIRECTION.LEFT)
   }
 
   hasRightSideWall () {
-    return this.sides.includes(DIRECTION.RIGHT)
+    return this.sideWalls.includes(DIRECTION.RIGHT)
   }
 
   hasTopSideWall () {
-    return this.sides.includes(DIRECTION.UP)
+    return this.sideWalls.includes(DIRECTION.UP)
   }
 
   hasBottomSideWall () {
-    return this.sides.includes(DIRECTION.DOWN)
+    return this.sideWalls.includes(DIRECTION.DOWN)
   }
 }
 

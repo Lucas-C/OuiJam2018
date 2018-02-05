@@ -14,8 +14,8 @@ export default class extends Phaser.Group {
       if (!sprite.animations.frameData || sprite.animations.frameData.total <= 1) {
         throw new Error('Failure parsing spritesheet')
       }
-      console.log('Scaling to', room.grid.widthCell / config.spriteSize, room.grid.heightCell / config.spriteSize)
-      sprite.scale.setTo(room.grid.widthCell / config.spriteSize, room.grid.heightCell / config.spriteSize)
+      console.log('Scaling to', room.cellsGrid.widthCell / config.spriteSize, room.cellsGrid.heightCell / config.spriteSize)
+      sprite.scale.setTo(room.cellsGrid.widthCell / config.spriteSize, room.cellsGrid.heightCell / config.spriteSize)
       sprite.anchor.setTo(0.5)
     })
     this.x = x
@@ -23,15 +23,19 @@ export default class extends Phaser.Group {
     room.add(this)
   }
 
-  canMoveTo (room) {
-    return false // TODO
+  canMoveTo (destRoom) {
+    return false // TODO: remove once method below is implemented
+    // const passing = this.room.getPassingToRoom(destRoom)
+    // return !passing.walls && !passing.bars
   }
 
-  move (newRoom, x, y) { // TODO: add tween + handle scrollMsg movement too
+  moveTo (newRoom, x, y) { // TODO: add tween + handle scrollMsg movement too
     const self = this
     this.room.characters = this.room.characters.filter((e) => e !== self)
+    /* TODO: implement moving this Group + sprites to another room
     this.move(newRoom)
-    newRoom.grid.placeAt(x || Math.floor(Math.random() * newRoom.size), y || Math.floor(Math.random() * newRoom.size), this)
+    newRoom.cellsGrid.placeAt(x || Math.floor(Math.random() * newRoom.size), y || Math.floor(Math.random() * newRoom.size), this)
+    */
     newRoom.characters.push(this)
     this.room = newRoom
   }

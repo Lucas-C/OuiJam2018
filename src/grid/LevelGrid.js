@@ -16,6 +16,7 @@ export default class LevelGrid extends GameGrid {
   addRoom (x, y, room) {
     this.rooms[x][y] = room
     this.placeAt(x, y, room)
+    room.parentLevelGrid = this
     // Lucas: if we do this, everything breaks :(
     // this.add(room)
     return room
