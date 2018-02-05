@@ -39,6 +39,7 @@ export default class BaseRoom extends Phaser.Group {
 
   getDirectionToRoom (destRoom) {
     if (this.gridPosX !== destRoom.gridPosX && this.gridPosY !== destRoom.gridPosY) {
+      console.error('Rooms are not aligned', this, destRoom)
       throw new Error('Rooms are not aligned')
     }
     if (this.gridPosX === destRoom.gridPosX && this.gridPosY === destRoom.gridPosY) {
