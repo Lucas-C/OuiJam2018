@@ -1,5 +1,6 @@
 import Phaser from 'phaser'
 import FRAME from '../const/Frame'
+import {selectOneInArray} from '../utils'
 
 export default class extends Phaser.Sprite {
   constructor () {
@@ -29,12 +30,8 @@ export default class extends Phaser.Sprite {
         /* duration= */1500, /* ease= */Phaser.Easing.Cubic.InOut))
     }
     transmissionTween.start()
-    var moveSound = window.game.add.audio(this.selectOneInArray(['move1', 'move2']))
+    var moveSound = window.game.add.audio(selectOneInArray(['move1', 'move2']))
     moveSound.volume += -0.9
     moveSound.play()
-  }
-
-  selectOneInArray (array) {
-    return array[Math.floor(Math.random() * array.length)]
   }
 }

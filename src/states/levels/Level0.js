@@ -17,23 +17,23 @@ export default class extends GameLevel {
     // Starting room:
     this.currentRoom = this.createStartCell()
     this.levelGrid.addRoom(1, 1, this.currentRoom)
-    this.levelGrid.addRoom(1, 2, this.createCorridor()).addSideWalls(DIRECTION.LEFT, DIRECTION.DOWN)
+    this.levelGrid.addRoom(1, 2, this.helper.createCorridor()).addSideWalls(DIRECTION.LEFT, DIRECTION.DOWN)
 
     this.levelGrid.addRoom(2, 1, this.createTopCell2())
-    this.levelGrid.addRoom(2, 2, this.createCorridor())
-    this.levelGrid.addRoom(2, 3, this.createCorridor()).addSideWalls(DIRECTION.LEFT, DIRECTION.DOWN)
+    this.levelGrid.addRoom(2, 2, this.helper.createCorridor())
+    this.levelGrid.addRoom(2, 3, this.helper.createCorridor()).addSideWalls(DIRECTION.LEFT, DIRECTION.DOWN)
 
     this.levelGrid.addRoom(3, 1, this.createTopCell3())
     this.levelGrid.addRoom(3, 2, this.createMiddleCell3())
-    this.levelGrid.addRoom(3, 3, this.createCorridor()).addSideWalls(DIRECTION.DOWN)
+    this.levelGrid.addRoom(3, 3, this.helper.createCorridor()).addSideWalls(DIRECTION.DOWN)
 
     this.levelGrid.addRoom(4, 1, this.createEndCell())
-    this.levelGrid.addRoom(4, 2, this.createCorridor()).addSideWalls(DIRECTION.RIGHT)
-    this.levelGrid.addRoom(4, 3, this.createCorridor()).addSideWalls(DIRECTION.RIGHT, DIRECTION.DOWN)
+    this.levelGrid.addRoom(4, 2, this.helper.createCorridor()).addSideWalls(DIRECTION.RIGHT)
+    this.levelGrid.addRoom(4, 3, this.helper.createCorridor()).addSideWalls(DIRECTION.RIGHT, DIRECTION.DOWN)
   }
 
   createStartCell () {
-    const room = super.makePrisonCell({
+    const room = this.helper.makePrisonCell({
       sideMetalBars: [DIRECTION.DOWN],
       sideWalls: [DIRECTION.LEFT, DIRECTION.UP],
       exits: ['right'],
@@ -44,7 +44,7 @@ export default class extends GameLevel {
   }
 
   createTopCell2 () {
-    const room = super.makePrisonCell({
+    const room = this.helper.makePrisonCell({
       sideMetalBars: [DIRECTION.LEFT, DIRECTION.DOWN],
       sideWalls: [DIRECTION.UP],
       exits: ['left', 'right']
@@ -55,7 +55,7 @@ export default class extends GameLevel {
   }
 
   createTopCell3 () {
-    const room = super.makePrisonCell({
+    const room = this.helper.makePrisonCell({
       sideMetalBars: [DIRECTION.DOWN],
       sideWalls: [DIRECTION.UP],
       exits: ['left', 'down', 'right'],
@@ -70,7 +70,7 @@ export default class extends GameLevel {
   }
 
   createMiddleCell3 () {
-    return super.makePrisonCell({
+    return this.helper.makePrisonCell({
       sideMetalBars: [DIRECTION.LEFT, DIRECTION.RIGHT, DIRECTION.DOWN],
       exits: ['up'],
       nbBaddies: 1
@@ -78,7 +78,7 @@ export default class extends GameLevel {
   }
 
   createEndCell () {
-    return super.makePrisonCell({
+    return this.helper.makePrisonCell({
       sideMetalBars: [DIRECTION.LEFT, DIRECTION.DOWN],
       sideWalls: [DIRECTION.UP, DIRECTION.RIGHT],
       exits: ['left'],

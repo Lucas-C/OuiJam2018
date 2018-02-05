@@ -4,6 +4,7 @@ import RoomGrid from '../../grid/RoomGrid'
 import Inmate from '../../sprites/characters/Inmate'
 import DIRECTION from '../../const/Direction'
 import FRAME from '../../const/Frame'
+import {selectOneInArray} from '../../utils'
 
 export default class BaseRoom extends Phaser.Group {
   constructor (roomWidth, roomHeight) {
@@ -28,6 +29,10 @@ export default class BaseRoom extends Phaser.Group {
 
   isDangerous () {
     return this.baddies().length > 0
+  }
+
+  getDirectionToRoom(destRoom) {
+
   }
 
   /**********
@@ -85,9 +90,9 @@ export default class BaseRoom extends Phaser.Group {
 
   addAlly (x, y) {
     const frames = [
-      this.selectOneInArray([0, 1]), // bases
-      this.selectOneInArray([10, 14, 327, 381]), // clothes
-      this.selectOneInArray([19, 21]) // hair
+      selectOneInArray([0, 1]), // bases
+      selectOneInArray([10, 14, 327, 381]), // clothes
+      selectOneInArray([19, 21]) // hair
     ]
     const character = new Inmate({frames: frames, isAlly: true, room: this})
     this.grid.placeAt(x, y, character)
@@ -96,25 +101,20 @@ export default class BaseRoom extends Phaser.Group {
   }
 
   addBaddy (x, y) {
-    const character = new Inmate({frames: [this.selectOneInArray(FRAME.BADDIES)], isAlly: false, room: this})
+    const character = new Inmate({frames: [selectOneInArray(FRAME.BADDIES)], isAlly: false, room: this})
     this.grid.placeAt(x, y, character)
     this.characters.push(character)
     return this
   }
 
   addGuard (x, y) {
-    this.baddiesCount += 1
-    this.grid.placeAt(x, y, this.create(0, 0, 'roguelikeChar', this.selectOneInArray([0, 1])))
-    this.grid.placeAt(x, y, this.create(0, 0, 'roguelikeChar', this.selectOneInArray([3])))
-    this.grid.placeAt(x, y, this.create(0, 0, 'roguelikeChar', this.selectOneInArray([6])))
-    this.grid.placeAt(x, y, this.create(0, 0, 'roguelikeChar', this.selectOneInArray([28])))
-    this.grid.placeAt(x, y, this.create(0, 0, 'roguelikeChar', this.selectOneInArray([256])))
-    this.grid.placeAt(x, y, this.create(0, 0, 'roguelikeChar', this.selectOneInArray([49])))
+    this.grid.placeAt(x, y, this.create(0, 0, 'roguelikeChar', selectOneInArray([0, 1])))
+    this.grid.placeAt(x, y, this.create(0, 0, 'roguelikeChar', selectOneInArray([3])))
+    this.grid.placeAt(x, y, this.create(0, 0, 'roguelikeChar', selectOneInArray([6])))
+    this.grid.placeAt(x, y, this.create(0, 0, 'roguelikeChar', selectOneInArray([28])))
+    this.grid.placeAt(x, y, this.create(0, 0, 'roguelikeChar', selectOneInArray([256])))
+    this.grid.placeAt(x, y, this.create(0, 0, 'roguelikeChar', selectOneInArray([49])))
     return this
-  }
-
-  selectOneInArray (array) {
-    return array[Math.floor(Math.random() * array.length)]
   }
 
   addFurniture (x, y) {
@@ -125,7 +125,7 @@ export default class BaseRoom extends Phaser.Group {
       FRAME.BED_SIDE_LEFT_1, FRAME.BED_SIDE_RIGHT_1, FRAME.BED_FRONT_1, FRAME.BED_BACK_1,
       FRAME.BED_SIDE_LEFT_2, FRAME.BED_SIDE_RIGHT_2, FRAME.BED_FRONT_2, FRAME.BED_BACK_2
     ]
-    this.grid.placeAt(x, y, this.create(0, 0, 'roguelikeSheet', this.selectOneInArray(furnitureArray))) // all in one
+    this.grid.placeAt(x, y, this.create(0, 0, 'roguelikeSheet', selectOneInArray(furnitureArray))) // all in one
     return this
   }
 
@@ -140,7 +140,7 @@ export default class BaseRoom extends Phaser.Group {
   }
 
   addDeco (x, y, spriteSheet, indices) {
-    var decoration = this.create(0, 0, spriteSheet, this.selectOneInArray(indices))
+    var decoration = this.create(0, 0, spriteSheet, selectOneInArray(indices))
     decoration.alpha = 0.5
     this.grid.placeAt(x, y, decoration)
     return this

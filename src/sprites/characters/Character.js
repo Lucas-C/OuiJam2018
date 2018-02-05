@@ -23,7 +23,7 @@ export default class extends Phaser.Group {
     room.add(this)
   }
 
-  canMoveTo (room) {
+  canMoveTo(destRoom) {
     return false // TODO
   }
 

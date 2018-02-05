@@ -5,9 +5,9 @@ import Cursor from '../sprites/Cursor'
 import ScrollMessage from '../sprites/ScrollMessage'
 import LevelGrid from '../grid/LevelGrid'
 import DIRECTION from '../const/Direction'
-import PrisonCell from '../sprites/rooms/PrisonCell'
-import PrisonCorridor from '../sprites/rooms/PrisonCorridor'
 import DeadTimer from '../sprites/DeadTimer'
+import LevelHelper from './levels/LevelHelper'
+import {selectOneInArray} from '../utils'
 
 export default class GameLevel extends Phaser.State {
   init () {
@@ -34,6 +34,8 @@ export default class GameLevel extends Phaser.State {
     this.levelGrid = new LevelGrid(this.roomsPerLevelSide, config.levelGridWidth, config.levelGridHeight, this.rootGroup)
     // this.levelGrid.showForDebug();
 
+    this.helper = new LevelHelper(this);
+
     this.nextLevel = null // By default we consider the level to be the last one
     this.currentRoom = null // Dummy, must be overriden by child level
   }
@@ -52,7 +54,7 @@ export default class GameLevel extends Phaser.State {
 
     this.scrollMsg = new ScrollMessage()
     this.game.add.existing(this.scrollMsg)
-    window.time.events.add(500, () => this.scrollMsg.sendTo(this.nellaMandelson))
+    this.time.events.add(500, () => this.scrollMsg.sendTo(this.nellaMandelson))
 
     if (this.currentRoom.onEnterPrecondition) {
       this.currentRoom.onEnterPrecondition()
@@ -117,7 +119,7 @@ export default class GameLevel extends Phaser.State {
 
   _addSkullInCurrentRoom () {
     // Skull sign (it will disappear)
-    var skullSign = this.game.add.sprite(this.currentRoom.centerX, this.currentRoom.centerY, this.selectOneInArray(['skull1', 'skull2', 'skull3']), Math.floor(Math.random() * 12))
+    var skullSign = this.game.add.sprite(this.currentRoom.centerX, this.currentRoom.centerY, selectOneInArray(['skull1', 'skull2', 'skull3']), Math.floor(Math.random() * 12))
     skullSign.scale.setTo(0.5)
     skullSign.anchor.setTo(0.5)
     skullSign.alpha = 0.5
@@ -250,10 +252,6 @@ export default class GameLevel extends Phaser.State {
     }
   }
 
-  selectOneInArray (array) {
-    return array[Math.floor(Math.random() * array.length)]
-  }
-
   setLevelNumber (number) {
     let levelNumber = this.add.text(70, this.game.height / 2, 'LVL\n' + number + ' ', {
       font: '60px Bangers',
@@ -265,119 +263,5 @@ export default class GameLevel extends Phaser.State {
     })
     levelNumber.lineSpacing = -15
     levelNumber.anchor.setTo(0.5)
-  }
-
-  makePrisonCell ({nbAllies = 0, nbBaddies = 0, sideMetalBars, sideWalls, exits, withNelly = false, endWindow}) {
-    const room = new PrisonCell(this.getRoomWidthInPx(), this.getRoomHeightInPx())
-
-    if (sideMetalBars) {
-      room.addSideMetalBars(...sideMetalBars)
-    }
-    if (sideWalls) {
-      room.addSideWalls(...sideWalls)
-    }
-    if (exits) {
-      room.addExits(...exits)
-    }
-
-    let allPossibilities = [
-      [1, 1], [1, 2], [1, 3], [1, 4], [1, 5],
-      [2, 1], [2, 2], [2, 3], [2, 4], [2, 5],
-      [3, 1], [3, 2], [3, 4], [3, 5],
-      [4, 1], [4, 2], [4, 3], [4, 4], [4, 5],
-      [5, 1], [5, 2], [5, 3], [5, 4], [5, 5]
-    ]
-
-    if (!withNelly) {
-      allPossibilities.push([3, 3])
-    }
-
-    let randomPossibilities = this.shuffle(allPossibilities)
-    let index = 0
-
-    // NELLY
-    if (withNelly) {
-      this.nellaMandelson = room.addNellaMandelson(3, 3)
-    }
-
-    // FURNITURES
-    let nbFurnitures = Math.floor(Math.random() * 4) + 1
-    for (var fur = 0; fur < nbFurnitures; fur++) {
-      let coord = randomPossibilities[index]
-      index = index + 1
-      room.addFurniture(coord[0], coord[1])
-    }
-
-    // DECO
-    let nbDeco = Math.floor(Math.random() * 6) + 2
-    for (var dec = 0; dec < nbDeco; dec++) {
-      let coord = randomPossibilities[index]
-      index = index + 1
-      room.addDecoCell(coord[0], coord[1])
-    }
-
-    // ALLIES
-    for (var ally = 0; ally < nbAllies; ally++) {
-      let coord = randomPossibilities[index]
-      index = index + 1
-      room.addAlly(coord[0], coord[1])
-    }
-
-    // BADDIES
-    for (var bad = 0; bad < nbBaddies; bad++) {
-      let coord = randomPossibilities[index]
-      index = index + 1
-      room.addBaddy(coord[0], coord[1])
-    }
-
-    if (endWindow) {
-      room.addEndWindow(...endWindow)
-    }
-
-    return room
-  }
-
-  shuffle (a) {
-    var j, x, i
-    for (i = a.length - 1; i > 0; i--) {
-      j = Math.floor(Math.random() * (i + 1))
-      x = a[i]
-      a[i] = a[j]
-      a[j] = x
-    }
-    return a
-  }
-
-  createCorridor () {
-    const room = new PrisonCorridor(this.getRoomWidthInPx(), this.getRoomHeightInPx())
-
-    let allPossibilities = [
-      [1, 1], [1, 2], [1, 3], [1, 4], [1, 5],
-      [2, 1], [2, 2], [2, 3], [2, 4], [2, 5],
-      [3, 1], [3, 2], [3, 3], [3, 4], [3, 5],
-      [4, 1], [4, 2], [4, 3], [4, 4], [4, 5],
-      [5, 1], [5, 2], [5, 3], [5, 4], [5, 5]
-    ]
-
-    let randomPossibilities = this.shuffle(allPossibilities)
-    let index = 0
-
-    // GUARDS
-    let nbGuards = Math.floor(Math.random() * 3) + 1 // 1 to 4 guards
-    for (var i = 0; i < nbGuards; i++) {
-      let coord = randomPossibilities[index]
-      index = index + 1
-      room.addGuard(coord[0], coord[1])
-    }
-
-    // DECO
-    let nbDeco = Math.floor(Math.random() * 6) + 2
-    for (var dec = 0; dec < nbDeco; dec++) {
-      let coord = randomPossibilities[index]
-      index = index + 1
-      room.addDecoCorridor(coord[0], coord[1])
-    }
-
-    return room
   }
 }
