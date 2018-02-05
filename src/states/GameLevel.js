@@ -3,6 +3,7 @@ import Phaser from 'phaser'
 import config from '../config'
 import Cursor from '../sprites/Cursor'
 import ScrollMessage from '../sprites/ScrollMessage'
+import PrisonCorridor from '../sprites/rooms/PrisonCorridor'
 import LevelGrid from '../grid/LevelGrid'
 import DIRECTION from '../const/Direction'
 import DeadTimer from '../sprites/DeadTimer'
@@ -74,6 +75,10 @@ export default class GameLevel extends Phaser.State {
     const newRoom = this.currentRoom.getRoomInDirection(wantedMovement)
     if (!newRoom) {
       console.log('No room exists in direction required')
+      return
+    }
+    if (newRoom instanceof PrisonCorridor) {
+      console.log('Cannot pass scroll message to a guards corridor !')
       return
     }
     if (!this.scrollMsg.canBeSentTo(newRoom)) {
