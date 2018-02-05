@@ -1,15 +1,20 @@
-/* globals __DEV__ */
 import PrisonCell from '../../sprites/rooms/PrisonCell'
 import PrisonCorridor from '../../sprites/rooms/PrisonCorridor'
-import {selectOneInArray, shuffle} from '../../utils'
+import {shuffle} from '../../utils'
 
 export default class LevelHelper {
-  constructor(game) {
-    this.game = game
+  constructor (level) {
+    this.level = level
   }
 
-  makePrisonCell({nbAllies = 0, nbBaddies = 0, sideMetalBars, sideWalls, exits, withNelly = false, endWindow}) {
-    const room = new PrisonCell(this.game.getRoomWidthInPx(), this.game.getRoomHeightInPx())
+  addPrisonCell (args) {
+    const room = this.makePrisonCell(args)
+    this.level.levelGrid.addRoom(args.x, args.y, room)
+    return room
+  }
+
+  makePrisonCell ({x, y, nbAllies = 0, nbBaddies = 0, sideMetalBars, sideWalls, exits, withNelly = false, endWindow, msgOnEntry}) {
+    const room = new PrisonCell(this.level.getRoomWidthInPx(), this.level.getRoomHeightInPx())
 
     if (sideMetalBars) {
       room.addSideMetalBars(...sideMetalBars)
@@ -17,8 +22,9 @@ export default class LevelHelper {
     if (sideWalls) {
       room.addSideWalls(...sideWalls)
     }
-    if (exits) {
-      room.addExits(...exits)
+    if (msgOnEntry) {
+      const level = this.level
+      room.onEnterPrecondition = () => level.displayMessage(...msgOnEntry)
     }
 
     let allPossibilities = [
@@ -38,7 +44,7 @@ export default class LevelHelper {
 
     // NELLY
     if (withNelly) {
-      this.game.nellaMandelson = room.addNellaMandelson(3, 3)
+      this.level.nellaMandelson = room.addNellaMandelson(3, 3)
     }
 
     // FURNITURES
@@ -78,8 +84,14 @@ export default class LevelHelper {
     return room
   }
 
-  createCorridor() {
-    const room = new PrisonCorridor(this.game.getRoomWidthInPx(), this.game.getRoomHeightInPx())
+  addCorridor ({x, y}) {
+    const room = this.createCorridor()
+    this.level.levelGrid.addRoom(x, y, room)
+    return room
+  }
+
+  createCorridor () {
+    const room = new PrisonCorridor(this.level.getRoomWidthInPx(), this.level.getRoomHeightInPx())
 
     let allPossibilities = [
       [1, 1], [1, 2], [1, 3], [1, 4], [1, 5],

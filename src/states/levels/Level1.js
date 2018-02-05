@@ -31,20 +31,17 @@ export default class extends GameLevel {
   }
 
   createStartCell () {
-    const room = this.helper.makePrisonCell({
+    return this.helper.makePrisonCell({
       sideMetalBars: [DIRECTION.UP],
       sideWalls: [DIRECTION.LEFT],
-      exits: [DIRECTION.RIGHT, DIRECTION.UP],
-      withNelly: true
+      withNelly: true,
+      msgOnEntry: ['Quick, bring this message outside the prison ! ']
     })
-    room.onEnterPrecondition = () => this.displayMessage('Quick, bring this message outside the prison ! ')
-    return room
   }
 
   createTopCell1 () {
     return this.helper.makePrisonCell({
       sideWalls: [DIRECTION.UP, DIRECTION.LEFT],
-      exits: [DIRECTION.DOWN, DIRECTION.RIGHT],
       nbAllies: 2,
       nbBaddies: 3
     })
@@ -53,7 +50,6 @@ export default class extends GameLevel {
   createBottomCell1 () {
     return this.helper.makePrisonCell({
       sideWalls: [DIRECTION.UP, DIRECTION.DOWN, DIRECTION.LEFT],
-      exits: [DIRECTION.RIGHT],
       nbAllies: 2,
       nbBaddies: 1
     })
@@ -63,28 +59,24 @@ export default class extends GameLevel {
     return this.helper.makePrisonCell({
       sideMetalBars: [DIRECTION.LEFT],
       sideWalls: [DIRECTION.UP],
-      exits: [DIRECTION.LEFT, DIRECTION.RIGHT, DIRECTION.DOWN],
       nbAllies: 2,
       nbBaddies: 1
     })
   }
 
   createMiddleCell2 () {
-    const room = this.helper.makePrisonCell({
+    return this.helper.makePrisonCell({
       sideMetalBars: [DIRECTION.UP],
       sideWalls: [DIRECTION.RIGHT],
-      exits: [DIRECTION.LEFT, DIRECTION.DOWN, DIRECTION.UP],
-      nbAllies: 1
+      nbAllies: 1,
+      msgOnEntry: ['It seems you have understood :-D ']
     })
-    room.onEnterPrecondition = () => this.displayMessage('It seems you have understood :-D ')
-    return room
   }
 
   createBottomCell2 () {
     return this.helper.makePrisonCell({
       sideMetalBars: [DIRECTION.LEFT, DIRECTION.UP],
       sideWalls: [DIRECTION.DOWN, DIRECTION.RIGHT],
-      exits: [DIRECTION.LEFT, DIRECTION.UP],
       nbAllies: 1
     })
   }
@@ -93,7 +85,6 @@ export default class extends GameLevel {
     return this.helper.makePrisonCell({
       sideMetalBars: [DIRECTION.LEFT],
       sideWalls: [DIRECTION.UP, DIRECTION.RIGHT],
-      exits: [DIRECTION.LEFT, DIRECTION.DOWN],
       nbAllies: 2,
       nbBaddies: 1
     })
@@ -102,7 +93,6 @@ export default class extends GameLevel {
   createMiddleCell3 () {
     return this.helper.makePrisonCell({
       sideMetalBars: [DIRECTION.UP],
-      exits: [DIRECTION.UP, DIRECTION.RIGHT, DIRECTION.DOWN],
       nbAllies: 1
     })
   }
@@ -111,7 +101,6 @@ export default class extends GameLevel {
     return this.helper.makePrisonCell({
       sideMetalBars: [DIRECTION.UP, DIRECTION.RIGHT],
       sideWalls: [DIRECTION.DOWN],
-      exits: [DIRECTION.UP],
       nbAllies: 1,
       nbBaddies: 5
     })
@@ -120,7 +109,6 @@ export default class extends GameLevel {
   createTopCell4 () {
     return this.helper.makePrisonCell({
       sideWalls: [DIRECTION.UP, DIRECTION.RIGHT],
-      exits: [DIRECTION.DOWN],
       nbAllies: 1,
       endWindow: [3, 0]
     })
@@ -130,7 +118,6 @@ export default class extends GameLevel {
     return this.helper.makePrisonCell({
       sideMetalBars: [DIRECTION.LEFT, DIRECTION.UP, DIRECTION.DOWN],
       sideWalls: [DIRECTION.RIGHT],
-      exits: [DIRECTION.UP, DIRECTION.LEFT],
       nbAllies: 2
     })
   }

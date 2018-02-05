@@ -10,6 +10,13 @@ export default class extends Phaser.Sprite {
     this.owner = null
   }
 
+  canBeSentTo (destRoom) {
+    if (!this.owner) {
+      return true
+    }
+    return !this.owner.room.getPassingToRoom(destRoom).walls
+  }
+
   sendTo (ally) {
     if (this.owner) {
       this.owner.hasScrollMsg = false

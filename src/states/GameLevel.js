@@ -34,7 +34,7 @@ export default class GameLevel extends Phaser.State {
     this.levelGrid = new LevelGrid(this.roomsPerLevelSide, config.levelGridWidth, config.levelGridHeight, this.rootGroup)
     // this.levelGrid.showForDebug();
 
-    this.helper = new LevelHelper(this);
+    this.helper = new LevelHelper(this)
 
     this.nextLevel = null // By default we consider the level to be the last one
     this.currentRoom = null // Dummy, must be overriden by child level
@@ -71,15 +71,13 @@ export default class GameLevel extends Phaser.State {
     const wantedMovement = this.cursor.getMovementByName(inputDirection)
     const direction = wantedMovement.directionName
     console.log(`Input direction ${inputDirection}. Want to go ${direction}.`)
-    if (!this.currentRoom.exits.includes(direction)) {
-      console.log('Cannot go ' + direction + ' in current room')
+    const newRoom = this.currentRoom.getRoomInDirection(wantedMovement)
+    if (!newRoom) {
+      console.log('No room exists in direction required')
       return
     }
-    const [srcX, srcY] = [this.currentRoom.gridPosX, this.currentRoom.gridPosY]
-    const [dstX, dstY] = [srcX + wantedMovement.deltaX, srcY + wantedMovement.deltaY]
-    const newRoom = this.levelGrid.roomAtPos(dstX, dstY)
-    if (!newRoom) {
-      console.log('Cannot move from', [srcX, srcY], 'to', [dstX, dstY])
+    if (!this.scrollMsg.canBeSentTo(newRoom)) {
+      console.log('Cannot send scroll msg : a wall is blocking')
       return
     }
     if (newRoom.onEnterPrecondition && newRoom.onEnterPrecondition() === false) {
@@ -93,7 +91,6 @@ export default class GameLevel extends Phaser.State {
     }
     this.currentRoom = newRoom
     this.deadTimer.stop()
-    console.log('Moved from', [srcX, srcY], 'to', [dstX, dstY])
     console.log('New room pos:', this.currentRoom.position)
     /* console.log('levelGrid 1st room world pos:', this.levelGrid.rooms[0][0].position)
      const sprite = this.levelGrid.rooms[0][0].topLeftCorner
