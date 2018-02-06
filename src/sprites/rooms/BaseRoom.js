@@ -2,7 +2,7 @@ import Phaser from 'phaser-ce/build/custom/phaser-split'
 import config from '../../config'
 import RoomGrid from '../../grid/RoomGrid'
 import Inmate from '../../sprites/characters/Inmate'
-import DIRECTION from '../../const/Direction'
+import {DIRECTION, oppositeDir} from '../../const/Direction'
 import FRAME from '../../const/Frame'
 import {selectOneInArray} from '../../utils'
 
@@ -37,33 +37,32 @@ export default class BaseRoom extends Phaser.Group {
     return this.parentLevelGrid.roomAtPos(dstX, dstY)
   }
 
-  getDirectionToRoom (destRoom) {
-    if (this.gridPosX !== destRoom.gridPosX && this.gridPosY !== destRoom.gridPosY) {
-      console.error('Rooms are not aligned', this, destRoom)
-      throw new Error('Rooms are not aligned')
-    }
-    if (this.gridPosX === destRoom.gridPosX && this.gridPosY === destRoom.gridPosY) {
-      throw new Error('Rooms are at the same position')
-    }
-    if (this.gridPosX === destRoom.gridPosX) {
-      return destRoom.gridPosY > this.gridPosY ? DIRECTION.DOWN : DIRECTION.UP
-    } else {
-      return destRoom.gridPosX > this.gridPosX ? DIRECTION.RIGHT : DIRECTION.LEFT
-    }
-  }
-
   /*
-   * TODO: If this & destRoom are not aligned:
+   * If this & destRoom are not aligned:
    * - if they are more distant from each other on one orthogonal axis,
    *   then return the direction on this axis
    * - else, if they are on an exact diagonal,
    *   then return consistently the first direction of the diagonal, clockwise,
    *   so that `A.getPassingToRoom(B)` is always the opposite of `B.getPassingToRoom(A)`
    */
-  getPassingToRoom (destRoom) {
-    if (Math.abs(this.gridPosY - destRoom.gridPosY) !== 1 && Math.abs(this.gridPosY - destRoom.gridPosY)) {
-      throw new Error('Cannot pass to a room that is not at a distance of exactly 1')
+  getDirectionToRoom (destRoom) {
+    const distY = Math.abs(this.gridPosY - destRoom.gridPosY)
+    const distX = Math.abs(this.gridPosX - destRoom.gridPosX)
+    if (distY === distX) {
+      if (destRoom.gridPosY > this.gridPosY) {
+        return destRoom.gridPosX > this.gridPosX ? DIRECTION.DOWN : DIRECTION.LEFT
+      } else {
+        return destRoom.gridPosX < this.gridPosX ? DIRECTION.UP : DIRECTION.RIGHT
+      }
     }
+    if (distY > distX) {
+      return destRoom.gridPosY > this.gridPosY ? DIRECTION.DOWN : DIRECTION.UP
+    } else {
+      return destRoom.gridPosX > this.gridPosX ? DIRECTION.RIGHT : DIRECTION.LEFT
+    }
+  }
+
+  getPassingToRoom (destRoom) {
     const passing = {
       bars: false,
       walls: false
@@ -331,3 +330,27 @@ export default class BaseRoom extends Phaser.Group {
 
 BaseRoom.WALL_AND_FLOOR_SPRITE_SHEET = 'roguelikeSheet'
 BaseRoom.METAL_BAR_SPRITE_SHEET = 'roguelikeIndoor'
+
+window.testGetDirectionToRoom = () => { // Unit test runnable in browser
+  let result = 'ok'
+  const assertEqual = (a, b, ...args) => {
+    if (a !== b) {
+      console.error('Not equal', a, b, ...args)
+      resumt = 'ko'
+    }
+  }
+  const roomA = new BaseRoom(1, 1)
+  roomA.gridPosX = 0
+  roomA.gridPosY = 0;
+  [
+    [1, 0], [-1, 0], [0, 1], [0, -1], // orthogonal neighbors
+    [1, 1], [-1, 1], [1, -1], [-1, -1], // diagonals
+    [1, 2], [2, 1]
+  ].forEach(([x, y]) => {
+    const roomB = new BaseRoom(1, 1)
+    roomB.gridPosX = x
+    roomB.gridPosY = y
+    assertEqual(roomA.getDirectionToRoom(roomB), oppositeDir(roomB.getDirectionToRoom(roomA)), {x, y})
+  })
+  return result
+}
