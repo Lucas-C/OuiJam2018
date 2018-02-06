@@ -52,6 +52,14 @@ export default class BaseRoom extends Phaser.Group {
     }
   }
 
+  /*
+   * TODO: If this & destRoom are not aligned:
+   * - if they are more distant from each other on one orthogonal axis,
+   *   then return the direction on this axis
+   * - else, if they are on an exact diagonal,
+   *   then return consistently the first direction of the diagonal, clockwise,
+   *   so that `A.getPassingToRoom(B)` is always the opposite of `B.getPassingToRoom(A)`
+   */
   getPassingToRoom (destRoom) {
     if (Math.abs(this.gridPosY - destRoom.gridPosY) !== 1 && Math.abs(this.gridPosY - destRoom.gridPosY)) {
       throw new Error('Cannot pass to a room that is not at a distance of exactly 1')
