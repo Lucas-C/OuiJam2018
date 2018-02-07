@@ -14,11 +14,7 @@ export default class extends Phaser.Sprite {
     if (!this.owner) {
       return true
     }
-    try {
-      return !this.owner.room.getPassingToRoom(destRoom).walls
-    } catch (error) {
-      return true // diagonal move, for now we always allow it (TODO ?)
-    }
+    return !this.owner.room.getPassingToRoom(destRoom).walls
   }
 
   sendTo (ally) {

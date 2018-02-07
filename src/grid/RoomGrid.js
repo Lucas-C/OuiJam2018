@@ -3,7 +3,7 @@ import config from '../config'
 
 export default class RoomGrid extends GameGrid {
   constructor (size, roomWidth, roomHeight, parent) {
-    super(roomWidth / size, roomHeight / size, parent)
+    super(size, roomWidth / size, roomHeight / size, parent)
   }
 
   placeAt (xx, yy, obj) {

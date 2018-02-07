@@ -331,12 +331,15 @@ export default class BaseRoom extends Phaser.Group {
 BaseRoom.WALL_AND_FLOOR_SPRITE_SHEET = 'roguelikeSheet'
 BaseRoom.METAL_BAR_SPRITE_SHEET = 'roguelikeIndoor'
 
+
+// Lucas: I tried to add those has pure NodeJS unit tests with the ava test runner,
+// however the p2 PhaserJS dependency cannot by used in NodeJS (it uses `window` at import time)
 window.testGetDirectionToRoom = () => { // Unit test runnable in browser
   let result = 'ok'
   const assertEqual = (a, b, ...args) => {
     if (a !== b) {
       console.error('Not equal', a, b, ...args)
-      resumt = 'ko'
+      result = 'ko'
     }
   }
   const roomA = new BaseRoom(1, 1)

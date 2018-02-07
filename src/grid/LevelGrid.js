@@ -3,8 +3,7 @@ import config from '../config'
 
 export default class LevelGrid extends GameGrid {
   constructor (size, levelWidth, levelHeight, parent) {
-    super(levelWidth / size, levelHeight / size, parent)
-    this.size = size
+    super(size, levelWidth / size, levelHeight / size, parent)
     this.rooms = Array.from({length: size}, () => Array.from({length: size}))
     // console.log('LevelGrid with cellWidth/Height:', levelWidth / size, levelHeight / size)
     // Lucas: clearly does not work :(
