@@ -29,20 +29,20 @@ export default class extends Phaser.Group {
 
   moveTo (newRoom, x, y) {
     // TODO:
-    // - fix character disappearing during movement
-    // - fix character erasing existing characters in dest cell
-    // - handle scrollMsg movement too
-    const newGridPosX = x || (1 + Math.floor(Math.random() * (newRoom.parentLevelGrid.size - 2)))
-    const newGridPosY = y || (1 + Math.floor(Math.random() * (newRoom.parentLevelGrid.size - 2)))
-    const destX = (newRoom.gridPosX - this.room.gridPosX) * newRoom.parentLevelGrid.widthCell + newGridPosX * newRoom.cellsGrid.widthCell
-    const destY = (newRoom.gridPosY - this.room.gridPosY) * newRoom.parentLevelGrid.heightCell + newGridPosY * newRoom.cellsGrid.heightCell
+    // - fix sprite disappearing during movement
+    // - fix character erasing existing character in dest cell
+    const newGridPos = {
+      x: x || (1 + Math.floor(Math.random() * (newRoom.parentLevelGrid.size - 2))),
+      y: y || (1 + Math.floor(Math.random() * (newRoom.parentLevelGrid.size - 2)))
+    }
+    const dest = this.room.getDeltaToTileInRoom({room: newRoom, toTileGridPos: newGridPos})
     const self = this
-    window.game.add.tween(this).to({x: destX, y: destY},
+    window.game.add.tween(this).to({x: dest.x, y: dest.y},
       /* duration= */500, /* ease= */Phaser.Easing.Cubic.InOut, /* autoStart= */ true)
       .onComplete.add(() => {
         self.room.characters = self.room.characters.filter((e) => e !== self)
         newRoom.add(self)
-        newRoom.cellsGrid.placeAt(newGridPosX, newGridPosY, self)
+        newRoom.cellsGrid.placeAt(newGridPos.x, newGridPos.y, self)
         newRoom.characters.push(self)
         self.room = newRoom
       })

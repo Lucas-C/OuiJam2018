@@ -55,8 +55,7 @@ export default class GameLevel extends Phaser.State {
 
     this.scrollMsg = new ScrollMessage()
     this.game.add.existing(this.scrollMsg)
-    // TODO: fix ugly 'appear' effect
-    this.time.events.add(500, () => this.scrollMsg.sendTo(this.nellaMandelson))
+    this.scrollMsg.giveToChar(this.nellaMandelson)
 
     if (this.currentRoom.onEnterPrecondition) {
       this.currentRoom.onEnterPrecondition()

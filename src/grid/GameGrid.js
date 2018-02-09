@@ -9,10 +9,9 @@ export default class GameGrid extends Phaser.Group {
   }
 
   placeAt (newGridPosX, newGridPosY, obj) {
-    obj.gridPosX = newGridPosX
-    obj.gridPosY = newGridPosY
-    obj.x = this.widthCell * obj.gridPosX
-    obj.y = this.heightCell * obj.gridPosY
+    obj.gridPos = {x: newGridPosX, y: newGridPosY}
+    obj.x = this.widthCell * obj.gridPos.x
+    obj.y = this.heightCell * obj.gridPos.y
   }
 
   showForDebug (lineColor = 0xff0000, lineSize = 4) {

@@ -33,7 +33,7 @@ export default class BaseRoom extends Phaser.Group {
   }
 
   getRoomInDirection ({deltaX, deltaY}) {
-    const [dstX, dstY] = [this.gridPosX + deltaX, this.gridPosY + deltaY]
+    const [dstX, dstY] = [this.gridPos.x + deltaX, this.gridPos.y + deltaY]
     return this.parentLevelGrid.roomAtPos(dstX, dstY)
   }
 
@@ -46,19 +46,19 @@ export default class BaseRoom extends Phaser.Group {
    *   so that `A.getPassingToRoom(B)` is always the opposite of `B.getPassingToRoom(A)`
    */
   getDirectionToRoom (destRoom) {
-    const distY = Math.abs(this.gridPosY - destRoom.gridPosY)
-    const distX = Math.abs(this.gridPosX - destRoom.gridPosX)
+    const distX = Math.abs(this.gridPos.x - destRoom.gridPos.x)
+    const distY = Math.abs(this.gridPos.y - destRoom.gridPos.y)
     if (distY === distX) {
-      if (destRoom.gridPosY > this.gridPosY) {
-        return destRoom.gridPosX > this.gridPosX ? DIRECTION.DOWN : DIRECTION.LEFT
+      if (destRoom.gridPos.y > this.gridPos.y) {
+        return destRoom.gridPos.x > this.gridPos.x ? DIRECTION.DOWN : DIRECTION.LEFT
       } else {
-        return destRoom.gridPosX < this.gridPosX ? DIRECTION.UP : DIRECTION.RIGHT
+        return destRoom.gridPos.x < this.gridPos.x ? DIRECTION.UP : DIRECTION.RIGHT
       }
     }
     if (distY > distX) {
-      return destRoom.gridPosY > this.gridPosY ? DIRECTION.DOWN : DIRECTION.UP
+      return destRoom.gridPos.y > this.gridPos.y ? DIRECTION.DOWN : DIRECTION.UP
     } else {
-      return destRoom.gridPosX > this.gridPosX ? DIRECTION.RIGHT : DIRECTION.LEFT
+      return destRoom.gridPos.x > this.gridPos.x ? DIRECTION.RIGHT : DIRECTION.LEFT
     }
   }
 
@@ -82,6 +82,21 @@ export default class BaseRoom extends Phaser.Group {
       passing.walls = true
     }
     return passing
+  }
+
+  /*
+   * Given a tile T1 in a room R1 (this),
+   * compute the relative position in px of a tile T2 in another room R2.
+   * If no source tile gridPos is specified, consider the top right corner
+   */
+  getDeltaToTileInRoom ({room, toTileGridPos, fromTileGridPos}) {
+    if (!fromTileGridPos) {
+      fromTileGridPos = {x: 0, y: 0}
+    }
+    return {
+      x: (room.gridPos.x - this.gridPos.x) * this.parentLevelGrid.widthCell + (toTileGridPos.x - fromTileGridPos.x) * room.cellsGrid.widthCell,
+      y: (room.gridPos.y - this.gridPos.y) * this.parentLevelGrid.heightCell + (toTileGridPos.y - fromTileGridPos.y) * room.cellsGrid.heightCell
+    }
   }
 
   /**********
@@ -343,16 +358,16 @@ window.testGetDirectionToRoom = () => { // Unit test runnable in browser
     }
   }
   const roomA = new BaseRoom(1, 1)
-  roomA.gridPosX = 0
-  roomA.gridPosY = 0;
+  roomA.gridPos.x = 0
+  roomA.gridPos.y = 0;
   [
     [1, 0], [-1, 0], [0, 1], [0, -1], // orthogonal neighbors
     [1, 1], [-1, 1], [1, -1], [-1, -1], // diagonals
     [1, 2], [2, 1]
   ].forEach(([x, y]) => {
     const roomB = new BaseRoom(1, 1)
-    roomB.gridPosX = x
-    roomB.gridPosY = y
+    roomB.gridPos.x = x
+    roomB.gridPos.y = y
     assertEqual(roomA.getDirectionToRoom(roomB), oppositeDir(roomB.getDirectionToRoom(roomA)), {x, y})
   })
   return result
