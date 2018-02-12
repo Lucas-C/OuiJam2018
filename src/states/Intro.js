@@ -42,8 +42,8 @@ export default class extends Phaser.State {
 
     var bck = this.game.add.sprite(0, 0, 'background')
     bck.scale.setTo(1, 1)
-    bck.width = 800
-    bck.height = 800
+    bck.width = this.game.width
+    bck.height = this.game.height
 
     const titleText = 'THE KING MUST KNOW ! '
     const title = this.add.text(this.world.centerX, 0.2 * this.game.height, titleText, {

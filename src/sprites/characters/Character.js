@@ -14,8 +14,8 @@ export default class extends Phaser.Group {
       if (!sprite.animations.frameData || sprite.animations.frameData.total <= 1) {
         throw new Error('Failure parsing spritesheet')
       }
-      console.log('Scaling Character sprite to', room.cellsGrid.widthCell / config.spriteSize, room.cellsGrid.heightCell / config.spriteSize)
-      sprite.scale.setTo(room.cellsGrid.widthCell / config.spriteSize, room.cellsGrid.heightCell / config.spriteSize)
+      //console.log('Scaling Character sprite to', room.cellsGrid.widthCell / config.spriteSize, room.cellsGrid.heightCell / config.spriteSize)
+      //sprite.scale.setTo(room.cellsGrid.widthCell / config.spriteSize, room.cellsGrid.heightCell / config.spriteSize)
       sprite.anchor.setTo(0.5)
       return sprite
     })

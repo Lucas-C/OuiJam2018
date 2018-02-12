@@ -249,7 +249,8 @@ export default class GameLevel extends Phaser.State {
 
   render () {
     if (__DEV__) {
-      // if (this.dialogExtraSprite) { game.debug.spriteInfo(this.dialogExtraSprite, 400, 600) }
+      window.game.debug.spriteInfo(this.nellaMandelson.sprites[0], 0, 600)
+      window.game.debug.spriteInfo(this.scrollMsg, 400, 620)
       // game.debug.cameraInfo(game.camera, 32, 32)
     }
   }

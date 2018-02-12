@@ -5,6 +5,7 @@ import {selectOneInArray} from '../utils'
 export default class extends Phaser.Sprite {
   constructor () {
     super(window.game, /* x= */0, /* y= */0, /* key= */'roguelikeSheet', /* frame= */FRAME.SCROLL_2)
+    this.name = 'ScrollMessage'
     this.scale.setTo(2)
     this.owner = null
   }
@@ -19,9 +20,11 @@ export default class extends Phaser.Sprite {
     }
     this.owner = ally
     this.owner.hasScrollMsg = true
+    console.log('giveToChar initial world pos:', this.world)
     this.owner.add(this)
     const scrollToCharDelta = this.scrollToCharDelta(this.owner.room)
     this.position.setTo(-scrollToCharDelta.x, -scrollToCharDelta.y)
+    window.game.time.events.add(500, () => console.log('giveToChar final world pos:', this.world))
   }
 
   canBeSentTo (destRoom) {
