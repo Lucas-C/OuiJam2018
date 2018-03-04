@@ -1,17 +1,19 @@
 import Phaser from 'phaser'
 
 export default class GameGrid extends Phaser.Group {
-  constructor (widthCell, heightCell, parent) {
+  constructor ({colCount, rowCount, widthCell, heightCell, parent}) {
     super(window.game, /* parent= */parent, 'GameGrid')
+    this.colCount = colCount
+    this.rowCount = rowCount
     this.widthCell = widthCell
     this.heightCell = heightCell
   }
 
-  placeAt (xx, yy, obj, offsetx = 0, offsety = 0) {
-    obj.gridPosX = xx
-    obj.gridPosY = yy
-    obj.x = (this.widthCell * xx) + offsetx
-    obj.y = (this.heightCell * yy) + offsety
+  placeAt (newGridPosX, newGridPosY, obj) {
+    obj.gridPos = {x: newGridPosX, y: newGridPosY}
+    obj.x = this.widthCell * obj.gridPos.x
+    obj.y = this.heightCell * obj.gridPos.y
+    // if (newGridPosX === 0 && newGridPosY === 0) this.topLeftCorner = obj
   }
 
   showForDebug (lineColor = 0xff0000, lineSize = 4) {

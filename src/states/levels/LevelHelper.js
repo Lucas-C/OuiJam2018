@@ -14,7 +14,7 @@ export default class LevelHelper {
   }
 
   makePrisonCell ({x, y, nbAllies = 0, nbBaddies = 0, sideMetalBars, sideWalls, exits, withNelly = false, endWindow, msgOnEntry}) {
-    const room = new PrisonCell(this.level.getRoomWidthInPx(), this.level.getRoomHeightInPx())
+    const room = new PrisonCell({parent: this.level.rootGroup})
 
     if (sideMetalBars) {
       room.addSideMetalBars(...sideMetalBars)
@@ -91,7 +91,7 @@ export default class LevelHelper {
   }
 
   createCorridor () {
-    const room = new PrisonCorridor(this.level.getRoomWidthInPx(), this.level.getRoomHeightInPx())
+    const room = new PrisonCorridor({parent: this.level.rootGroup})
 
     let allPossibilities = [
       [1, 1], [1, 2], [1, 3], [1, 4], [1, 5],

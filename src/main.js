@@ -12,10 +12,7 @@ import Credits from './states/Credits'
 
 class Game extends Phaser.Game {
   constructor () {
-    const docElement = document.documentElement
-    const width = docElement.clientWidth > config.gameWidth ? config.gameWidth : docElement.clientWidth
-    const height = docElement.clientHeight > config.gameHeight ? config.gameHeight : docElement.clientHeight
-    super(width, height, Phaser.CANVAS, 'content', /* state= */null, /* transparent= */false, /* antialias= */false)
+    super(config.gameWidth, config.gameHeight, /* renderer= */Phaser.CANVAS, /* parent= */'content', /* state= */null, /* transparent= */false, /* antialias= */false)
 
     this.state.add('Boot', BootState, false)
     this.state.add('Intro', IntroState, false)
@@ -28,6 +25,12 @@ class Game extends Phaser.Game {
     if (!window.cordova) {
       this.state.start('Boot')
     }
+  }
+  boot () {
+    super.boot()
+    this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL
+    this.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL
+    this.scale.parentIsWindow = true
   }
 }
 

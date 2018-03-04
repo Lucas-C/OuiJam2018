@@ -6,7 +6,8 @@ import FRAME from '../../const/Frame'
 export default class extends GameLevel {
   init () {
     super.init()
-    this.roomsPerLevelSide = 6
+    this.colCount = 4
+    this.rowCount = 3
   }
 
   preload () {
@@ -16,20 +17,20 @@ export default class extends GameLevel {
 
     // Starting room:
     this.currentRoom = this.createStartCell()
-    this.levelGrid.addRoom(1, 1, this.currentRoom)
+    this.levelGrid.addRoom(0, 0, this.currentRoom)
+    this.levelGrid.addRoom(0, 1, this.helper.createCorridor()).addSideWalls(DIRECTION.LEFT, DIRECTION.DOWN)
+
+    this.levelGrid.addRoom(1, 0, this.createTopCell2())
+    this.levelGrid.addRoom(1, 1, this.helper.createCorridor())
     this.levelGrid.addRoom(1, 2, this.helper.createCorridor()).addSideWalls(DIRECTION.LEFT, DIRECTION.DOWN)
 
-    this.levelGrid.addRoom(2, 1, this.createTopCell2())
-    this.levelGrid.addRoom(2, 2, this.helper.createCorridor())
-    this.levelGrid.addRoom(2, 3, this.helper.createCorridor()).addSideWalls(DIRECTION.LEFT, DIRECTION.DOWN)
+    this.levelGrid.addRoom(2, 0, this.createTopCell3())
+    this.levelGrid.addRoom(2, 1, this.createMiddleCell3())
+    this.levelGrid.addRoom(2, 2, this.helper.createCorridor()).addSideWalls(DIRECTION.DOWN)
 
-    this.levelGrid.addRoom(3, 1, this.createTopCell3())
-    this.levelGrid.addRoom(3, 2, this.createMiddleCell3())
-    this.levelGrid.addRoom(3, 3, this.helper.createCorridor()).addSideWalls(DIRECTION.DOWN)
-
-    this.levelGrid.addRoom(4, 1, this.createEndCell())
-    this.levelGrid.addRoom(4, 2, this.helper.createCorridor()).addSideWalls(DIRECTION.RIGHT)
-    this.levelGrid.addRoom(4, 3, this.helper.createCorridor()).addSideWalls(DIRECTION.RIGHT, DIRECTION.DOWN)
+    this.levelGrid.addRoom(3, 0, this.createEndCell())
+    this.levelGrid.addRoom(3, 1, this.helper.createCorridor()).addSideWalls(DIRECTION.RIGHT)
+    this.levelGrid.addRoom(3, 2, this.helper.createCorridor()).addSideWalls(DIRECTION.RIGHT, DIRECTION.DOWN)
   }
 
   createStartCell () {

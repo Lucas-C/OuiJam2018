@@ -4,7 +4,9 @@ import DIRECTION from '../../const/Direction'
 export default class extends GameLevel {
   init () {
     super.init()
-    this.roomsPerLevelSide = 6
+    // Note: row & column #1 are not used in this level (for no reason)
+    this.colCount = 6
+    this.rowCount = 5
   }
 
   preload () {

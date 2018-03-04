@@ -20,7 +20,7 @@ Fork from https://github.com/lean/phaser-es6-webpack
 
 ```npm install``` to download the dependencies
 
-```npm run dev``` to start the game
+```npm start``` to start the game in development mode (watch)
 
 ```npm run deploy``` to build a standalone version
 

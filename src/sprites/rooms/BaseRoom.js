@@ -2,16 +2,14 @@ import Phaser from 'phaser-ce/build/custom/phaser-split'
 import config from '../../config'
 import RoomGrid from '../../grid/RoomGrid'
 import Inmate from '../../sprites/characters/Inmate'
-import DIRECTION from '../../const/Direction'
+import {DIRECTION, oppositeDir} from '../../const/Direction'
 import FRAME from '../../const/Frame'
 import {selectOneInArray} from '../../utils'
 
 export default class BaseRoom extends Phaser.Group {
-  constructor (roomWidth, roomHeight) {
-    super(window.game)
-    this.roomWidth = roomWidth
-    this.roomHeight = roomHeight
-    this.cellsGrid = new RoomGrid(config.cellsPerRoomSide, roomWidth, roomHeight)
+  constructor ({parent, name}) {
+    super(window.game, /* parent= */parent, /* name= */name || 'BaseRoom')
+    this.cellsGrid = new RoomGrid({parent: this})
     // this.cellsGrid.showForDebug()
     this.sideWalls = []
     this.sideBars = []
@@ -33,37 +31,36 @@ export default class BaseRoom extends Phaser.Group {
   }
 
   getRoomInDirection ({deltaX, deltaY}) {
-    const [dstX, dstY] = [this.gridPosX + deltaX, this.gridPosY + deltaY]
+    const [dstX, dstY] = [this.gridPos.x + deltaX, this.gridPos.y + deltaY]
     return this.parentLevelGrid.roomAtPos(dstX, dstY)
   }
 
-  getDirectionToRoom (destRoom) {
-    if (this.gridPosX !== destRoom.gridPosX && this.gridPosY !== destRoom.gridPosY) {
-      console.error('Rooms are not aligned', this, destRoom)
-      throw new Error('Rooms are not aligned')
-    }
-    if (this.gridPosX === destRoom.gridPosX && this.gridPosY === destRoom.gridPosY) {
-      throw new Error('Rooms are at the same position')
-    }
-    if (this.gridPosX === destRoom.gridPosX) {
-      return destRoom.gridPosY > this.gridPosY ? DIRECTION.DOWN : DIRECTION.UP
-    } else {
-      return destRoom.gridPosX > this.gridPosX ? DIRECTION.RIGHT : DIRECTION.LEFT
-    }
-  }
-
   /*
-   * TODO: If this & destRoom are not aligned:
+   * If this & destRoom are not aligned:
    * - if they are more distant from each other on one orthogonal axis,
    *   then return the direction on this axis
    * - else, if they are on an exact diagonal,
    *   then return consistently the first direction of the diagonal, clockwise,
    *   so that `A.getPassingToRoom(B)` is always the opposite of `B.getPassingToRoom(A)`
    */
-  getPassingToRoom (destRoom) {
-    if (Math.abs(this.gridPosY - destRoom.gridPosY) !== 1 && Math.abs(this.gridPosY - destRoom.gridPosY)) {
-      throw new Error('Cannot pass to a room that is not at a distance of exactly 1')
+  getDirectionToRoom (destRoom) {
+    const distX = Math.abs(this.gridPos.x - destRoom.gridPos.x)
+    const distY = Math.abs(this.gridPos.y - destRoom.gridPos.y)
+    if (distY === distX) {
+      if (destRoom.gridPos.y > this.gridPos.y) {
+        return destRoom.gridPos.x > this.gridPos.x ? DIRECTION.DOWN : DIRECTION.LEFT
+      } else {
+        return destRoom.gridPos.x < this.gridPos.x ? DIRECTION.UP : DIRECTION.RIGHT
+      }
     }
+    if (distY > distX) {
+      return destRoom.gridPos.y > this.gridPos.y ? DIRECTION.DOWN : DIRECTION.UP
+    } else {
+      return destRoom.gridPos.x > this.gridPos.x ? DIRECTION.RIGHT : DIRECTION.LEFT
+    }
+  }
+
+  getPassingToRoom (destRoom) {
     const passing = {
       bars: false,
       walls: false
@@ -85,6 +82,21 @@ export default class BaseRoom extends Phaser.Group {
     return passing
   }
 
+  /*
+   * Given a tile T1 in a room R1 (this),
+   * compute the relative position in px of a tile T2 in another room R2.
+   * If no source tile gridPos is specified, consider the top right corner
+   */
+  getDeltaToTileInRoom ({room, toTileGridPos, fromTileGridPos}) {
+    if (!fromTileGridPos) {
+      fromTileGridPos = {x: 0, y: 0}
+    }
+    return {
+      x: (room.gridPos.x - this.gridPos.x) * this.parentLevelGrid.widthCell + (toTileGridPos.x - fromTileGridPos.x) * room.cellsGrid.widthCell,
+      y: (room.gridPos.y - this.gridPos.y) * this.parentLevelGrid.heightCell + (toTileGridPos.y - fromTileGridPos.y) * room.cellsGrid.heightCell
+    }
+  }
+
   /**********
    * Setters
    *********/
@@ -92,7 +104,7 @@ export default class BaseRoom extends Phaser.Group {
     this.background = window.game.add.graphics(0, 0)
     this.add(this.background)
     this.background.beginFill(color)
-    this.background.drawRect(0, 0, this.roomWidth, this.roomHeight)
+    this.background.drawRect(0, 0, config.roomSizeInPx(), config.roomSizeInPx())
     this.background.endFill()
   }
 
@@ -331,3 +343,29 @@ export default class BaseRoom extends Phaser.Group {
 
 BaseRoom.WALL_AND_FLOOR_SPRITE_SHEET = 'roguelikeSheet'
 BaseRoom.METAL_BAR_SPRITE_SHEET = 'roguelikeIndoor'
+
+// Lucas: I tried to add those has pure NodeJS unit tests with the ava test runner,
+// however the p2 PhaserJS dependency cannot by used in NodeJS (it uses `window` at import time)
+window.testGetDirectionToRoom = () => { // Unit test runnable in browser
+  let result = 'ok'
+  const assertEqual = (a, b, ...args) => {
+    if (a !== b) {
+      console.error('Not equal', a, b, ...args)
+      result = 'ko'
+    }
+  }
+  const roomA = new BaseRoom()
+  roomA.gridPos.x = 0
+  roomA.gridPos.y = 0;
+  [
+    [1, 0], [-1, 0], [0, 1], [0, -1], // orthogonal neighbors
+    [1, 1], [-1, 1], [1, -1], [-1, -1], // diagonals
+    [1, 2], [2, 1]
+  ].forEach(([x, y]) => {
+    const roomB = new BaseRoom()
+    roomB.gridPos.x = x
+    roomB.gridPos.y = y
+    assertEqual(roomA.getDirectionToRoom(roomB), oppositeDir(roomB.getDirectionToRoom(roomA)), {x, y})
+  })
+  return result
+}
