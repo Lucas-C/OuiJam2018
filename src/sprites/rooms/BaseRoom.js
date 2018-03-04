@@ -7,11 +7,9 @@ import FRAME from '../../const/Frame'
 import {selectOneInArray} from '../../utils'
 
 export default class BaseRoom extends Phaser.Group {
-  constructor (roomWidth, roomHeight) {
-    super(window.game)
-    this.roomWidth = roomWidth
-    this.roomHeight = roomHeight
-    this.cellsGrid = new RoomGrid(config.cellsPerRoomSide, roomWidth, roomHeight)
+  constructor ({parent, name}) {
+    super(window.game, /* parent= */parent, /* name= */name || 'BaseRoom')
+    this.cellsGrid = new RoomGrid({parent: this})
     // this.cellsGrid.showForDebug()
     this.sideWalls = []
     this.sideBars = []
@@ -106,7 +104,7 @@ export default class BaseRoom extends Phaser.Group {
     this.background = window.game.add.graphics(0, 0)
     this.add(this.background)
     this.background.beginFill(color)
-    this.background.drawRect(0, 0, this.roomWidth, this.roomHeight)
+    this.background.drawRect(0, 0, config.roomSizeInPx(), config.roomSizeInPx())
     this.background.endFill()
   }
 
@@ -346,7 +344,6 @@ export default class BaseRoom extends Phaser.Group {
 BaseRoom.WALL_AND_FLOOR_SPRITE_SHEET = 'roguelikeSheet'
 BaseRoom.METAL_BAR_SPRITE_SHEET = 'roguelikeIndoor'
 
-
 // Lucas: I tried to add those has pure NodeJS unit tests with the ava test runner,
 // however the p2 PhaserJS dependency cannot by used in NodeJS (it uses `window` at import time)
 window.testGetDirectionToRoom = () => { // Unit test runnable in browser
@@ -357,7 +354,7 @@ window.testGetDirectionToRoom = () => { // Unit test runnable in browser
       result = 'ko'
     }
   }
-  const roomA = new BaseRoom(1, 1)
+  const roomA = new BaseRoom()
   roomA.gridPos.x = 0
   roomA.gridPos.y = 0;
   [
@@ -365,7 +362,7 @@ window.testGetDirectionToRoom = () => { // Unit test runnable in browser
     [1, 1], [-1, 1], [1, -1], [-1, -1], // diagonals
     [1, 2], [2, 1]
   ].forEach(([x, y]) => {
-    const roomB = new BaseRoom(1, 1)
+    const roomB = new BaseRoom()
     roomB.gridPos.x = x
     roomB.gridPos.y = y
     assertEqual(roomA.getDirectionToRoom(roomB), oppositeDir(roomB.getDirectionToRoom(roomA)), {x, y})

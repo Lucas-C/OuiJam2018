@@ -1,5 +1,6 @@
 import Phaser from 'phaser'
 import FRAME from '../const/Frame'
+import config from '../config'
 import {selectOneInArray} from '../utils'
 
 export default class extends Phaser.Sprite {
@@ -11,7 +12,7 @@ export default class extends Phaser.Sprite {
   }
 
   scrollToCharDelta (room) {
-    return {x: 0.04 * room.roomWidth, y: 0.04 * room.roomHeight}
+    return {x: 0.04 * config.roomSizeInPx(), y: 0.04 * config.roomSizeInPx()}
   }
 
   giveToChar (ally) {
@@ -35,12 +36,10 @@ export default class extends Phaser.Sprite {
   }
 
   sendTo (ally) {
-    // TODO:
-    // - fix end move position glitch
-    // - fix sprite disappearing during movement
+    // TODO: fix scroll sprite disappearing during movement
     const dest = this.owner.room.getDeltaToTileInRoom({room: ally.room, toTileGridPos: ally.gridPos, fromTileGridPos: this.owner.gridPos})
     const scrollToCharDelta = this.scrollToCharDelta(ally.room)
-    console.log('Sending scrollMsg to', ally.name, dest)
+    console.log('Sending scrollMsg to', ally.name, ally.room, dest, scrollToCharDelta)
     const transmissionTween = window.game.add.tween(this).to({
       x: dest.x - scrollToCharDelta.x, y: dest.y - scrollToCharDelta.y
     }, /* duration= */500, /* ease= */Phaser.Easing.Cubic.InOut)

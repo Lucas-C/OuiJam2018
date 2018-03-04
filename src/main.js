@@ -26,7 +26,7 @@ class Game extends Phaser.Game {
       this.state.start('Boot')
     }
   }
-  boot() {
+  boot () {
     super.boot()
     this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL
     this.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL

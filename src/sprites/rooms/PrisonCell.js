@@ -1,8 +1,8 @@
 import BaseRoom from './BaseRoom'
 
 export default class PrisonCell extends BaseRoom {
-  constructor (roomWidth, roomHeight) {
-    super(roomWidth, roomHeight)
+  constructor ({parent}) {
+    super({parent: parent, name: 'PrisonCell'})
     this.setUniformBackground(0xCCCCCC)
   }
 }

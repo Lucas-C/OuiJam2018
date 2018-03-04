@@ -2,14 +2,12 @@ import GameGrid from './GameGrid'
 import config from '../config'
 
 export default class RoomGrid extends GameGrid {
-  constructor (size, roomWidth, roomHeight, parent) {
-    super(size, roomWidth / size, roomHeight / size, parent)
-  }
-
-  placeAt (xx, yy, obj) {
-    super.placeAt(xx, yy, obj)
-    // Only has an effect ig obj is a Sprite
-    obj.scale.setTo(this.widthCell / config.spriteSize, this.heightCell / config.spriteSize)
+  constructor ({parent}) {
+    const colCount = config.cellsPerRoomSide
+    const rowCount = config.cellsPerRoomSide
+    const widthCell = config.spriteSize
+    const heightCell = config.spriteSize
+    super({colCount, rowCount, widthCell, heightCell, parent})
   }
 
   showForDebug () {

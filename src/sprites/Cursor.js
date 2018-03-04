@@ -1,18 +1,12 @@
 import Phaser from 'phaser'
 import DIRECTION from '../const/Direction'
 import FRAME from '../const/Frame'
+import config from '../config'
 
 export default class Cursor extends Phaser.Group {
-  constructor (roomWidth, roomHeight, parent) {
-    super(window.game, /* parent= */parent, /* name= */'cursor')
-
-    // this.fixedToCamera = true
-    // this.cameraOffset.setTo(game.width / 2 - roomWidth / 2,
-    //                        game.height / 2 - roomHeight / 2)
-
+  constructor ({parent}) {
+    super(window.game, /* parent= */parent, /* name= */'Cursor')
     this.currentMovements = this._cloneObject(Cursor.ORIGINAL_MOVEMENT)
-    this.roomWidth = roomWidth
-    this.roomHeight = roomHeight
     this._draw()
   }
 
@@ -21,10 +15,10 @@ export default class Cursor extends Phaser.Group {
   }
 
   _draw () {
-    this.leftArrow = this._addArrow(0, this.roomHeight / 2, this.currentMovements.LEFT.icon.iconFrame, this.currentMovements.LEFT.icon.iconRotation)
-    this.rightArrow = this._addArrow(this.roomWidth, this.roomHeight / 2, this.currentMovements.RIGHT.icon.iconFrame, this.currentMovements.RIGHT.icon.iconRotation)
-    this.upArrow = this._addArrow(this.roomWidth / 2, 0, this.currentMovements.UP.icon.iconFrame, this.currentMovements.UP.icon.iconRotation)
-    this.downArrow = this._addArrow(this.roomWidth / 2, this.roomHeight, this.currentMovements.DOWN.icon.iconFrame, this.currentMovements.DOWN.icon.iconRotation)
+    this.leftArrow = this._addArrow(0, config.roomSizeInPx() / 2, this.currentMovements.LEFT.icon.iconFrame, this.currentMovements.LEFT.icon.iconRotation)
+    this.rightArrow = this._addArrow(config.roomSizeInPx(), config.roomSizeInPx() / 2, this.currentMovements.RIGHT.icon.iconFrame, this.currentMovements.RIGHT.icon.iconRotation)
+    this.upArrow = this._addArrow(config.roomSizeInPx() / 2, 0, this.currentMovements.UP.icon.iconFrame, this.currentMovements.UP.icon.iconRotation)
+    this.downArrow = this._addArrow(config.roomSizeInPx() / 2, config.roomSizeInPx(), this.currentMovements.DOWN.icon.iconFrame, this.currentMovements.DOWN.icon.iconRotation)
   }
 
   _reDraw () {
@@ -46,7 +40,6 @@ export default class Cursor extends Phaser.Group {
   }
 
   randomizeMovements () {
-    console.log('randomize movements')
     const shuffledMovements = this._getRandomMovementsList()
     this.currentMovements.UP = this._cloneObject(Cursor.ORIGINAL_MOVEMENT[shuffledMovements[0]])
     this.currentMovements.RIGHT = this._cloneObject(Cursor.ORIGINAL_MOVEMENT[shuffledMovements[1]])

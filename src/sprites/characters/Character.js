@@ -1,10 +1,8 @@
 import Phaser from 'phaser'
 
-import config from '../../config'
-
 export default class extends Phaser.Group {
   constructor ({ frames, spriteSheet, room, isAlly, name }) {
-    super(window.game, room, name || 'Character')
+    super(window.game, /* parent= */room, /* name= */name || 'Character')
     this.room = room
     this.isAlly = isAlly
     this.hasScrollMsg = false
@@ -14,8 +12,8 @@ export default class extends Phaser.Group {
       if (!sprite.animations.frameData || sprite.animations.frameData.total <= 1) {
         throw new Error('Failure parsing spritesheet')
       }
-      //console.log('Scaling Character sprite to', room.cellsGrid.widthCell / config.spriteSize, room.cellsGrid.heightCell / config.spriteSize)
-      //sprite.scale.setTo(room.cellsGrid.widthCell / config.spriteSize, room.cellsGrid.heightCell / config.spriteSize)
+      // console.log('Scaling Character sprite to', room.cellsGrid.widthCell / config.spriteSize, room.cellsGrid.heightCell / config.spriteSize)
+      // sprite.scale.setTo(room.cellsGrid.widthCell / config.spriteSize, room.cellsGrid.heightCell / config.spriteSize)
       sprite.anchor.setTo(0.5)
       return sprite
     })
@@ -28,12 +26,10 @@ export default class extends Phaser.Group {
   }
 
   moveTo (newRoom, x, y) {
-    // TODO:
-    // - fix sprite disappearing during movement
-    // - fix character erasing existing character in dest cell
+    // TODO: fix character erasing existing character in dest cell
     const newGridPos = {
-      x: x || (1 + Math.floor(Math.random() * (newRoom.parentLevelGrid.size - 2))),
-      y: y || (1 + Math.floor(Math.random() * (newRoom.parentLevelGrid.size - 2)))
+      x: x || (1 + Math.floor(Math.random() * (newRoom.parentLevelGrid.colCount - 2))),
+      y: y || (1 + Math.floor(Math.random() * (newRoom.parentLevelGrid.rowCount - 2)))
     }
     const dest = this.room.getDeltaToTileInRoom({room: newRoom, toTileGridPos: newGridPos})
     const self = this
